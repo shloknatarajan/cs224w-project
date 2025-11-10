@@ -1,0 +1,10 @@
+[project]
+authors = ["Shlok Natarajan <shlok.natarajan@gmail.com>"]
+channels = ["conda-forge"]
+name = "project"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
