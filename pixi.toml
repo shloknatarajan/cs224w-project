@@ -1,8 +1,8 @@
-[project]
+[workspace]
 authors = ["Shlok Natarajan <shlok.natarajan@gmail.com>"]
 channels = ["conda-forge"]
-name = "project"
-platforms = ["osx-arm64"]
+name = "cs224w-project"
+platforms = ["osx-arm64", "linux-64"]
 version = "0.1.0"
 
 [dependencies]
