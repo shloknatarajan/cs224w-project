@@ -51,48 +51,122 @@ data.edge_index = train_pos.t().contiguous().to(device)
 evaluator = Evaluator(name='ogbl-ddi')
 
 class BaseModel(nn.Module):
-    def decode(self, z, edge):
-        src, dst = edge[:, 0], edge[:, 1]
-        return (z[src] * z[dst]).sum(dim=1)
-
-class GCN(BaseModel):
     def __init__(self, hidden_dim):
         super().__init__()
+        # MLP decoder for better link prediction
+        self.decoder = nn.Sequential(
+            nn.Linear(hidden_dim * 2, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(hidden_dim // 2, 1)
+        )
+
+    def decode(self, z, edge):
+        src, dst = edge[:, 0], edge[:, 1]
+        # Concatenate source and destination embeddings
+        edge_emb = torch.cat([z[src], z[dst]], dim=1)
+        return self.decoder(edge_emb).squeeze()
+
+class GCN(BaseModel):
+    def __init__(self, num_nodes, hidden_dim, num_layers=3, dropout=0.3):
+        super().__init__(hidden_dim)
         self.hidden_dim = hidden_dim
-        self.conv1 = GCNConv(hidden_dim, hidden_dim)
-        self.conv2 = GCNConv(hidden_dim, hidden_dim)
+        self.dropout = dropout
+        self.num_layers = num_layers
+
+        # Learnable embeddings
+        self.emb = nn.Embedding(num_nodes, hidden_dim)
+        nn.init.xavier_uniform_(self.emb.weight)
+
+        # Multiple GCN layers with residual connections
+        self.convs = nn.ModuleList()
+        self.bns = nn.ModuleList()
+        for _ in range(num_layers):
+            self.convs.append(GCNConv(hidden_dim, hidden_dim))
+            self.bns.append(nn.BatchNorm1d(hidden_dim))
 
     def encode(self, edge_index):
-        # Random non-trainable node features → prevents memorization
-        x = torch.randn(num_nodes, self.hidden_dim, device=device)
-        x = F.relu(self.conv1(x, edge_index))
-        x = self.conv2(x, edge_index)
+        x = self.emb.weight
+
+        for i, (conv, bn) in enumerate(zip(self.convs, self.bns)):
+            x_prev = x
+            x = conv(x, edge_index)
+            x = bn(x)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            # Residual connection (skip first layer)
+            if i > 0:
+                x = x + x_prev
+
         return x
 
 class GraphSAGE(BaseModel):
-    def __init__(self, hidden_dim):
-        super().__init__()
+    def __init__(self, num_nodes, hidden_dim, num_layers=3, dropout=0.3):
+        super().__init__(hidden_dim)
         self.hidden_dim = hidden_dim
-        self.conv1 = SAGEConv(hidden_dim, hidden_dim)
-        self.conv2 = SAGEConv(hidden_dim, hidden_dim)
+        self.dropout = dropout
+        self.num_layers = num_layers
+
+        # Learnable embeddings
+        self.emb = nn.Embedding(num_nodes, hidden_dim)
+        nn.init.xavier_uniform_(self.emb.weight)
+
+        # Multiple SAGE layers with residual connections
+        self.convs = nn.ModuleList()
+        self.bns = nn.ModuleList()
+        for _ in range(num_layers):
+            self.convs.append(SAGEConv(hidden_dim, hidden_dim))
+            self.bns.append(nn.BatchNorm1d(hidden_dim))
 
     def encode(self, edge_index):
-        x = torch.randn(num_nodes, self.hidden_dim, device=device)
-        x = F.relu(self.conv1(x, edge_index))
-        x = self.conv2(x, edge_index)
+        x = self.emb.weight
+
+        for i, (conv, bn) in enumerate(zip(self.convs, self.bns)):
+            x_prev = x
+            x = conv(x, edge_index)
+            x = bn(x)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            # Residual connection (skip first layer)
+            if i > 0:
+                x = x + x_prev
+
         return x
 
 class GraphTransformer(BaseModel):
-    def __init__(self, hidden_dim, heads=2):
-        super().__init__()
+    def __init__(self, num_nodes, hidden_dim, num_layers=3, heads=4, dropout=0.3):
+        super().__init__(hidden_dim)
         self.hidden_dim = hidden_dim
-        self.conv1 = TransformerConv(hidden_dim, hidden_dim // heads, heads=heads)
-        self.conv2 = TransformerConv(hidden_dim, hidden_dim // heads, heads=heads)
+        self.dropout = dropout
+        self.num_layers = num_layers
+
+        # Learnable embeddings
+        self.emb = nn.Embedding(num_nodes, hidden_dim)
+        nn.init.xavier_uniform_(self.emb.weight)
+
+        # Multiple Transformer layers with residual connections
+        self.convs = nn.ModuleList()
+        self.bns = nn.ModuleList()
+        for _ in range(num_layers):
+            self.convs.append(TransformerConv(hidden_dim, hidden_dim // heads, heads=heads))
+            self.bns.append(nn.BatchNorm1d(hidden_dim))
 
     def encode(self, edge_index):
-        x = torch.randn(num_nodes, self.hidden_dim, device=device)
-        x = F.relu(self.conv1(x, edge_index))
-        x = self.conv2(x, edge_index)
+        x = self.emb.weight
+
+        for i, (conv, bn) in enumerate(zip(self.convs, self.bns)):
+            x_prev = x
+            x = conv(x, edge_index)
+            x = bn(x)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            # Residual connection (skip first layer)
+            if i > 0:
+                x = x + x_prev
+
         return x
 
 def get_loss(model, edge_index, pos_edges):
@@ -111,26 +185,31 @@ def get_loss(model, edge_index, pos_edges):
     loss = -torch.log(torch.sigmoid(pos_score)).mean() - torch.log(1 - torch.sigmoid(neg_score)).mean()
     return loss
 
-def evaluate(model):
+def evaluate(model, pos_edges, neg_edges=None):
+    """Evaluate model on given positive (and optionally negative) edges."""
     model.eval()
     with torch.no_grad():
         z = model.encode(data.edge_index)
 
         # Positive scores
-        pos_scores = model.decode(z, test_pos).view(-1).cpu()
+        pos_scores = model.decode(z, pos_edges).view(-1).cpu()
 
-        # Negative sampling + batch to avoid OOM
-        neg_test = negative_sampling(
-            edge_index=data.edge_index.cpu(),
-            num_nodes=num_nodes,
-            num_neg_samples=test_pos.size(0)
-        )
-        neg_test = neg_test.t().to(device)
+        # Use provided negatives or sample new ones
+        if neg_edges is None:
+            neg_test = negative_sampling(
+                edge_index=data.edge_index.cpu(),
+                num_nodes=num_nodes,
+                num_neg_samples=pos_edges.size(0)
+            )
+            neg_test = neg_test.t().to(device)
+        else:
+            neg_test = neg_edges
 
+        # Batch processing to avoid OOM
         neg_scores_list = []
-        batch = 200000  # safe chunk size
-        for i in range(0, neg_test.size(0), batch):
-            chunk = neg_test[i:i+batch]
+        batch_size = 300000  # Larger batch size for faster evaluation
+        for i in range(0, neg_test.size(0), batch_size):
+            chunk = neg_test[i:i+batch_size]
             neg_scores_list.append(model.decode(z, chunk).view(-1).cpu())
 
         neg_scores = torch.cat(neg_scores_list)
@@ -142,69 +221,168 @@ def evaluate(model):
 
         return result['hits@20']
 
-def train_model(name, model, epochs=1000, lr=0.001):
-    logger.info(f"Starting training for {name} (epochs={epochs}, lr={lr})")
+def train_model(name, model, epochs=200, lr=0.01, patience=20, eval_every=5):
+    """
+    Train model with early stopping and validation.
+
+    Args:
+        name: Model name for logging
+        model: Model to train
+        epochs: Maximum number of epochs
+        lr: Learning rate
+        patience: Early stopping patience (number of eval steps without improvement)
+        eval_every: Evaluate every N epochs
+    """
+    logger.info(f"Starting training for {name} (epochs={epochs}, lr={lr}, patience={patience})")
     model = model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-5)
+
+    # Learning rate scheduler - reduce LR when validation plateaus
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, mode='max', factor=0.5, patience=5, verbose=True  # More aggressive LR reduction
+    )
+
+    best_val_hits = 0
+    best_test_hits = 0
+    best_epoch = 0
+    epochs_no_improve = 0
 
     for epoch in range(1, epochs + 1):
         model.train()
         optimizer.zero_grad()
 
+        # Encode once per epoch - keep in memory
         z = model.encode(data.edge_index)
+
+        # Reduced negative sampling for memory efficiency
         neg_samples = negative_sampling(
             edge_index=data.edge_index,
             num_nodes=num_nodes,
-            num_neg_samples=train_pos.size(0)
+            num_neg_samples=train_pos.size(0)  # 1:1 ratio
         ).t().to(device)
 
-        pos_out = model.decode(z, train_pos).sigmoid()
-        neg_out = model.decode(z, neg_samples).sigmoid()
+        # MEMORY-EFFICIENT BATCH DECODING - process in smaller chunks
+        batch_size = 100000  # Process edges in chunks
+        pos_out_list = []
+        for i in range(0, train_pos.size(0), batch_size):
+            chunk = train_pos[i:i+batch_size]
+            pos_out_list.append(model.decode(z, chunk))
+        pos_out = torch.cat(pos_out_list)
+        
+        neg_out_list = []
+        for i in range(0, neg_samples.size(0), batch_size):
+            chunk = neg_samples[i:i+batch_size]
+            neg_out_list.append(model.decode(z, chunk))
+        neg_out = torch.cat(neg_out_list)
 
-        loss = -torch.log(pos_out + 1e-15).mean() - torch.log(1 - neg_out + 1e-15).mean()
+        # IMPROVED LOSS: Use BCE with logits (more numerically stable)
+        pos_loss = F.binary_cross_entropy_with_logits(
+            pos_out, torch.ones_like(pos_out)
+        )
+        neg_loss = F.binary_cross_entropy_with_logits(
+            neg_out, torch.zeros_like(neg_out)
+        )
+        loss = pos_loss + neg_loss
+
         loss.backward()
+        # Gradient clipping for stability
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         optimizer.step()
+        
+        # Clear intermediate tensors
+        del z, neg_samples, pos_out, neg_out, pos_loss, neg_loss
+        torch.cuda.empty_cache()
 
-        if epoch % 5 == 0:
-            logger.info(f"{name} Epoch {epoch}/{epochs} - Loss = {loss.item():.4f}")
+        # EARLY STOPPING: Evaluate periodically
+        if epoch % eval_every == 0 or epoch == 1:
+            val_hits = evaluate(model, valid_pos)
+            test_hits = evaluate(model, test_pos)
+            
+            # Free up memory after evaluation
+            torch.cuda.empty_cache()
 
-    hits20 = evaluate(model)
-    logger.info(f"{name}: Hits@20 = {hits20:.4f}")
-    return hits20
+            # Update learning rate based on validation performance
+            scheduler.step(val_hits)
 
-gcn_hits  = train_model("GCN", GCN(128))
-sage_hits = train_model("GraphSAGE", GraphSAGE(128))
-gt_hits   = train_model("GraphTransformer", GraphTransformer(128))
+            improved = val_hits > best_val_hits
+            if improved:
+                best_val_hits = val_hits
+                best_test_hits = test_hits
+                best_epoch = epoch
+                epochs_no_improve = 0
+            else:
+                epochs_no_improve += 1
 
-logger.info("\n==== FINAL RESULTS ====")
-logger.info(f"GCN Hits@20       = {gcn_hits:.4f}")
-logger.info(f"GraphSAGE Hits@20 = {sage_hits:.4f}")
-logger.info(f"Transformer Hits@20 = {gt_hits:.4f}")
+            current_lr = optimizer.param_groups[0]['lr']
+            logger.info(
+                f"{name} Epoch {epoch:04d}/{epochs} | "
+                f"Loss: {loss.item():.4f} | "
+                f"Val Hits@20: {val_hits:.4f} | "
+                f"Test Hits@20: {test_hits:.4f} | "
+                f"Best Val: {best_val_hits:.4f} (epoch {best_epoch}) | "
+                f"LR: {current_lr:.6f}"
+            )
 
-@torch.no_grad()
-def debug_evaluator(model):
-    model = model.to(device)                # ✅ move model to cuda
-    model.eval()
+            # Early stopping check
+            if epochs_no_improve >= patience:
+                logger.info(f"{name}: Early stopping at epoch {epoch} (no improvement for {patience} eval steps)")
+                break
 
-    z = model.encode(data.edge_index)       # now both live on GPU
+    logger.info(f"{name} FINAL: Best Val Hits@20 = {best_val_hits:.4f} | Test Hits@20 = {best_test_hits:.4f} (at epoch {best_epoch})")
+    return best_val_hits, best_test_hits
 
-    pos_scores = model.decode(z, test_pos).view(-1).cpu()
+# Train all three models with improved architecture
+# Reduced dimensions for better memory efficiency and potentially better generalization
+HIDDEN_DIM = 128  # Reduced from 256 for memory and to prevent overfitting
+NUM_LAYERS = 2    # Reduced from 3 for faster training and better generalization
+DROPOUT = 0.3
+EPOCHS = 300      # More epochs since each is faster now
+PATIENCE = 30     # More patience for early stopping
 
-    neg_test = negative_sampling(
-        edge_index=data.edge_index.cpu(),   # ✅ negative_sampling works on CPU
-        num_nodes=num_nodes,
-        num_neg_samples=test_pos.size(0),
-    )
-    neg_test = neg_test.to(device)          # ✅ then move back to CUDA
-    neg_scores = model.decode(z, neg_test).view(-1).cpu()
+logger.info("=" * 60)
+logger.info(f"Training GCN Model (hidden_dim={HIDDEN_DIM}, layers={NUM_LAYERS})")
+logger.info("=" * 60)
+gcn_val, gcn_test = train_model(
+    "GCN",
+    GCN(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT),
+    epochs=EPOCHS,
+    lr=0.01,
+    patience=PATIENCE
+)
 
-    result = evaluator.eval({
-        'y_pred_pos': pos_scores,
-        'y_pred_neg': neg_scores,
-    })
+logger.info("\n" + "=" * 60)
+logger.info(f"Training GraphSAGE Model (hidden_dim={HIDDEN_DIM}, layers={NUM_LAYERS})")
+logger.info("=" * 60)
+sage_val, sage_test = train_model(
+    "GraphSAGE",
+    GraphSAGE(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT),
+    epochs=EPOCHS,
+    lr=0.01,
+    patience=PATIENCE
+)
 
-    logger.info(f"Returned evaluator keys: {result.keys()}")
-    return result
+logger.info("\n" + "=" * 60)
+logger.info(f"Training GraphTransformer Model (hidden_dim={HIDDEN_DIM}, layers={NUM_LAYERS})")
+logger.info("=" * 60)
+gt_val, gt_test = train_model(
+    "GraphTransformer",
+    GraphTransformer(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT),
+    epochs=EPOCHS,
+    lr=0.005,  # Lower LR for transformer
+    patience=PATIENCE
+)
 
-debug_evaluator(GCN(32))
+logger.info("\n" + "=" * 80)
+logger.info("FINAL RESULTS SUMMARY")
+logger.info("=" * 80)
+logger.info(f"{'Model':<20} {'Val Hits@20':>15} {'Test Hits@20':>15}")
+logger.info("-" * 80)
+logger.info(f"{'GCN':<20} {gcn_val:>15.4f} {gcn_test:>15.4f}")
+logger.info(f"{'GraphSAGE':<20} {sage_val:>15.4f} {sage_test:>15.4f}")
+logger.info(f"{'GraphTransformer':<20} {gt_val:>15.4f} {gt_test:>15.4f}")
+logger.info("=" * 80)
+
+logger.info("\n" + "=" * 80)
 logger.info("Training and evaluation completed successfully!")
+logger.info(f"Results logged to: {log_filename}")
+logger.info("=" * 80)
