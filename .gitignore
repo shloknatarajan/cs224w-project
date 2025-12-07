@@ -1,2 +1,6 @@
 dataset/
 .pixi
+__pycache__/
+*.pyc
+.DS_Store
+docs/
