@@ -1,0 +1,34 @@
+2025-12-07 14:17:18,702 - Using device: mps
+2025-12-07 14:17:18,702 - Logging results to: logs/mac_gcn_test_20251207_141718.log
+2025-12-07 14:17:18,702 - Loading dataset ogbl-ddi...
+2025-12-07 14:17:18,750 - Dataset loaded: 4267 nodes
+2025-12-07 14:17:18,945 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-07 14:17:18,945 - Valid neg edges: 101882, Test neg: 95599
+2025-12-07 14:17:19,018 - Added self-loops: Total edges now = 1072178
+2025-12-07 14:17:19,025 - 
+================================================================================
+2025-12-07 14:17:19,025 - Training GCN Baseline on Mac (50 epochs)
+2025-12-07 14:17:19,025 - ================================================================================
+2025-12-07 14:17:19,051 - Starting training for GCN-Mac50 (epochs=50, lr=0.01, patience=20, hard_neg=False)
+2025-12-07 14:17:19,051 - Model description: Graph Convolutional Network with spectral convolutions | hidden_dim=128, num_layers=2, dropout=0.5, decoder_dropout=0.3, decoder=simple
+2025-12-07 14:17:19,051 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-07 14:17:19,055 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-07 14:17:24,247 - GCN-Mac50 Epoch 0001/50 [Random Neg] | Loss: 1.4682 | Val Hits@20: 0.0000 | Test Hits@20: 0.0002 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-07 14:17:35,646 - GCN-Mac50 Epoch 0005/50 [Random Neg] | Loss: 1.3488 | Val Hits@20: 0.0000 | Test Hits@20: 0.0002 | Best Val: 0.0000 (epoch 5) | LR: 0.010000 🔥
+2025-12-07 14:17:49,455 - GCN-Mac50 Epoch 0010/50 [Random Neg] | Loss: 1.2583 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 10) | LR: 0.010000 🔥
+2025-12-07 14:18:03,681 - GCN-Mac50 Epoch 0015/50 [Random Neg] | Loss: 1.1917 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 15) | LR: 0.010000 🔥
+2025-12-07 14:18:19,382 - GCN-Mac50 Epoch 0020/50 [Random Neg] | Loss: 1.0987 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 20) | LR: 0.010000 🔥
+2025-12-07 14:18:34,087 - GCN-Mac50 Epoch 0025/50 [Random Neg] | Loss: 1.0194 | Val Hits@20: 0.0002 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 25) | LR: 0.010000 🔥
+2025-12-07 14:18:47,461 - GCN-Mac50 Epoch 0030/50 [Random Neg] | Loss: 0.9726 | Val Hits@20: 0.0002 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 30) | LR: 0.010000 🔥
+2025-12-07 14:19:00,789 - GCN-Mac50 Epoch 0035/50 [Random Neg] | Loss: 0.9630 | Val Hits@20: 0.0002 | Test Hits@20: 0.0004 | Best Val: 0.0002 (epoch 35) | LR: 0.010000 🔥
+2025-12-07 14:19:14,262 - GCN-Mac50 Epoch 0040/50 [Random Neg] | Loss: 0.9363 | Val Hits@20: 0.0002 | Test Hits@20: 0.0004 | Best Val: 0.0002 (epoch 35) | LR: 0.010000 
+2025-12-07 14:19:27,743 - GCN-Mac50 Epoch 0045/50 [Random Neg] | Loss: 0.9245 | Val Hits@20: 0.0003 | Test Hits@20: 0.0004 | Best Val: 0.0003 (epoch 45) | LR: 0.010000 🔥
+2025-12-07 14:19:41,183 - GCN-Mac50 Epoch 0050/50 [Random Neg] | Loss: 0.9181 | Val Hits@20: 0.0003 | Test Hits@20: 0.0003 | Best Val: 0.0003 (epoch 50) | LR: 0.010000 🔥
+2025-12-07 14:19:41,183 - GCN-Mac50 FINAL: Best Val Hits@20 = 0.0003 | Test Hits@20 = 0.0003 (at epoch 50)
+2025-12-07 14:19:41,185 - 
+================================================================================
+2025-12-07 14:19:41,185 - Mac Test Complete!
+2025-12-07 14:19:41,185 - Final Validation Hits@20: 0.0003
+2025-12-07 14:19:41,185 - Final Test Hits@20: 0.0003
+2025-12-07 14:19:41,186 - ================================================================================
+2025-12-07 14:19:41,186 - Full logs saved to: logs/mac_gcn_test_20251207_141718.log

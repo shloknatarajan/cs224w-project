@@ -1,0 +1,26 @@
+2025-12-07 14:14:55,901 - Using device: mps
+2025-12-07 14:14:55,901 - Logging results to: logs/mac_test_20251207_141455.log
+2025-12-07 14:14:55,901 - Loading dataset...
+2025-12-07 14:14:55,901 - Loading dataset ogbl-ddi...
+2025-12-07 14:14:55,979 - Dataset loaded: 4267 nodes
+2025-12-07 14:14:56,176 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-07 14:14:56,176 - Valid neg edges: 101882, Test neg: 95599
+2025-12-07 14:14:56,849 - Added self-loops: Total edges now = 1072178
+2025-12-07 14:14:56,856 - 
+================================================================================
+2025-12-07 14:14:56,857 - Testing GCN on Mac
+2025-12-07 14:14:56,857 - ================================================================================
+2025-12-07 14:14:56,889 - Starting training for GCN-MacTest (epochs=10, lr=0.01, patience=5, hard_neg=False)
+2025-12-07 14:14:56,889 - Model description: Graph Convolutional Network with spectral convolutions | hidden_dim=128, num_layers=2, dropout=0.5, decoder_dropout=0.3, decoder=simple
+2025-12-07 14:14:56,889 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-07 14:14:56,896 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-07 14:15:07,196 - GCN-MacTest Epoch 0001/10 [Random Neg] | Loss: 1.4661 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-07 14:15:18,389 - GCN-MacTest Epoch 0005/10 [Random Neg] | Loss: 1.3207 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 5) | LR: 0.010000 🔥
+2025-12-07 14:15:32,084 - GCN-MacTest Epoch 0010/10 [Random Neg] | Loss: 1.2053 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 5) | LR: 0.010000 
+2025-12-07 14:15:32,085 - GCN-MacTest FINAL: Best Val Hits@20 = 0.0000 | Test Hits@20 = 0.0000 (at epoch 5)
+2025-12-07 14:15:32,086 - 
+================================================================================
+2025-12-07 14:15:32,086 - Mac Test Complete!
+2025-12-07 14:15:32,086 - Validation Hits@20: 0.0000
+2025-12-07 14:15:32,086 - Test Hits@20: 0.0000
+2025-12-07 14:15:32,086 - ================================================================================

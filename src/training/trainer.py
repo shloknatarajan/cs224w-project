@@ -187,7 +187,11 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
 
             # Clear intermediate tensors
             del z, neg_samples, pos_out, neg_out, pos_loss, neg_loss, emb_reg_loss, loss
-            torch.cuda.empty_cache()
+            # Clear cache for CUDA devices
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+                torch.mps.empty_cache()
 
         # Optimizer step
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -204,7 +208,11 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             test_hits = evaluate_fn(model, test_pos, test_neg, batch_size=eval_batch_size)
             ema.restore()
 
-            torch.cuda.empty_cache()
+            # Clear cache for CUDA and MPS devices
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+                torch.mps.empty_cache()
 
             scheduler.step(val_hits)
 

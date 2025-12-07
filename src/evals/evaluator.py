@@ -42,7 +42,11 @@ def evaluate(model, data, evaluator, pos_edges, neg_edges, batch_size=50000):
 
         # Free z before evaluation
         del z
-        torch.cuda.empty_cache()
+        # Clear cache for CUDA and MPS devices
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            torch.mps.empty_cache()
 
         # Use OGB evaluator
         result = evaluator.eval({

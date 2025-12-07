@@ -1,0 +1,105 @@
+2025-12-07 14:21:42,896 - Using device: mps
+2025-12-07 14:21:42,896 - Logging results to: logs/baselines_20251207_142142.log
+2025-12-07 14:21:42,896 - Loading dataset ogbl-ddi...
+2025-12-07 14:21:42,942 - Dataset loaded: 4267 nodes
+2025-12-07 14:21:43,005 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-07 14:21:43,005 - Valid neg edges: 101882, Test neg: 95599
+2025-12-07 14:21:43,073 - Added self-loops: Total edges now = 1072178
+2025-12-07 14:21:43,080 - 
+================================================================================
+2025-12-07 14:21:43,080 - Training Simple GCN Baseline
+2025-12-07 14:21:43,080 - ================================================================================
+2025-12-07 14:21:43,108 - Starting training for GCN-Baseline (epochs=200, lr=0.01, patience=20, hard_neg=False)
+2025-12-07 14:21:43,108 - Model description: Graph Convolutional Network with spectral convolutions | hidden_dim=128, num_layers=2, dropout=0.5, decoder_dropout=0.3, decoder=simple
+2025-12-07 14:21:43,108 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-07 14:21:43,114 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-07 14:21:47,919 - GCN-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.4652 | Val Hits@20: 0.0000 | Test Hits@20: 0.0003 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-07 14:21:58,093 - GCN-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.3314 | Val Hits@20: 0.0000 | Test Hits@20: 0.0002 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-07 14:22:10,361 - GCN-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.3515 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-07 14:22:22,725 - GCN-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.1998 | Val Hits@20: 0.0002 | Test Hits@20: 0.0002 | Best Val: 0.0002 (epoch 15) | LR: 0.010000 🔥
+2025-12-07 14:22:35,411 - GCN-Baseline Epoch 0020/200 [Random Neg] | Loss: 1.1204 | Val Hits@20: 0.0022 | Test Hits@20: 0.0025 | Best Val: 0.0022 (epoch 20) | LR: 0.010000 🔥
+2025-12-07 14:22:47,746 - GCN-Baseline Epoch 0025/200 [Random Neg] | Loss: 1.0357 | Val Hits@20: 0.0028 | Test Hits@20: 0.0051 | Best Val: 0.0028 (epoch 25) | LR: 0.010000 🔥
+2025-12-07 14:22:59,954 - GCN-Baseline Epoch 0030/200 [Random Neg] | Loss: 0.9773 | Val Hits@20: 0.0042 | Test Hits@20: 0.0078 | Best Val: 0.0042 (epoch 30) | LR: 0.010000 🔥
+2025-12-07 14:23:12,398 - GCN-Baseline Epoch 0035/200 [Random Neg] | Loss: 0.9506 | Val Hits@20: 0.0052 | Test Hits@20: 0.0086 | Best Val: 0.0052 (epoch 35) | LR: 0.010000 🔥
+2025-12-07 14:23:24,855 - GCN-Baseline Epoch 0040/200 [Random Neg] | Loss: 0.9384 | Val Hits@20: 0.0062 | Test Hits@20: 0.0072 | Best Val: 0.0062 (epoch 40) | LR: 0.010000 🔥
+2025-12-07 14:23:37,462 - GCN-Baseline Epoch 0045/200 [Random Neg] | Loss: 0.9300 | Val Hits@20: 0.0066 | Test Hits@20: 0.0070 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 🔥
+2025-12-07 14:23:49,904 - GCN-Baseline Epoch 0050/200 [Random Neg] | Loss: 0.9202 | Val Hits@20: 0.0060 | Test Hits@20: 0.0062 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:24:02,534 - GCN-Baseline Epoch 0055/200 [Random Neg] | Loss: 0.9192 | Val Hits@20: 0.0060 | Test Hits@20: 0.0059 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:24:15,233 - GCN-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.9111 | Val Hits@20: 0.0053 | Test Hits@20: 0.0056 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:24:27,518 - GCN-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.9039 | Val Hits@20: 0.0048 | Test Hits@20: 0.0046 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:24:39,946 - GCN-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.8979 | Val Hits@20: 0.0046 | Test Hits@20: 0.0044 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:24:52,266 - GCN-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.8935 | Val Hits@20: 0.0047 | Test Hits@20: 0.0038 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:25:04,604 - GCN-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.8952 | Val Hits@20: 0.0051 | Test Hits@20: 0.0034 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:25:17,228 - GCN-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.8862 | Val Hits@20: 0.0049 | Test Hits@20: 0.0032 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:25:29,319 - GCN-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.8940 | Val Hits@20: 0.0045 | Test Hits@20: 0.0029 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:25:42,142 - GCN-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.8756 | Val Hits@20: 0.0045 | Test Hits@20: 0.0030 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:25:54,267 - GCN-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.8745 | Val Hits@20: 0.0041 | Test Hits@20: 0.0027 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:26:06,793 - GCN-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.8635 | Val Hits@20: 0.0041 | Test Hits@20: 0.0025 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:26:19,334 - GCN-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.8660 | Val Hits@20: 0.0043 | Test Hits@20: 0.0021 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:26:31,615 - GCN-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.8588 | Val Hits@20: 0.0042 | Test Hits@20: 0.0018 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:26:44,368 - GCN-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.8651 | Val Hits@20: 0.0039 | Test Hits@20: 0.0019 | Best Val: 0.0066 (epoch 45) | LR: 0.010000 
+2025-12-07 14:26:57,530 - GCN-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.8737 | Val Hits@20: 0.0039 | Test Hits@20: 0.0018 | Best Val: 0.0066 (epoch 45) | LR: 0.005000 
+2025-12-07 14:27:10,841 - GCN-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.8561 | Val Hits@20: 0.0039 | Test Hits@20: 0.0017 | Best Val: 0.0066 (epoch 45) | LR: 0.005000 
+2025-12-07 14:27:23,514 - GCN-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.8514 | Val Hits@20: 0.0040 | Test Hits@20: 0.0016 | Best Val: 0.0066 (epoch 45) | LR: 0.005000 
+2025-12-07 14:27:36,123 - GCN-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.8422 | Val Hits@20: 0.0040 | Test Hits@20: 0.0014 | Best Val: 0.0066 (epoch 45) | LR: 0.005000 
+2025-12-07 14:27:48,653 - GCN-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.8476 | Val Hits@20: 0.0043 | Test Hits@20: 0.0015 | Best Val: 0.0066 (epoch 45) | LR: 0.005000 
+2025-12-07 14:27:48,654 - GCN-Baseline: Early stopping at epoch 145 (no improvement for 20 eval steps)
+2025-12-07 14:27:48,654 - GCN-Baseline FINAL: Best Val Hits@20 = 0.0066 | Test Hits@20 = 0.0070 (at epoch 45)
+2025-12-07 14:27:48,657 - 
+================================================================================
+2025-12-07 14:27:48,657 - Training GraphSAGE Baseline
+2025-12-07 14:27:48,657 - ================================================================================
+2025-12-07 14:27:48,807 - Starting training for GraphSAGE-Baseline (epochs=200, lr=0.01, patience=20, hard_neg=False)
+2025-12-07 14:27:48,807 - Model description: GraphSAGE with mean aggregation and ReLU activation | hidden_dim=128, num_layers=2, dropout=0.5, decoder_dropout=0.3, decoder=simple
+2025-12-07 14:27:48,807 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-07 14:27:48,819 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-07 14:27:52,139 - GraphSAGE-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.4653 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-07 14:28:01,976 - GraphSAGE-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.4064 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-07 14:28:14,270 - GraphSAGE-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.2907 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-07 14:28:26,407 - GraphSAGE-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.1439 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-07 14:28:38,627 - GraphSAGE-Baseline Epoch 0020/200 [Random Neg] | Loss: 1.0897 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-07 14:28:50,914 - GraphSAGE-Baseline Epoch 0025/200 [Random Neg] | Loss: 1.0523 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 25) | LR: 0.010000 🔥
+2025-12-07 14:29:03,143 - GraphSAGE-Baseline Epoch 0030/200 [Random Neg] | Loss: 1.0260 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 30) | LR: 0.010000 🔥
+2025-12-07 14:29:15,736 - GraphSAGE-Baseline Epoch 0035/200 [Random Neg] | Loss: 1.0007 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 35) | LR: 0.010000 🔥
+2025-12-07 14:29:28,140 - GraphSAGE-Baseline Epoch 0040/200 [Random Neg] | Loss: 0.9810 | Val Hits@20: 0.0001 | Test Hits@20: 0.0003 | Best Val: 0.0001 (epoch 40) | LR: 0.010000 🔥
+2025-12-07 14:29:40,245 - GraphSAGE-Baseline Epoch 0045/200 [Random Neg] | Loss: 0.9630 | Val Hits@20: 0.0001 | Test Hits@20: 0.0003 | Best Val: 0.0001 (epoch 40) | LR: 0.010000 
+2025-12-07 14:29:52,484 - GraphSAGE-Baseline Epoch 0050/200 [Random Neg] | Loss: 0.9524 | Val Hits@20: 0.0001 | Test Hits@20: 0.0004 | Best Val: 0.0001 (epoch 50) | LR: 0.010000 🔥
+2025-12-07 14:30:04,655 - GraphSAGE-Baseline Epoch 0055/200 [Random Neg] | Loss: 0.9456 | Val Hits@20: 0.0001 | Test Hits@20: 0.0005 | Best Val: 0.0001 (epoch 55) | LR: 0.010000 🔥
+2025-12-07 14:30:17,178 - GraphSAGE-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.9372 | Val Hits@20: 0.0001 | Test Hits@20: 0.0006 | Best Val: 0.0001 (epoch 55) | LR: 0.010000 
+2025-12-07 14:30:29,221 - GraphSAGE-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.9297 | Val Hits@20: 0.0002 | Test Hits@20: 0.0006 | Best Val: 0.0002 (epoch 65) | LR: 0.010000 🔥
+2025-12-07 14:30:41,596 - GraphSAGE-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.9218 | Val Hits@20: 0.0003 | Test Hits@20: 0.0007 | Best Val: 0.0003 (epoch 70) | LR: 0.010000 🔥
+2025-12-07 14:30:53,798 - GraphSAGE-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.9171 | Val Hits@20: 0.0003 | Test Hits@20: 0.0010 | Best Val: 0.0003 (epoch 75) | LR: 0.010000 🔥
+2025-12-07 14:31:06,009 - GraphSAGE-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.9123 | Val Hits@20: 0.0004 | Test Hits@20: 0.0011 | Best Val: 0.0004 (epoch 80) | LR: 0.010000 🔥
+2025-12-07 14:31:18,363 - GraphSAGE-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.9102 | Val Hits@20: 0.0006 | Test Hits@20: 0.0013 | Best Val: 0.0006 (epoch 85) | LR: 0.010000 🔥
+2025-12-07 14:31:30,438 - GraphSAGE-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.9006 | Val Hits@20: 0.0007 | Test Hits@20: 0.0014 | Best Val: 0.0007 (epoch 90) | LR: 0.010000 🔥
+2025-12-07 14:31:42,486 - GraphSAGE-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.8996 | Val Hits@20: 0.0008 | Test Hits@20: 0.0015 | Best Val: 0.0008 (epoch 95) | LR: 0.010000 🔥
+2025-12-07 14:31:56,754 - GraphSAGE-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.8937 | Val Hits@20: 0.0009 | Test Hits@20: 0.0016 | Best Val: 0.0009 (epoch 100) | LR: 0.010000 🔥
+2025-12-07 14:39:14,462 - GraphSAGE-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.8946 | Val Hits@20: 0.0014 | Test Hits@20: 0.0016 | Best Val: 0.0014 (epoch 105) | LR: 0.010000 🔥
+2025-12-07 14:39:30,856 - GraphSAGE-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.8915 | Val Hits@20: 0.0017 | Test Hits@20: 0.0019 | Best Val: 0.0017 (epoch 110) | LR: 0.010000 🔥
+2025-12-07 14:39:44,477 - GraphSAGE-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.8866 | Val Hits@20: 0.0017 | Test Hits@20: 0.0020 | Best Val: 0.0017 (epoch 110) | LR: 0.010000 
+2025-12-07 14:39:57,927 - GraphSAGE-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.8881 | Val Hits@20: 0.0020 | Test Hits@20: 0.0023 | Best Val: 0.0020 (epoch 120) | LR: 0.010000 🔥
+2025-12-07 14:40:11,245 - GraphSAGE-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.8793 | Val Hits@20: 0.0023 | Test Hits@20: 0.0024 | Best Val: 0.0023 (epoch 125) | LR: 0.010000 🔥
+2025-12-07 14:40:24,290 - GraphSAGE-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.8815 | Val Hits@20: 0.0024 | Test Hits@20: 0.0026 | Best Val: 0.0024 (epoch 130) | LR: 0.010000 🔥
+2025-12-07 14:40:37,156 - GraphSAGE-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.8777 | Val Hits@20: 0.0026 | Test Hits@20: 0.0030 | Best Val: 0.0026 (epoch 135) | LR: 0.010000 🔥
+2025-12-07 14:40:50,261 - GraphSAGE-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.8756 | Val Hits@20: 0.0026 | Test Hits@20: 0.0034 | Best Val: 0.0026 (epoch 140) | LR: 0.010000 🔥
+2025-12-07 14:41:03,148 - GraphSAGE-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.8745 | Val Hits@20: 0.0032 | Test Hits@20: 0.0036 | Best Val: 0.0032 (epoch 145) | LR: 0.010000 🔥
+2025-12-07 14:41:16,288 - GraphSAGE-Baseline Epoch 0150/200 [Random Neg] | Loss: 0.8732 | Val Hits@20: 0.0036 | Test Hits@20: 0.0038 | Best Val: 0.0036 (epoch 150) | LR: 0.010000 🔥
+2025-12-07 14:41:29,359 - GraphSAGE-Baseline Epoch 0155/200 [Random Neg] | Loss: 0.8675 | Val Hits@20: 0.0040 | Test Hits@20: 0.0037 | Best Val: 0.0040 (epoch 155) | LR: 0.010000 🔥
+2025-12-07 14:41:43,320 - GraphSAGE-Baseline Epoch 0160/200 [Random Neg] | Loss: 0.8621 | Val Hits@20: 0.0042 | Test Hits@20: 0.0037 | Best Val: 0.0042 (epoch 160) | LR: 0.010000 🔥
+2025-12-07 14:41:57,353 - GraphSAGE-Baseline Epoch 0165/200 [Random Neg] | Loss: 0.8607 | Val Hits@20: 0.0047 | Test Hits@20: 0.0036 | Best Val: 0.0047 (epoch 165) | LR: 0.010000 🔥
+2025-12-07 14:42:10,275 - GraphSAGE-Baseline Epoch 0170/200 [Random Neg] | Loss: 0.8594 | Val Hits@20: 0.0053 | Test Hits@20: 0.0037 | Best Val: 0.0053 (epoch 170) | LR: 0.010000 🔥
+2025-12-07 14:42:22,864 - GraphSAGE-Baseline Epoch 0175/200 [Random Neg] | Loss: 0.8558 | Val Hits@20: 0.0057 | Test Hits@20: 0.0038 | Best Val: 0.0057 (epoch 175) | LR: 0.010000 🔥
+2025-12-07 14:42:35,520 - GraphSAGE-Baseline Epoch 0180/200 [Random Neg] | Loss: 0.8569 | Val Hits@20: 0.0063 | Test Hits@20: 0.0044 | Best Val: 0.0063 (epoch 180) | LR: 0.010000 🔥
+2025-12-07 14:42:48,111 - GraphSAGE-Baseline Epoch 0185/200 [Random Neg] | Loss: 0.8542 | Val Hits@20: 0.0063 | Test Hits@20: 0.0045 | Best Val: 0.0063 (epoch 180) | LR: 0.010000 
+2025-12-07 14:43:00,446 - GraphSAGE-Baseline Epoch 0190/200 [Random Neg] | Loss: 0.8535 | Val Hits@20: 0.0069 | Test Hits@20: 0.0043 | Best Val: 0.0069 (epoch 190) | LR: 0.010000 🔥
+2025-12-07 14:43:14,189 - GraphSAGE-Baseline Epoch 0195/200 [Random Neg] | Loss: 0.8513 | Val Hits@20: 0.0065 | Test Hits@20: 0.0042 | Best Val: 0.0069 (epoch 190) | LR: 0.010000 
+2025-12-07 14:43:27,657 - GraphSAGE-Baseline Epoch 0200/200 [Random Neg] | Loss: 0.8456 | Val Hits@20: 0.0067 | Test Hits@20: 0.0046 | Best Val: 0.0069 (epoch 190) | LR: 0.010000 
+2025-12-07 14:43:27,658 - GraphSAGE-Baseline FINAL: Best Val Hits@20 = 0.0069 | Test Hits@20 = 0.0043 (at epoch 190)
+2025-12-07 14:43:27,660 - 
+================================================================================
+2025-12-07 14:43:27,660 - Training GraphTransformer Baseline
+2025-12-07 14:43:27,660 - ================================================================================
+2025-12-07 14:43:27,752 - Starting training for GraphTransformer-Baseline (epochs=200, lr=0.005, patience=20, hard_neg=False)
+2025-12-07 14:43:27,753 - Model description: Graph Transformer with multi-head self-attention and position-aware edge encoding | hidden_dim=128, num_layers=2, heads=4, dropout=0.5, decoder_dropout=0.3, decoder=simple
+2025-12-07 14:43:27,753 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-07 14:43:27,767 - Initialized EMA with decay=0.999 for stable checkpointing
