@@ -23,3 +23,6 @@ torchaudio = ">=2.0,<3"
 
 [pypi-dependencies]
 torch-geometric = ">=2.7.0, <3"
+
+[tasks]
+baselines = "python train_baselines.py"
