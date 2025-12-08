@@ -7,7 +7,7 @@ from .losses import hard_negative_mining, k_hop_negative_sampling
 logger = logging.getLogger(__name__)
 
 
-def log_diagnostics(model, data, train_pos, num_nodes, epoch, device='cpu'):
+def log_diagnostics(model, data, train_pos, num_nodes, epoch, device='cpu', grad_norm=None):
     """
     Log diagnostic information to detect common training issues.
 
@@ -15,6 +15,9 @@ def log_diagnostics(model, data, train_pos, num_nodes, epoch, device='cpu'):
     1. Embedding collapse (all embeddings becoming similar)
     2. Decoder bugs (positive edges not scoring higher than negative)
     3. Gradient flow issues
+
+    Args:
+        grad_norm: Pre-computed gradient norm (before zero_grad()) for accurate diagnostics
     """
     with torch.no_grad():
         model.eval()
@@ -58,14 +61,16 @@ def log_diagnostics(model, data, train_pos, num_nodes, epoch, device='cpu'):
         neg_score_mean = neg_scores.mean().item()
         score_gap = pos_score_mean - neg_score_mean
 
-        # 3. Gradient statistics (if available)
-        grad_norm = 0.0
-        num_params = 0
-        for p in model.parameters():
-            if p.grad is not None:
-                grad_norm += p.grad.norm().item() ** 2
-                num_params += 1
-        grad_norm = (grad_norm ** 0.5) if num_params > 0 else 0.0
+        # 3. Use pre-computed gradient norm (computed before zero_grad for accuracy)
+        if grad_norm is None:
+            # Fallback: compute from current gradients (will be 0 if zero_grad was called)
+            grad_norm = 0.0
+            num_params = 0
+            for p in model.parameters():
+                if p.grad is not None:
+                    grad_norm += p.grad.norm().item() ** 2
+                    num_params += 1
+            grad_norm = (grad_norm ** 0.5) if num_params > 0 else 0.0
 
         # Log diagnostics
         logger.info(
@@ -381,7 +386,7 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
 
             # Run diagnostics if scheduled
             if run_diagnostics:
-                log_diagnostics(model, data, train_pos, num_nodes, epoch, device)
+                log_diagnostics(model, data, train_pos, num_nodes, epoch, device, grad_norm=grad_norm_before_clip)
 
             if epochs_no_improve >= patience:
                 logger.info(f"{name}: Early stopping at epoch {epoch} (no improvement for {patience} eval steps)")
