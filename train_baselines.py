@@ -12,9 +12,10 @@ from src.training import train_model
 from src.evals import evaluate
 
 # Setup logging
-os.makedirs('logs', exist_ok=True)
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-log_filename = f'logs/baselines_{timestamp}.log'
+log_dir = f'logs/baselines_{timestamp}'
+os.makedirs(log_dir, exist_ok=True)
+log_filename = f'{log_dir}/baselines.log'
 
 logging.basicConfig(
     level=logging.INFO,

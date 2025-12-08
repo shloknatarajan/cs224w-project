@@ -12,9 +12,10 @@ from src.training import train_model
 from src.evals import evaluate
 
 # Setup logging
-os.makedirs('logs', exist_ok=True)
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-log_filename = f'logs/advanced_{timestamp}.log'
+log_dir = f'logs/advanced_{timestamp}'
+os.makedirs(log_dir, exist_ok=True)
+log_filename = f'{log_dir}/advanced.log'
 
 logging.basicConfig(
     level=logging.INFO,
