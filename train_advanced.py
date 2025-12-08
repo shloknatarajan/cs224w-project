@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 
 from src.data import load_dataset, compute_structural_features
-from src.models.advanced import GCNStructuralV2
+from src.models.advanced import GCNStructuralV4
 from src.training import train_model
 from src.evals import evaluate
 
@@ -50,14 +50,14 @@ test_neg = split_edge['test']['edge_neg'].to(device)
 train_edge_index = train_pos.t().contiguous().to(device)
 structural_features = compute_structural_features(train_edge_index, num_nodes, device=device)
 
-# Hyperparameters - V2 with analysis-based improvements
-HIDDEN_DIM = 256  # Increased from 192 to reduce embedding collapse
-NUM_LAYERS = 2  # Reduced from 3 to prevent over-smoothing
-DROPOUT = 0.2  # Reduced from 0.5 to fix gradient vanishing
-DECODER_DROPOUT = 0.3  # Reduced from 0.4
+# Hyperparameters - V4 with multi-strategy decoder
+HIDDEN_DIM = 256  # Kept at 256 for capacity
+NUM_LAYERS = 3  # 3 layers for good depth
+DROPOUT = 0.2  # Kept low for gradient flow
+DECODER_DROPOUT = 0.3  # Kept at 0.3
 EPOCHS = 400
-PATIENCE = 20  # Reduced from 40 for faster early stopping
-LEARNING_RATE = 0.003
+PATIENCE = 20  # Kept at 20 for efficiency
+LEARNING_RATE = 0.005  # Kept at 0.005
 WEIGHT_DECAY = 5e-5
 USE_HARD_NEGATIVES = True
 HARD_NEG_RATIO = 0.05
@@ -65,11 +65,11 @@ BATCH_SIZE = 20000
 EVAL_BATCH_SIZE = 50000
 GRADIENT_ACCUMULATION_STEPS = 3
 NUM_STRUCTURAL_FEATURES = 6
-USE_MULTI_STRATEGY = False
-DIVERSITY_WEIGHT = 0.01  # New: embedding diversity loss weight
+USE_MULTI_STRATEGY = True  # ENABLED - key change from V3
+DIVERSITY_WEIGHT = 0.02  # Reduced from 0.05 (we achieved good diversity)
 
 config = {
-    'model_name': 'GCN-Structural-V2',
+    'model_name': 'GCN-Structural-V4',
     'hidden_dim': HIDDEN_DIM,
     'num_layers': NUM_LAYERS,
     'dropout': DROPOUT,
@@ -125,7 +125,7 @@ logger.info("\n" + "=" * 80)
 logger.info("Training Advanced GCN with Structural Features")
 logger.info("=" * 80)
 
-model = GCNStructuralV2(
+model = GCNStructuralV4(
     num_nodes,
     hidden_dim=HIDDEN_DIM,
     num_layers=NUM_LAYERS,
