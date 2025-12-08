@@ -7,6 +7,104 @@ from .losses import hard_negative_mining, k_hop_negative_sampling
 logger = logging.getLogger(__name__)
 
 
+def log_diagnostics(model, data, train_pos, num_nodes, epoch, device='cpu'):
+    """
+    Log diagnostic information to detect common training issues.
+
+    Checks for:
+    1. Embedding collapse (all embeddings becoming similar)
+    2. Decoder bugs (positive edges not scoring higher than negative)
+    3. Gradient flow issues
+    """
+    with torch.no_grad():
+        model.eval()
+
+        # 1. Embedding statistics
+        z = model.encode(data.edge_index)
+
+        # Sample subset of embeddings for efficiency
+        sample_size = min(1000, z.size(0))
+        sample_indices = torch.randperm(z.size(0))[:sample_size]
+        z_sample = z[sample_indices]
+
+        # Compute pairwise cosine similarity
+        z_norm = F.normalize(z_sample, p=2, dim=1)
+        similarity_matrix = torch.mm(z_norm, z_norm.t())
+
+        # Exclude diagonal (self-similarity)
+        mask = ~torch.eye(sample_size, dtype=torch.bool, device=similarity_matrix.device)
+        similarities = similarity_matrix[mask]
+
+        emb_sim_mean = similarities.mean().item()
+        emb_sim_std = similarities.std().item()
+        emb_norm_mean = z.norm(dim=1).mean().item()
+
+        # 2. Score distributions
+        # Sample edges for efficiency
+        sample_edges = min(1000, train_pos.size(0))
+        pos_sample = train_pos[torch.randperm(train_pos.size(0))[:sample_edges]]
+
+        # Generate random negative samples
+        neg_sample = negative_sampling(
+            edge_index=data.edge_index,
+            num_nodes=num_nodes,
+            num_neg_samples=sample_edges
+        ).t().to(device)
+
+        pos_scores = model.decode(z, pos_sample).sigmoid()
+        neg_scores = model.decode(z, neg_sample).sigmoid()
+
+        pos_score_mean = pos_scores.mean().item()
+        neg_score_mean = neg_scores.mean().item()
+        score_gap = pos_score_mean - neg_score_mean
+
+        # 3. Gradient statistics (if available)
+        grad_norm = 0.0
+        num_params = 0
+        for p in model.parameters():
+            if p.grad is not None:
+                grad_norm += p.grad.norm().item() ** 2
+                num_params += 1
+        grad_norm = (grad_norm ** 0.5) if num_params > 0 else 0.0
+
+        # Log diagnostics
+        logger.info(
+            f"[DIAGNOSTICS Epoch {epoch}] "
+            f"Emb: sim_mean={emb_sim_mean:.3f} sim_std={emb_sim_std:.3f} norm={emb_norm_mean:.3f} | "
+            f"Scores: pos={pos_score_mean:.3f} neg={neg_score_mean:.3f} gap={score_gap:.3f} | "
+            f"Grad: norm={grad_norm:.2f}"
+        )
+
+        # Warning flags
+        warnings = []
+        if emb_sim_mean > 0.9:
+            warnings.append("EMBEDDING COLLAPSE (similarity > 0.9)")
+        if emb_sim_std < 0.05:
+            warnings.append("LOW EMBEDDING DIVERSITY (std < 0.05)")
+        if score_gap <= 0:
+            warnings.append("DECODER BUG (pos_scores <= neg_scores)")
+        if emb_norm_mean < 0.1:
+            warnings.append("EMBEDDING VANISHING (norm < 0.1)")
+        if emb_norm_mean > 100:
+            warnings.append("EMBEDDING EXPLOSION (norm > 100)")
+        if grad_norm < 1e-6 and epoch > 1:
+            warnings.append("GRADIENT VANISHING")
+
+        if warnings:
+            for warning in warnings:
+                logger.warning(f"  ⚠️  {warning}")
+
+        model.train()
+
+        # Clean up
+        del z, z_sample, z_norm, similarity_matrix, similarities
+        del pos_sample, neg_sample, pos_scores, neg_scores
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            torch.mps.empty_cache()
+
+
 class ExponentialMovingAverage:
     """
     Maintains exponential moving average of model parameters.
@@ -226,6 +324,13 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
         # Update EMA
         ema.update()
 
+        # Run diagnostics at key points
+        run_diagnostics = (
+            epoch in [1, 5, 10, 20, 50] or  # Early training checkpoints
+            epoch % 50 == 0 or  # Every 50 epochs
+            (epoch % eval_every == 0 and epoch > warmup_epochs)  # After warmup, during eval
+        )
+
         # Evaluation
         if epoch % eval_every == 0 or epoch == 1:
             ema.apply_shadow()
@@ -261,6 +366,10 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
                 f"Best Val: {best_val_hits:.4f} (epoch {best_epoch}) | "
                 f"LR: {current_lr:.6f} {improvement_marker}"
             )
+
+            # Run diagnostics if scheduled
+            if run_diagnostics:
+                log_diagnostics(model, data, train_pos, num_nodes, epoch, device)
 
             if epochs_no_improve >= patience:
                 logger.info(f"{name}: Early stopping at epoch {epoch} (no improvement for {patience} eval steps)")
