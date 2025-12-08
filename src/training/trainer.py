@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 import logging
 from torch_geometric.utils import negative_sampling
-from .losses import hard_negative_mining
+from .losses import hard_negative_mining, k_hop_negative_sampling
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,8 @@ class ExponentialMovingAverage:
 def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, test_neg,
                 num_nodes, evaluate_fn, device='cpu', epochs=200, lr=0.01, patience=20,
                 eval_every=5, use_hard_negatives=True, hard_neg_ratio=0.3, batch_size=20000,
-                eval_batch_size=50000, gradient_accumulation_steps=3, weight_decay=5e-5):
+                eval_batch_size=50000, gradient_accumulation_steps=3, weight_decay=5e-5,
+                neg_sampling_strategy='hard', k_hop=2):
     """
     Train model with early stopping, validation, and hard negative mining.
 
@@ -77,11 +78,15 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
         eval_batch_size: Batch size for evaluation
         gradient_accumulation_steps: Number of steps to accumulate gradients
         weight_decay: Weight decay for optimizer
+        neg_sampling_strategy: Negative sampling strategy ('random', 'hard', 'khop', 'mixed')
+        k_hop: Number of hops for k-hop negative sampling
 
     Returns:
         tuple: (best_val_hits, best_test_hits)
     """
     logger.info(f"Starting training for {name} (epochs={epochs}, lr={lr}, patience={patience}, hard_neg={use_hard_negatives})")
+    if use_hard_negatives:
+        logger.info(f"Negative sampling: strategy={neg_sampling_strategy}, ratio={hard_neg_ratio}, k_hop={k_hop if neg_sampling_strategy in ['khop', 'mixed'] else 'N/A'}")
     if hasattr(model, 'description'):
         logger.info(f"Model description: {model.description}")
     logger.info(f"Memory optimization: batch_size={batch_size}, gradient_accumulation={gradient_accumulation_steps}")
@@ -120,14 +125,34 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             # Encode graph
             z = model.encode(data.edge_index)
 
-            # Generate negatives
+            # Generate negatives based on strategy
             num_negatives = pos_batch.size(0)
             if use_hard_negatives and epoch > warmup_epochs:
                 num_hard = int(num_negatives * hard_neg_ratio)
                 num_random = num_negatives - num_hard
 
-                # Hard negatives
-                hard_neg = hard_negative_mining(model, z, data.edge_index, num_nodes, num_hard, top_k_ratio=0.3, device=device)
+                # Select hard negative strategy
+                if neg_sampling_strategy == 'hard':
+                    # Original hard negative mining
+                    hard_neg = hard_negative_mining(model, z, data.edge_index, num_nodes, num_hard, top_k_ratio=0.3, device=device)
+                elif neg_sampling_strategy == 'khop':
+                    # K-hop negative sampling
+                    hard_neg = k_hop_negative_sampling(data.edge_index, num_nodes, num_hard, k=k_hop, device=device)
+                elif neg_sampling_strategy == 'mixed':
+                    # Mix of score-based hard negatives and k-hop negatives
+                    num_score_hard = num_hard // 2
+                    num_khop_hard = num_hard - num_score_hard
+                    score_hard = hard_negative_mining(model, z, data.edge_index, num_nodes, num_score_hard, top_k_ratio=0.3, device=device)
+                    khop_hard = k_hop_negative_sampling(data.edge_index, num_nodes, num_khop_hard, k=k_hop, device=device)
+                    hard_neg = torch.cat([score_hard, khop_hard], dim=0)
+                    del score_hard, khop_hard
+                else:
+                    # Default to random
+                    hard_neg = negative_sampling(
+                        edge_index=data.edge_index,
+                        num_nodes=num_nodes,
+                        num_neg_samples=num_hard
+                    ).t().to(device)
 
                 # Random negatives
                 random_neg = negative_sampling(

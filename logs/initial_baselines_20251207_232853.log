@@ -166,3 +166,64 @@
 2025-12-07 23:43:50,409 - GAT-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.4652 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
 2025-12-07 23:43:56,609 - GAT-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.4122 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
 2025-12-07 23:44:04,373 - GAT-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.4040 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:12,106 - GAT-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.3944 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:19,830 - GAT-Baseline Epoch 0020/200 [Random Neg] | Loss: 1.2952 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:27,536 - GAT-Baseline Epoch 0025/200 [Random Neg] | Loss: 1.1881 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:35,176 - GAT-Baseline Epoch 0030/200 [Random Neg] | Loss: 1.1300 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:42,818 - GAT-Baseline Epoch 0035/200 [Random Neg] | Loss: 1.1122 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:50,491 - GAT-Baseline Epoch 0040/200 [Random Neg] | Loss: 1.0938 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-07 23:44:58,142 - GAT-Baseline Epoch 0045/200 [Random Neg] | Loss: 1.0592 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 45) | LR: 0.005000 🔥
+2025-12-07 23:45:05,798 - GAT-Baseline Epoch 0050/200 [Random Neg] | Loss: 1.0459 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 45) | LR: 0.005000 
+2025-12-07 23:45:13,486 - GAT-Baseline Epoch 0055/200 [Random Neg] | Loss: 1.0169 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 55) | LR: 0.005000 🔥
+2025-12-07 23:45:21,220 - GAT-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.9885 | Val Hits@20: 0.0000 | Test Hits@20: 0.0002 | Best Val: 0.0000 (epoch 60) | LR: 0.005000 🔥
+2025-12-07 23:45:28,911 - GAT-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.9812 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 65) | LR: 0.005000 🔥
+2025-12-07 23:45:36,570 - GAT-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.9738 | Val Hits@20: 0.0001 | Test Hits@20: 0.0003 | Best Val: 0.0001 (epoch 70) | LR: 0.005000 🔥
+2025-12-07 23:45:44,242 - GAT-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.9668 | Val Hits@20: 0.0001 | Test Hits@20: 0.0003 | Best Val: 0.0001 (epoch 75) | LR: 0.005000 🔥
+2025-12-07 23:45:51,894 - GAT-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.9852 | Val Hits@20: 0.0002 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 80) | LR: 0.005000 🔥
+2025-12-07 23:45:59,638 - GAT-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.9768 | Val Hits@20: 0.0003 | Test Hits@20: 0.0003 | Best Val: 0.0003 (epoch 85) | LR: 0.005000 🔥
+2025-12-07 23:46:07,314 - GAT-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.9410 | Val Hits@20: 0.0004 | Test Hits@20: 0.0004 | Best Val: 0.0004 (epoch 90) | LR: 0.005000 🔥
+2025-12-07 23:46:14,953 - GAT-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.9436 | Val Hits@20: 0.0004 | Test Hits@20: 0.0004 | Best Val: 0.0004 (epoch 95) | LR: 0.005000 🔥
+2025-12-07 23:46:22,673 - GAT-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.9459 | Val Hits@20: 0.0005 | Test Hits@20: 0.0005 | Best Val: 0.0005 (epoch 100) | LR: 0.005000 🔥
+2025-12-07 23:46:30,351 - GAT-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.9295 | Val Hits@20: 0.0007 | Test Hits@20: 0.0006 | Best Val: 0.0007 (epoch 105) | LR: 0.005000 🔥
+2025-12-07 23:46:38,004 - GAT-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.9396 | Val Hits@20: 0.0008 | Test Hits@20: 0.0007 | Best Val: 0.0008 (epoch 110) | LR: 0.005000 🔥
+2025-12-07 23:46:45,639 - GAT-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.9305 | Val Hits@20: 0.0010 | Test Hits@20: 0.0007 | Best Val: 0.0010 (epoch 115) | LR: 0.005000 🔥
+2025-12-07 23:46:53,294 - GAT-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.9298 | Val Hits@20: 0.0010 | Test Hits@20: 0.0007 | Best Val: 0.0010 (epoch 120) | LR: 0.005000 🔥
+2025-12-07 23:47:00,925 - GAT-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.9308 | Val Hits@20: 0.0011 | Test Hits@20: 0.0008 | Best Val: 0.0011 (epoch 125) | LR: 0.005000 🔥
+2025-12-07 23:47:08,581 - GAT-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.9557 | Val Hits@20: 0.0014 | Test Hits@20: 0.0009 | Best Val: 0.0014 (epoch 130) | LR: 0.005000 🔥
+2025-12-07 23:47:16,212 - GAT-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.9578 | Val Hits@20: 0.0015 | Test Hits@20: 0.0009 | Best Val: 0.0015 (epoch 135) | LR: 0.005000 🔥
+2025-12-07 23:47:23,830 - GAT-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.9222 | Val Hits@20: 0.0016 | Test Hits@20: 0.0009 | Best Val: 0.0016 (epoch 140) | LR: 0.005000 🔥
+2025-12-07 23:47:31,491 - GAT-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.9357 | Val Hits@20: 0.0017 | Test Hits@20: 0.0010 | Best Val: 0.0017 (epoch 145) | LR: 0.005000 🔥
+2025-12-07 23:47:39,179 - GAT-Baseline Epoch 0150/200 [Random Neg] | Loss: 0.9138 | Val Hits@20: 0.0017 | Test Hits@20: 0.0010 | Best Val: 0.0017 (epoch 150) | LR: 0.005000 🔥
+2025-12-07 23:47:46,868 - GAT-Baseline Epoch 0155/200 [Random Neg] | Loss: 0.8963 | Val Hits@20: 0.0018 | Test Hits@20: 0.0010 | Best Val: 0.0018 (epoch 155) | LR: 0.005000 🔥
+2025-12-07 23:47:54,542 - GAT-Baseline Epoch 0160/200 [Random Neg] | Loss: 0.9191 | Val Hits@20: 0.0018 | Test Hits@20: 0.0010 | Best Val: 0.0018 (epoch 160) | LR: 0.005000 🔥
+2025-12-07 23:48:02,231 - GAT-Baseline Epoch 0165/200 [Random Neg] | Loss: 0.9155 | Val Hits@20: 0.0018 | Test Hits@20: 0.0011 | Best Val: 0.0018 (epoch 165) | LR: 0.005000 🔥
+2025-12-07 23:48:09,909 - GAT-Baseline Epoch 0170/200 [Random Neg] | Loss: 0.9007 | Val Hits@20: 0.0020 | Test Hits@20: 0.0012 | Best Val: 0.0020 (epoch 170) | LR: 0.005000 🔥
+2025-12-07 23:48:17,586 - GAT-Baseline Epoch 0175/200 [Random Neg] | Loss: 0.9139 | Val Hits@20: 0.0020 | Test Hits@20: 0.0012 | Best Val: 0.0020 (epoch 175) | LR: 0.005000 🔥
+2025-12-07 23:48:25,258 - GAT-Baseline Epoch 0180/200 [Random Neg] | Loss: 0.8980 | Val Hits@20: 0.0021 | Test Hits@20: 0.0012 | Best Val: 0.0021 (epoch 180) | LR: 0.005000 🔥
+2025-12-07 23:48:32,858 - GAT-Baseline Epoch 0185/200 [Random Neg] | Loss: 0.8901 | Val Hits@20: 0.0022 | Test Hits@20: 0.0013 | Best Val: 0.0022 (epoch 185) | LR: 0.005000 🔥
+2025-12-07 23:48:40,494 - GAT-Baseline Epoch 0190/200 [Random Neg] | Loss: 0.8909 | Val Hits@20: 0.0023 | Test Hits@20: 0.0013 | Best Val: 0.0023 (epoch 190) | LR: 0.005000 🔥
+2025-12-07 23:48:48,156 - GAT-Baseline Epoch 0195/200 [Random Neg] | Loss: 0.9132 | Val Hits@20: 0.0024 | Test Hits@20: 0.0013 | Best Val: 0.0024 (epoch 195) | LR: 0.005000 🔥
+2025-12-07 23:48:55,826 - GAT-Baseline Epoch 0200/200 [Random Neg] | Loss: 0.9010 | Val Hits@20: 0.0025 | Test Hits@20: 0.0013 | Best Val: 0.0025 (epoch 200) | LR: 0.005000 🔥
+2025-12-07 23:48:55,826 - GAT-Baseline FINAL: Best Val Hits@20 = 0.0025 | Test Hits@20 = 0.0013 (at epoch 200)
+2025-12-07 23:48:55,827 - 
+================================================================================
+2025-12-07 23:48:55,827 - FINAL RESULTS - BASELINES
+2025-12-07 23:48:55,827 - ================================================================================
+2025-12-07 23:48:55,827 - GCN:
+2025-12-07 23:48:55,827 -   Validation Hits@20: 0.0057
+2025-12-07 23:48:55,827 -   Test Hits@20: 0.0024
+2025-12-07 23:48:55,827 -   Val-Test Gap: 0.0033 (58.1% relative)
+2025-12-07 23:48:55,827 - GraphSAGE:
+2025-12-07 23:48:55,827 -   Validation Hits@20: 0.0015
+2025-12-07 23:48:55,827 -   Test Hits@20: 0.0006
+2025-12-07 23:48:55,827 -   Val-Test Gap: 0.0009 (60.2% relative)
+2025-12-07 23:48:55,827 - GraphTransformer:
+2025-12-07 23:48:55,827 -   Validation Hits@20: 0.0029
+2025-12-07 23:48:55,827 -   Test Hits@20: 0.0024
+2025-12-07 23:48:55,827 -   Val-Test Gap: 0.0005 (16.1% relative)
+2025-12-07 23:48:55,827 - GAT:
+2025-12-07 23:48:55,828 -   Validation Hits@20: 0.0025
+2025-12-07 23:48:55,828 -   Test Hits@20: 0.0013
+2025-12-07 23:48:55,828 -   Val-Test Gap: 0.0012 (46.7% relative)
+2025-12-07 23:48:55,828 - ================================================================================
+2025-12-07 23:48:55,828 - Results logged to: logs/baselines_20251207_232853.log
