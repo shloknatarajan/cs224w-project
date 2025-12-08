@@ -301,6 +301,11 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             emb_reg_loss = emb_reg_weight * torch.norm(model.emb.weight, p=2)
             loss = loss + emb_reg_loss
 
+            # Add diversity loss if model supports it (for GCNStructuralV2)
+            if hasattr(model, 'compute_diversity_loss') and hasattr(model, 'diversity_weight'):
+                diversity_loss = model.compute_diversity_loss(z)
+                loss = loss + model.diversity_weight * diversity_loss
+
             # Scale loss
             loss = loss / gradient_accumulation_steps
             total_loss += loss.item()
@@ -316,8 +321,15 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
                 torch.mps.empty_cache()
 
-        # Optimizer step
-        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        # Compute gradient norm BEFORE clipping/clearing (for diagnostics)
+        grad_norm_before_clip = 0.0
+        for p in model.parameters():
+            if p.grad is not None:
+                grad_norm_before_clip += p.grad.norm().item() ** 2
+        grad_norm_before_clip = grad_norm_before_clip ** 0.5
+
+        # Optimizer step with less aggressive gradient clipping
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)  # Increased from 1.0 to 5.0
         optimizer.step()
         optimizer.zero_grad()
 

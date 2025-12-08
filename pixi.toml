@@ -26,3 +26,4 @@ torch-geometric = ">=2.7.0, <3"
 
 [tasks]
 baselines = "python train_baselines.py"
+advanced = "python train_advanced.py"

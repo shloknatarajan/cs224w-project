@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 
 from src.data import load_dataset, compute_structural_features
-from src.models.advanced import GCNStructural
+from src.models.advanced import GCNStructuralV2
 from src.training import train_model
 from src.evals import evaluate
 
@@ -50,13 +50,13 @@ test_neg = split_edge['test']['edge_neg'].to(device)
 train_edge_index = train_pos.t().contiguous().to(device)
 structural_features = compute_structural_features(train_edge_index, num_nodes, device=device)
 
-# Hyperparameters
-HIDDEN_DIM = 192
-NUM_LAYERS = 3
-DROPOUT = 0.5
-DECODER_DROPOUT = 0.4
+# Hyperparameters - V2 with analysis-based improvements
+HIDDEN_DIM = 256  # Increased from 192 to reduce embedding collapse
+NUM_LAYERS = 2  # Reduced from 3 to prevent over-smoothing
+DROPOUT = 0.2  # Reduced from 0.5 to fix gradient vanishing
+DECODER_DROPOUT = 0.3  # Reduced from 0.4
 EPOCHS = 400
-PATIENCE = 40
+PATIENCE = 20  # Reduced from 40 for faster early stopping
 LEARNING_RATE = 0.003
 WEIGHT_DECAY = 5e-5
 USE_HARD_NEGATIVES = True
@@ -66,9 +66,10 @@ EVAL_BATCH_SIZE = 50000
 GRADIENT_ACCUMULATION_STEPS = 3
 NUM_STRUCTURAL_FEATURES = 6
 USE_MULTI_STRATEGY = False
+DIVERSITY_WEIGHT = 0.01  # New: embedding diversity loss weight
 
 config = {
-    'model_name': 'GCN-Enhanced-v4-RichFeatures',
+    'model_name': 'GCN-Structural-V2',
     'hidden_dim': HIDDEN_DIM,
     'num_layers': NUM_LAYERS,
     'dropout': DROPOUT,
@@ -84,6 +85,7 @@ config = {
     'gradient_accumulation_steps': GRADIENT_ACCUMULATION_STEPS,
     'num_structural_features': NUM_STRUCTURAL_FEATURES,
     'use_multi_strategy': USE_MULTI_STRATEGY,
+    'diversity_weight': DIVERSITY_WEIGHT,
     'num_nodes': num_nodes,
     'train_edges': train_pos.size(0),
     'val_edges': valid_pos.size(0),
@@ -99,6 +101,7 @@ logger.info(f"  Hidden Dim: {config['hidden_dim']}, Layers: {config['num_layers'
 logger.info(f"  Dropout: {config['dropout']}, Decoder Dropout: {config['decoder_dropout']}")
 logger.info(f"  Structural Features: {config['num_structural_features']} dims")
 logger.info(f"  Multi-strategy decoder: {config['use_multi_strategy']}")
+logger.info(f"  Diversity Loss Weight: {config['diversity_weight']}")
 logger.info("")
 logger.info("Training:")
 logger.info(f"  Epochs: {config['epochs']}, Patience: {config['patience']}")
@@ -122,16 +125,17 @@ logger.info("\n" + "=" * 80)
 logger.info("Training Advanced GCN with Structural Features")
 logger.info("=" * 80)
 
-model = GCNStructural(
+model = GCNStructuralV2(
     num_nodes,
-    HIDDEN_DIM,
+    hidden_dim=HIDDEN_DIM,
     num_layers=NUM_LAYERS,
     dropout=DROPOUT,
     decoder_dropout=DECODER_DROPOUT,
     use_structural_features=True,
     num_structural_features=NUM_STRUCTURAL_FEATURES,
     structural_features=structural_features,
-    use_multi_strategy=USE_MULTI_STRATEGY
+    use_multi_strategy=USE_MULTI_STRATEGY,
+    diversity_weight=DIVERSITY_WEIGHT
 )
 
 gcn_val, gcn_test = train_model(
