@@ -1,0 +1,222 @@
+2025-12-08 04:33:32,487 - Using device: cuda
+2025-12-08 04:33:32,487 - Logging results to: logs/advanced_20251208_043332/advanced.log
+2025-12-08 04:33:32,487 - Loading dataset ogbl-ddi...
+2025-12-08 04:33:32,572 - Dataset loaded: 4267 nodes
+2025-12-08 04:33:32,715 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-08 04:33:32,715 - Valid neg edges: 101882, Test neg: 95599
+2025-12-08 04:33:32,734 - Added self-loops: Total edges now = 1072178
+2025-12-08 04:33:32,741 - Computing structural features (this may take a moment)...
+2025-12-08 04:37:33,678 - Computed structural features (6 dims):
+2025-12-08 04:37:33,681 -   - Degree: mean=4.473, std=1.892
+2025-12-08 04:37:33,681 -   - Clustering: mean=0.514, std=0.219
+2025-12-08 04:37:33,681 -   - Core number: mean=5.122, std=1.539
+2025-12-08 04:37:33,681 -   - PageRank: mean=0.105, std=0.075
+2025-12-08 04:37:33,681 - ================================================================================
+2025-12-08 04:37:33,682 - MODEL CONFIGURATION - GCN-Structural-V3
+2025-12-08 04:37:33,682 - ================================================================================
+2025-12-08 04:37:33,682 - Architecture:
+2025-12-08 04:37:33,682 -   Model: GCN-Structural-V3
+2025-12-08 04:37:33,682 -   Hidden Dim: 256, Layers: 3
+2025-12-08 04:37:33,682 -   Dropout: 0.2, Decoder Dropout: 0.3
+2025-12-08 04:37:33,682 -   Structural Features: 6 dims
+2025-12-08 04:37:33,682 -   Multi-strategy decoder: False
+2025-12-08 04:37:33,682 -   Diversity Loss Weight: 0.05
+2025-12-08 04:37:33,682 - 
+2025-12-08 04:37:33,682 - Training:
+2025-12-08 04:37:33,682 -   Epochs: 400, Patience: 20
+2025-12-08 04:37:33,682 -   Learning Rate: 0.005, Weight Decay: 5e-05
+2025-12-08 04:37:33,682 -   Hard Negatives: True (ratio=0.05)
+2025-12-08 04:37:33,682 -   Batch Size: 20000, Eval Batch: 50000
+2025-12-08 04:37:33,682 -   Gradient Accumulation Steps: 3
+2025-12-08 04:37:33,682 - 
+2025-12-08 04:37:33,682 - Dataset:
+2025-12-08 04:37:33,682 -   Nodes: 4267
+2025-12-08 04:37:33,682 -   Train Edges: 1067911
+2025-12-08 04:37:33,682 -   Val Edges: 133489, Test Edges: 133489
+2025-12-08 04:37:33,682 - ================================================================================
+2025-12-08 04:37:33,682 - 
+================================================================================
+2025-12-08 04:37:33,682 - Training Advanced GCN with Structural Features
+2025-12-08 04:37:33,682 - ================================================================================
+2025-12-08 04:37:33,729 - Starting training for GCN-Structural-V3 (epochs=400, lr=0.005, patience=20, hard_neg=True)
+2025-12-08 04:37:33,730 - Negative sampling: strategy=hard, ratio=0.05, k_hop=N/A
+2025-12-08 04:37:33,730 - Model description: GCN-V3 with 6 structural features, layer norm, LeakyReLU, full residuals, strong diversity loss | hidden_dim=256, num_layers=3, dropout=0.2, decoder_dropout=0.3, decoder=simple, diversity_weight=0.05
+2025-12-08 04:37:33,730 - Memory optimization: batch_size=20000, gradient_accumulation=3
+2025-12-08 04:37:33,732 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-08 04:37:36,716 - GCN-Structural-V3 Epoch 0001/400 [Random Neg] | Loss: 1.8732 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:37:37,207 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.994 sim_std=0.026 norm=15.594 | Scores: pos=0.983 neg=0.983 gap=0.001 | Grad: norm=10.01
+2025-12-08 04:37:37,207 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-08 04:37:37,207 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-08 04:37:47,875 - GCN-Structural-V3 Epoch 0005/400 [Random Neg] | Loss: 1.6130 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:37:48,373 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.995 sim_std=0.024 norm=13.624 | Scores: pos=0.478 neg=0.476 gap=0.002 | Grad: norm=2.34
+2025-12-08 04:37:48,373 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-08 04:37:48,374 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-08 04:38:01,598 - GCN-Structural-V3 Epoch 0010/400 [Random Neg] | Loss: 1.4672 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:38:02,058 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.993 sim_std=0.029 norm=13.263 | Scores: pos=0.494 neg=0.490 gap=0.004 | Grad: norm=0.24
+2025-12-08 04:38:02,059 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-08 04:38:02,059 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-08 04:38:14,966 - GCN-Structural-V3 Epoch 0015/400 [Random Neg] | Loss: 1.4423 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:38:27,900 - GCN-Structural-V3 Epoch 0020/400 [Random Neg] | Loss: 1.3660 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:38:28,357 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.969 sim_std=0.089 norm=13.253 | Scores: pos=0.511 neg=0.429 gap=0.082 | Grad: norm=0.45
+2025-12-08 04:38:28,357 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-08 04:38:41,431 - GCN-Structural-V3 Epoch 0025/400 [Random Neg] | Loss: 1.2513 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:38:54,486 - GCN-Structural-V3 Epoch 0030/400 [Random Neg] | Loss: 1.2283 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:39:07,531 - GCN-Structural-V3 Epoch 0035/400 [Random Neg] | Loss: 1.1838 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-08 04:39:20,612 - GCN-Structural-V3 Epoch 0040/400 [Random Neg] | Loss: 1.1544 | Val Hits@20: 0.0002 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 40) | LR: 0.005000 🔥
+2025-12-08 04:39:33,769 - GCN-Structural-V3 Epoch 0045/400 [Random Neg] | Loss: 1.1404 | Val Hits@20: 0.0002 | Test Hits@20: 0.0004 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 🔥
+2025-12-08 04:39:47,423 - GCN-Structural-V3 Epoch 0050/400 [Random Neg] | Loss: 1.1120 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:39:47,949 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.836 sim_std=0.222 norm=12.454 | Scores: pos=0.671 neg=0.322 gap=0.349 | Grad: norm=1.49
+2025-12-08 04:40:08,719 - GCN-Structural-V3 Epoch 0055/400 [Hard Neg] | Loss: 1.0470 | Val Hits@20: 0.0000 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:40:09,207 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.756 sim_std=0.258 norm=12.665 | Scores: pos=0.717 neg=0.309 gap=0.407 | Grad: norm=0.35
+2025-12-08 04:40:29,497 - GCN-Structural-V3 Epoch 0060/400 [Hard Neg] | Loss: 1.0138 | Val Hits@20: 0.0000 | Test Hits@20: 0.0004 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:40:29,962 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.769 sim_std=0.223 norm=12.610 | Scores: pos=0.682 neg=0.277 gap=0.405 | Grad: norm=0.43
+2025-12-08 04:40:50,185 - GCN-Structural-V3 Epoch 0065/400 [Hard Neg] | Loss: 0.9754 | Val Hits@20: 0.0000 | Test Hits@20: 0.0009 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:40:50,633 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.765 sim_std=0.197 norm=12.423 | Scores: pos=0.678 neg=0.242 gap=0.437 | Grad: norm=0.59
+2025-12-08 04:41:11,046 - GCN-Structural-V3 Epoch 0070/400 [Hard Neg] | Loss: 0.9505 | Val Hits@20: 0.0000 | Test Hits@20: 0.0009 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:41:11,555 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.748 sim_std=0.222 norm=12.259 | Scores: pos=0.758 neg=0.317 gap=0.441 | Grad: norm=0.96
+2025-12-08 04:41:31,815 - GCN-Structural-V3 Epoch 0075/400 [Hard Neg] | Loss: 0.9130 | Val Hits@20: 0.0000 | Test Hits@20: 0.0004 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:41:32,305 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.725 sim_std=0.215 norm=12.186 | Scores: pos=0.692 neg=0.233 gap=0.459 | Grad: norm=0.20
+2025-12-08 04:41:53,035 - GCN-Structural-V3 Epoch 0080/400 [Hard Neg] | Loss: 0.8914 | Val Hits@20: 0.0000 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:41:53,522 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.714 sim_std=0.217 norm=12.098 | Scores: pos=0.778 neg=0.259 gap=0.519 | Grad: norm=0.33
+2025-12-08 04:42:14,862 - GCN-Structural-V3 Epoch 0085/400 [Hard Neg] | Loss: 0.8688 | Val Hits@20: 0.0000 | Test Hits@20: 0.0005 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:42:15,322 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.700 sim_std=0.210 norm=12.210 | Scores: pos=0.742 neg=0.213 gap=0.529 | Grad: norm=0.20
+2025-12-08 04:42:35,799 - GCN-Structural-V3 Epoch 0090/400 [Hard Neg] | Loss: 0.8469 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:42:36,288 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.698 sim_std=0.202 norm=12.036 | Scores: pos=0.770 neg=0.229 gap=0.541 | Grad: norm=0.13
+2025-12-08 04:42:57,024 - GCN-Structural-V3 Epoch 0095/400 [Hard Neg] | Loss: 0.8271 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:42:57,509 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.695 sim_std=0.198 norm=12.005 | Scores: pos=0.757 neg=0.213 gap=0.544 | Grad: norm=0.58
+2025-12-08 04:43:18,391 - GCN-Structural-V3 Epoch 0100/400 [Hard Neg] | Loss: 0.8926 | Val Hits@20: 0.0000 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:43:18,876 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.682 sim_std=0.244 norm=11.779 | Scores: pos=0.842 neg=0.298 gap=0.544 | Grad: norm=2.53
+2025-12-08 04:43:39,841 - GCN-Structural-V3 Epoch 0105/400 [Hard Neg] | Loss: 0.8367 | Val Hits@20: 0.0000 | Test Hits@20: 0.0004 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:43:40,332 - [DIAGNOSTICS Epoch 105] Emb: sim_mean=0.658 sim_std=0.218 norm=12.144 | Scores: pos=0.797 neg=0.253 gap=0.544 | Grad: norm=0.51
+2025-12-08 04:44:01,178 - GCN-Structural-V3 Epoch 0110/400 [Hard Neg] | Loss: 0.8203 | Val Hits@20: 0.0000 | Test Hits@20: 0.0002 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:44:01,679 - [DIAGNOSTICS Epoch 110] Emb: sim_mean=0.666 sim_std=0.208 norm=12.032 | Scores: pos=0.769 neg=0.229 gap=0.539 | Grad: norm=0.29
+2025-12-08 04:44:22,616 - GCN-Structural-V3 Epoch 0115/400 [Hard Neg] | Loss: 0.8023 | Val Hits@20: 0.0000 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:44:23,141 - [DIAGNOSTICS Epoch 115] Emb: sim_mean=0.656 sim_std=0.206 norm=12.016 | Scores: pos=0.790 neg=0.214 gap=0.576 | Grad: norm=0.26
+2025-12-08 04:44:44,682 - GCN-Structural-V3 Epoch 0120/400 [Hard Neg] | Loss: 0.7908 | Val Hits@20: 0.0000 | Test Hits@20: 0.0007 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 
+2025-12-08 04:44:45,198 - [DIAGNOSTICS Epoch 120] Emb: sim_mean=0.646 sim_std=0.204 norm=11.955 | Scores: pos=0.788 neg=0.215 gap=0.573 | Grad: norm=0.33
+2025-12-08 04:45:06,753 - GCN-Structural-V3 Epoch 0125/400 [Hard Neg] | Loss: 0.7833 | Val Hits@20: 0.0000 | Test Hits@20: 0.0017 | Best Val: 0.0002 (epoch 45) | LR: 0.002500 
+2025-12-08 04:45:07,292 - [DIAGNOSTICS Epoch 125] Emb: sim_mean=0.616 sim_std=0.207 norm=12.001 | Scores: pos=0.783 neg=0.190 gap=0.593 | Grad: norm=0.17
+2025-12-08 04:45:28,758 - GCN-Structural-V3 Epoch 0130/400 [Hard Neg] | Loss: 0.7674 | Val Hits@20: 0.0021 | Test Hits@20: 0.0036 | Best Val: 0.0021 (epoch 130) | LR: 0.002500 🔥
+2025-12-08 04:45:29,160 - [DIAGNOSTICS Epoch 130] Emb: sim_mean=0.609 sim_std=0.213 norm=11.916 | Scores: pos=0.779 neg=0.207 gap=0.572 | Grad: norm=0.27
+2025-12-08 04:45:46,754 - GCN-Structural-V3 Epoch 0135/400 [Hard Neg] | Loss: 0.7697 | Val Hits@20: 0.0021 | Test Hits@20: 0.0029 | Best Val: 0.0021 (epoch 130) | LR: 0.002500 
+2025-12-08 04:45:47,156 - [DIAGNOSTICS Epoch 135] Emb: sim_mean=0.601 sim_std=0.210 norm=12.001 | Scores: pos=0.780 neg=0.178 gap=0.602 | Grad: norm=0.31
+2025-12-08 04:46:04,774 - GCN-Structural-V3 Epoch 0140/400 [Hard Neg] | Loss: 0.7675 | Val Hits@20: 0.0021 | Test Hits@20: 0.0030 | Best Val: 0.0021 (epoch 130) | LR: 0.002500 
+2025-12-08 04:46:05,171 - [DIAGNOSTICS Epoch 140] Emb: sim_mean=0.587 sim_std=0.217 norm=12.006 | Scores: pos=0.792 neg=0.199 gap=0.593 | Grad: norm=0.41
+2025-12-08 04:46:22,747 - GCN-Structural-V3 Epoch 0145/400 [Hard Neg] | Loss: 0.7503 | Val Hits@20: 0.0022 | Test Hits@20: 0.0030 | Best Val: 0.0022 (epoch 145) | LR: 0.002500 🔥
+2025-12-08 04:46:23,145 - [DIAGNOSTICS Epoch 145] Emb: sim_mean=0.584 sim_std=0.212 norm=11.997 | Scores: pos=0.795 neg=0.203 gap=0.592 | Grad: norm=0.49
+2025-12-08 04:46:42,346 - GCN-Structural-V3 Epoch 0150/400 [Hard Neg] | Loss: 0.7478 | Val Hits@20: 0.0021 | Test Hits@20: 0.0029 | Best Val: 0.0022 (epoch 145) | LR: 0.002500 
+2025-12-08 04:46:42,781 - [DIAGNOSTICS Epoch 150] Emb: sim_mean=0.577 sim_std=0.218 norm=12.016 | Scores: pos=0.798 neg=0.198 gap=0.601 | Grad: norm=0.60
+2025-12-08 04:47:02,556 - GCN-Structural-V3 Epoch 0155/400 [Hard Neg] | Loss: 0.7341 | Val Hits@20: 0.0022 | Test Hits@20: 0.0029 | Best Val: 0.0022 (epoch 145) | LR: 0.002500 
+2025-12-08 04:47:03,097 - [DIAGNOSTICS Epoch 155] Emb: sim_mean=0.567 sim_std=0.212 norm=11.996 | Scores: pos=0.805 neg=0.199 gap=0.607 | Grad: norm=0.26
+2025-12-08 04:47:23,425 - GCN-Structural-V3 Epoch 0160/400 [Hard Neg] | Loss: 0.7314 | Val Hits@20: 0.0022 | Test Hits@20: 0.0028 | Best Val: 0.0022 (epoch 160) | LR: 0.002500 🔥
+2025-12-08 04:47:23,895 - [DIAGNOSTICS Epoch 160] Emb: sim_mean=0.568 sim_std=0.210 norm=12.057 | Scores: pos=0.818 neg=0.203 gap=0.615 | Grad: norm=0.24
+2025-12-08 04:47:43,786 - GCN-Structural-V3 Epoch 0165/400 [Hard Neg] | Loss: 0.7202 | Val Hits@20: 0.0022 | Test Hits@20: 0.0027 | Best Val: 0.0022 (epoch 160) | LR: 0.002500 
+2025-12-08 04:47:44,366 - [DIAGNOSTICS Epoch 165] Emb: sim_mean=0.555 sim_std=0.215 norm=11.965 | Scores: pos=0.825 neg=0.207 gap=0.618 | Grad: norm=0.31
+2025-12-08 04:48:05,122 - GCN-Structural-V3 Epoch 0170/400 [Hard Neg] | Loss: 0.7220 | Val Hits@20: 0.0022 | Test Hits@20: 0.0030 | Best Val: 0.0022 (epoch 160) | LR: 0.002500 
+2025-12-08 04:48:05,613 - [DIAGNOSTICS Epoch 170] Emb: sim_mean=0.542 sim_std=0.218 norm=12.049 | Scores: pos=0.786 neg=0.176 gap=0.610 | Grad: norm=0.64
+2025-12-08 04:48:25,984 - GCN-Structural-V3 Epoch 0175/400 [Hard Neg] | Loss: 0.7140 | Val Hits@20: 0.0023 | Test Hits@20: 0.0030 | Best Val: 0.0023 (epoch 175) | LR: 0.002500 🔥
+2025-12-08 04:48:26,447 - [DIAGNOSTICS Epoch 175] Emb: sim_mean=0.527 sim_std=0.224 norm=12.143 | Scores: pos=0.781 neg=0.157 gap=0.624 | Grad: norm=0.57
+2025-12-08 04:48:46,344 - GCN-Structural-V3 Epoch 0180/400 [Hard Neg] | Loss: 0.7228 | Val Hits@20: 0.0024 | Test Hits@20: 0.0029 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 🔥
+2025-12-08 04:48:46,805 - [DIAGNOSTICS Epoch 180] Emb: sim_mean=0.528 sim_std=0.224 norm=12.110 | Scores: pos=0.798 neg=0.165 gap=0.633 | Grad: norm=1.17
+2025-12-08 04:49:06,619 - GCN-Structural-V3 Epoch 0185/400 [Hard Neg] | Loss: 0.7154 | Val Hits@20: 0.0024 | Test Hits@20: 0.0030 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:49:07,040 - [DIAGNOSTICS Epoch 185] Emb: sim_mean=0.517 sim_std=0.223 norm=12.102 | Scores: pos=0.807 neg=0.189 gap=0.618 | Grad: norm=0.58
+2025-12-08 04:49:25,412 - GCN-Structural-V3 Epoch 0190/400 [Hard Neg] | Loss: 0.7013 | Val Hits@20: 0.0024 | Test Hits@20: 0.0030 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:49:25,836 - [DIAGNOSTICS Epoch 190] Emb: sim_mean=0.522 sim_std=0.222 norm=12.045 | Scores: pos=0.821 neg=0.196 gap=0.625 | Grad: norm=0.54
+2025-12-08 04:49:44,033 - GCN-Structural-V3 Epoch 0195/400 [Hard Neg] | Loss: 0.7012 | Val Hits@20: 0.0021 | Test Hits@20: 0.0028 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:49:44,452 - [DIAGNOSTICS Epoch 195] Emb: sim_mean=0.516 sim_std=0.221 norm=12.092 | Scores: pos=0.811 neg=0.178 gap=0.633 | Grad: norm=0.50
+2025-12-08 04:50:02,664 - GCN-Structural-V3 Epoch 0200/400 [Hard Neg] | Loss: 0.6934 | Val Hits@20: 0.0021 | Test Hits@20: 0.0028 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:50:03,082 - [DIAGNOSTICS Epoch 200] Emb: sim_mean=0.516 sim_std=0.224 norm=12.108 | Scores: pos=0.805 neg=0.182 gap=0.623 | Grad: norm=0.35
+2025-12-08 04:50:23,725 - GCN-Structural-V3 Epoch 0205/400 [Hard Neg] | Loss: 0.6947 | Val Hits@20: 0.0022 | Test Hits@20: 0.0028 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:50:24,157 - [DIAGNOSTICS Epoch 205] Emb: sim_mean=0.498 sim_std=0.230 norm=12.116 | Scores: pos=0.830 neg=0.208 gap=0.622 | Grad: norm=0.24
+2025-12-08 04:50:42,430 - GCN-Structural-V3 Epoch 0210/400 [Hard Neg] | Loss: 0.7028 | Val Hits@20: 0.0022 | Test Hits@20: 0.0029 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:50:42,854 - [DIAGNOSTICS Epoch 210] Emb: sim_mean=0.495 sim_std=0.229 norm=12.106 | Scores: pos=0.825 neg=0.197 gap=0.628 | Grad: norm=0.30
+2025-12-08 04:51:01,254 - GCN-Structural-V3 Epoch 0215/400 [Hard Neg] | Loss: 0.6844 | Val Hits@20: 0.0023 | Test Hits@20: 0.0030 | Best Val: 0.0024 (epoch 180) | LR: 0.002500 
+2025-12-08 04:51:01,684 - [DIAGNOSTICS Epoch 215] Emb: sim_mean=0.488 sim_std=0.228 norm=12.124 | Scores: pos=0.812 neg=0.167 gap=0.645 | Grad: norm=0.33
+2025-12-08 04:51:19,854 - GCN-Structural-V3 Epoch 0220/400 [Hard Neg] | Loss: 0.6881 | Val Hits@20: 0.0024 | Test Hits@20: 0.0029 | Best Val: 0.0024 (epoch 220) | LR: 0.002500 🔥
+2025-12-08 04:51:20,263 - [DIAGNOSTICS Epoch 220] Emb: sim_mean=0.499 sim_std=0.225 norm=12.154 | Scores: pos=0.830 neg=0.214 gap=0.615 | Grad: norm=0.49
+2025-12-08 04:51:38,283 - GCN-Structural-V3 Epoch 0225/400 [Hard Neg] | Loss: 0.6841 | Val Hits@20: 0.0024 | Test Hits@20: 0.0030 | Best Val: 0.0024 (epoch 225) | LR: 0.002500 🔥
+2025-12-08 04:51:38,692 - [DIAGNOSTICS Epoch 225] Emb: sim_mean=0.471 sim_std=0.239 norm=12.206 | Scores: pos=0.801 neg=0.177 gap=0.624 | Grad: norm=0.64
+2025-12-08 04:51:58,078 - GCN-Structural-V3 Epoch 0230/400 [Hard Neg] | Loss: 0.6865 | Val Hits@20: 0.0024 | Test Hits@20: 0.0029 | Best Val: 0.0024 (epoch 225) | LR: 0.002500 
+2025-12-08 04:51:58,554 - [DIAGNOSTICS Epoch 230] Emb: sim_mean=0.477 sim_std=0.231 norm=12.286 | Scores: pos=0.810 neg=0.168 gap=0.642 | Grad: norm=0.63
+2025-12-08 04:52:18,161 - GCN-Structural-V3 Epoch 0235/400 [Hard Neg] | Loss: 0.6782 | Val Hits@20: 0.0025 | Test Hits@20: 0.0029 | Best Val: 0.0025 (epoch 235) | LR: 0.002500 🔥
+2025-12-08 04:52:18,605 - [DIAGNOSTICS Epoch 235] Emb: sim_mean=0.461 sim_std=0.239 norm=12.150 | Scores: pos=0.822 neg=0.171 gap=0.652 | Grad: norm=0.45
+2025-12-08 04:52:38,455 - GCN-Structural-V3 Epoch 0240/400 [Hard Neg] | Loss: 0.6788 | Val Hits@20: 0.0024 | Test Hits@20: 0.0030 | Best Val: 0.0025 (epoch 235) | LR: 0.002500 
+2025-12-08 04:52:38,929 - [DIAGNOSTICS Epoch 240] Emb: sim_mean=0.462 sim_std=0.235 norm=12.240 | Scores: pos=0.830 neg=0.174 gap=0.656 | Grad: norm=0.38
+2025-12-08 04:52:59,514 - GCN-Structural-V3 Epoch 0245/400 [Hard Neg] | Loss: 0.6675 | Val Hits@20: 0.0024 | Test Hits@20: 0.0030 | Best Val: 0.0025 (epoch 235) | LR: 0.002500 
+2025-12-08 04:52:59,975 - [DIAGNOSTICS Epoch 245] Emb: sim_mean=0.455 sim_std=0.236 norm=12.223 | Scores: pos=0.823 neg=0.180 gap=0.643 | Grad: norm=0.26
+2025-12-08 04:53:20,283 - GCN-Structural-V3 Epoch 0250/400 [Hard Neg] | Loss: 0.6719 | Val Hits@20: 0.0024 | Test Hits@20: 0.0030 | Best Val: 0.0025 (epoch 235) | LR: 0.002500 
+2025-12-08 04:53:20,761 - [DIAGNOSTICS Epoch 250] Emb: sim_mean=0.450 sim_std=0.239 norm=12.110 | Scores: pos=0.819 neg=0.184 gap=0.635 | Grad: norm=0.47
+2025-12-08 04:53:40,133 - GCN-Structural-V3 Epoch 0255/400 [Hard Neg] | Loss: 0.6783 | Val Hits@20: 0.0025 | Test Hits@20: 0.0031 | Best Val: 0.0025 (epoch 235) | LR: 0.002500 
+2025-12-08 04:53:40,584 - [DIAGNOSTICS Epoch 255] Emb: sim_mean=0.447 sim_std=0.231 norm=12.352 | Scores: pos=0.833 neg=0.168 gap=0.665 | Grad: norm=0.65
+2025-12-08 04:54:00,536 - GCN-Structural-V3 Epoch 0260/400 [Hard Neg] | Loss: 0.6672 | Val Hits@20: 0.0025 | Test Hits@20: 0.0031 | Best Val: 0.0025 (epoch 235) | LR: 0.002500 
+2025-12-08 04:54:00,940 - [DIAGNOSTICS Epoch 260] Emb: sim_mean=0.441 sim_std=0.241 norm=12.194 | Scores: pos=0.826 neg=0.150 gap=0.677 | Grad: norm=0.44
+2025-12-08 04:54:18,753 - GCN-Structural-V3 Epoch 0265/400 [Hard Neg] | Loss: 0.6694 | Val Hits@20: 0.0026 | Test Hits@20: 0.0032 | Best Val: 0.0026 (epoch 265) | LR: 0.002500 🔥
+2025-12-08 04:54:19,161 - [DIAGNOSTICS Epoch 265] Emb: sim_mean=0.445 sim_std=0.240 norm=12.080 | Scores: pos=0.827 neg=0.170 gap=0.658 | Grad: norm=0.34
+2025-12-08 04:54:37,039 - GCN-Structural-V3 Epoch 0270/400 [Hard Neg] | Loss: 0.6660 | Val Hits@20: 0.0026 | Test Hits@20: 0.0032 | Best Val: 0.0026 (epoch 265) | LR: 0.002500 
+2025-12-08 04:54:37,452 - [DIAGNOSTICS Epoch 270] Emb: sim_mean=0.422 sim_std=0.243 norm=12.305 | Scores: pos=0.818 neg=0.148 gap=0.670 | Grad: norm=0.38
+2025-12-08 04:54:55,457 - GCN-Structural-V3 Epoch 0275/400 [Hard Neg] | Loss: 0.6663 | Val Hits@20: 0.0026 | Test Hits@20: 0.0032 | Best Val: 0.0026 (epoch 275) | LR: 0.002500 🔥
+2025-12-08 04:54:55,872 - [DIAGNOSTICS Epoch 275] Emb: sim_mean=0.423 sim_std=0.248 norm=12.293 | Scores: pos=0.826 neg=0.162 gap=0.664 | Grad: norm=0.90
+2025-12-08 04:55:13,592 - GCN-Structural-V3 Epoch 0280/400 [Hard Neg] | Loss: 0.6643 | Val Hits@20: 0.0026 | Test Hits@20: 0.0031 | Best Val: 0.0026 (epoch 280) | LR: 0.002500 🔥
+2025-12-08 04:55:13,992 - [DIAGNOSTICS Epoch 280] Emb: sim_mean=0.429 sim_std=0.244 norm=11.992 | Scores: pos=0.809 neg=0.175 gap=0.634 | Grad: norm=0.52
+2025-12-08 04:55:32,919 - GCN-Structural-V3 Epoch 0285/400 [Hard Neg] | Loss: 0.6692 | Val Hits@20: 0.0027 | Test Hits@20: 0.0031 | Best Val: 0.0027 (epoch 285) | LR: 0.002500 🔥
+2025-12-08 04:55:33,391 - [DIAGNOSTICS Epoch 285] Emb: sim_mean=0.423 sim_std=0.241 norm=12.073 | Scores: pos=0.824 neg=0.191 gap=0.633 | Grad: norm=0.55
+2025-12-08 04:55:53,363 - GCN-Structural-V3 Epoch 0290/400 [Hard Neg] | Loss: 0.6645 | Val Hits@20: 0.0028 | Test Hits@20: 0.0031 | Best Val: 0.0028 (epoch 290) | LR: 0.002500 🔥
+2025-12-08 04:55:53,831 - [DIAGNOSTICS Epoch 290] Emb: sim_mean=0.413 sim_std=0.240 norm=12.244 | Scores: pos=0.840 neg=0.190 gap=0.650 | Grad: norm=0.38
+2025-12-08 04:56:13,790 - GCN-Structural-V3 Epoch 0295/400 [Hard Neg] | Loss: 0.6501 | Val Hits@20: 0.0027 | Test Hits@20: 0.0031 | Best Val: 0.0028 (epoch 290) | LR: 0.002500 
+2025-12-08 04:56:14,257 - [DIAGNOSTICS Epoch 295] Emb: sim_mean=0.407 sim_std=0.240 norm=12.156 | Scores: pos=0.826 neg=0.160 gap=0.666 | Grad: norm=0.38
+2025-12-08 04:56:34,182 - GCN-Structural-V3 Epoch 0300/400 [Hard Neg] | Loss: 0.6551 | Val Hits@20: 0.0027 | Test Hits@20: 0.0030 | Best Val: 0.0028 (epoch 290) | LR: 0.002500 
+2025-12-08 04:56:34,651 - [DIAGNOSTICS Epoch 300] Emb: sim_mean=0.413 sim_std=0.245 norm=11.931 | Scores: pos=0.837 neg=0.172 gap=0.665 | Grad: norm=0.64
+2025-12-08 04:56:54,511 - GCN-Structural-V3 Epoch 0305/400 [Hard Neg] | Loss: 0.6504 | Val Hits@20: 0.0027 | Test Hits@20: 0.0030 | Best Val: 0.0028 (epoch 290) | LR: 0.002500 
+2025-12-08 04:56:54,981 - [DIAGNOSTICS Epoch 305] Emb: sim_mean=0.392 sim_std=0.250 norm=12.099 | Scores: pos=0.832 neg=0.161 gap=0.671 | Grad: norm=0.40
+2025-12-08 04:57:14,867 - GCN-Structural-V3 Epoch 0310/400 [Hard Neg] | Loss: 0.6523 | Val Hits@20: 0.0027 | Test Hits@20: 0.0029 | Best Val: 0.0028 (epoch 290) | LR: 0.002500 
+2025-12-08 04:57:15,341 - [DIAGNOSTICS Epoch 310] Emb: sim_mean=0.388 sim_std=0.250 norm=12.124 | Scores: pos=0.820 neg=0.157 gap=0.664 | Grad: norm=0.58
+2025-12-08 04:57:35,390 - GCN-Structural-V3 Epoch 0315/400 [Hard Neg] | Loss: 0.6484 | Val Hits@20: 0.0027 | Test Hits@20: 0.0029 | Best Val: 0.0028 (epoch 290) | LR: 0.002500 
+2025-12-08 04:57:35,878 - [DIAGNOSTICS Epoch 315] Emb: sim_mean=0.381 sim_std=0.253 norm=12.122 | Scores: pos=0.829 neg=0.170 gap=0.659 | Grad: norm=0.57
+2025-12-08 04:57:56,305 - GCN-Structural-V3 Epoch 0320/400 [Hard Neg] | Loss: 0.6459 | Val Hits@20: 0.0029 | Test Hits@20: 0.0030 | Best Val: 0.0029 (epoch 320) | LR: 0.002500 🔥
+2025-12-08 04:57:56,771 - [DIAGNOSTICS Epoch 320] Emb: sim_mean=0.379 sim_std=0.250 norm=12.175 | Scores: pos=0.824 neg=0.150 gap=0.674 | Grad: norm=0.59
+2025-12-08 04:58:16,600 - GCN-Structural-V3 Epoch 0325/400 [Hard Neg] | Loss: 0.6382 | Val Hits@20: 0.0031 | Test Hits@20: 0.0030 | Best Val: 0.0031 (epoch 325) | LR: 0.002500 🔥
+2025-12-08 04:58:17,066 - [DIAGNOSTICS Epoch 325] Emb: sim_mean=0.377 sim_std=0.250 norm=12.160 | Scores: pos=0.830 neg=0.164 gap=0.666 | Grad: norm=0.33
+2025-12-08 04:58:36,871 - GCN-Structural-V3 Epoch 0330/400 [Hard Neg] | Loss: 0.6374 | Val Hits@20: 0.0032 | Test Hits@20: 0.0032 | Best Val: 0.0032 (epoch 330) | LR: 0.002500 🔥
+2025-12-08 04:58:37,336 - [DIAGNOSTICS Epoch 330] Emb: sim_mean=0.375 sim_std=0.249 norm=11.999 | Scores: pos=0.837 neg=0.165 gap=0.672 | Grad: norm=0.53
+2025-12-08 04:58:57,097 - GCN-Structural-V3 Epoch 0335/400 [Hard Neg] | Loss: 0.6509 | Val Hits@20: 0.0033 | Test Hits@20: 0.0033 | Best Val: 0.0033 (epoch 335) | LR: 0.002500 🔥
+2025-12-08 04:58:57,559 - [DIAGNOSTICS Epoch 335] Emb: sim_mean=0.373 sim_std=0.244 norm=12.017 | Scores: pos=0.823 neg=0.141 gap=0.682 | Grad: norm=0.85
+2025-12-08 04:59:17,306 - GCN-Structural-V3 Epoch 0340/400 [Hard Neg] | Loss: 0.6419 | Val Hits@20: 0.0035 | Test Hits@20: 0.0034 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 🔥
+2025-12-08 04:59:17,770 - [DIAGNOSTICS Epoch 340] Emb: sim_mean=0.372 sim_std=0.245 norm=12.020 | Scores: pos=0.830 neg=0.149 gap=0.681 | Grad: norm=0.47
+2025-12-08 04:59:38,507 - GCN-Structural-V3 Epoch 0345/400 [Hard Neg] | Loss: 0.6376 | Val Hits@20: 0.0035 | Test Hits@20: 0.0034 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 
+2025-12-08 04:59:39,026 - [DIAGNOSTICS Epoch 345] Emb: sim_mean=0.371 sim_std=0.248 norm=12.065 | Scores: pos=0.826 neg=0.150 gap=0.676 | Grad: norm=0.57
+2025-12-08 04:59:59,229 - GCN-Structural-V3 Epoch 0350/400 [Hard Neg] | Loss: 0.6418 | Val Hits@20: 0.0034 | Test Hits@20: 0.0032 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 
+2025-12-08 04:59:59,780 - [DIAGNOSTICS Epoch 350] Emb: sim_mean=0.356 sim_std=0.248 norm=12.007 | Scores: pos=0.824 neg=0.162 gap=0.662 | Grad: norm=1.14
+2025-12-08 05:00:20,604 - GCN-Structural-V3 Epoch 0355/400 [Hard Neg] | Loss: 0.6344 | Val Hits@20: 0.0032 | Test Hits@20: 0.0032 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 
+2025-12-08 05:00:21,078 - [DIAGNOSTICS Epoch 355] Emb: sim_mean=0.360 sim_std=0.252 norm=11.827 | Scores: pos=0.834 neg=0.159 gap=0.676 | Grad: norm=0.49
+2025-12-08 05:00:41,409 - GCN-Structural-V3 Epoch 0360/400 [Hard Neg] | Loss: 0.6322 | Val Hits@20: 0.0031 | Test Hits@20: 0.0032 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 
+2025-12-08 05:00:41,967 - [DIAGNOSTICS Epoch 360] Emb: sim_mean=0.348 sim_std=0.250 norm=12.004 | Scores: pos=0.824 neg=0.173 gap=0.651 | Grad: norm=0.47
+2025-12-08 05:01:02,521 - GCN-Structural-V3 Epoch 0365/400 [Hard Neg] | Loss: 0.6275 | Val Hits@20: 0.0032 | Test Hits@20: 0.0032 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 
+2025-12-08 05:01:03,008 - [DIAGNOSTICS Epoch 365] Emb: sim_mean=0.343 sim_std=0.251 norm=12.030 | Scores: pos=0.836 neg=0.161 gap=0.675 | Grad: norm=0.46
+2025-12-08 05:01:23,736 - GCN-Structural-V3 Epoch 0370/400 [Hard Neg] | Loss: 0.6305 | Val Hits@20: 0.0034 | Test Hits@20: 0.0032 | Best Val: 0.0035 (epoch 340) | LR: 0.002500 
+2025-12-08 05:01:24,211 - [DIAGNOSTICS Epoch 370] Emb: sim_mean=0.337 sim_std=0.258 norm=11.896 | Scores: pos=0.851 neg=0.172 gap=0.680 | Grad: norm=0.64
+2025-12-08 05:01:45,008 - GCN-Structural-V3 Epoch 0375/400 [Hard Neg] | Loss: 0.6271 | Val Hits@20: 0.0036 | Test Hits@20: 0.0032 | Best Val: 0.0036 (epoch 375) | LR: 0.002500 🔥
+2025-12-08 05:01:45,496 - [DIAGNOSTICS Epoch 375] Emb: sim_mean=0.336 sim_std=0.255 norm=12.081 | Scores: pos=0.834 neg=0.172 gap=0.662 | Grad: norm=0.76
+2025-12-08 05:02:06,368 - GCN-Structural-V3 Epoch 0380/400 [Hard Neg] | Loss: 0.6280 | Val Hits@20: 0.0037 | Test Hits@20: 0.0032 | Best Val: 0.0037 (epoch 380) | LR: 0.002500 🔥
+2025-12-08 05:02:06,856 - [DIAGNOSTICS Epoch 380] Emb: sim_mean=0.325 sim_std=0.256 norm=12.019 | Scores: pos=0.836 neg=0.163 gap=0.673 | Grad: norm=0.85
+2025-12-08 05:02:27,383 - GCN-Structural-V3 Epoch 0385/400 [Hard Neg] | Loss: 0.6249 | Val Hits@20: 0.0040 | Test Hits@20: 0.0033 | Best Val: 0.0040 (epoch 385) | LR: 0.002500 🔥
+2025-12-08 05:02:27,848 - [DIAGNOSTICS Epoch 385] Emb: sim_mean=0.325 sim_std=0.252 norm=12.032 | Scores: pos=0.832 neg=0.151 gap=0.681 | Grad: norm=0.47
+2025-12-08 05:02:48,548 - GCN-Structural-V3 Epoch 0390/400 [Hard Neg] | Loss: 0.6233 | Val Hits@20: 0.0041 | Test Hits@20: 0.0035 | Best Val: 0.0041 (epoch 390) | LR: 0.002500 🔥
+2025-12-08 05:02:49,019 - [DIAGNOSTICS Epoch 390] Emb: sim_mean=0.320 sim_std=0.258 norm=11.957 | Scores: pos=0.837 neg=0.159 gap=0.678 | Grad: norm=0.60
+2025-12-08 05:03:09,316 - GCN-Structural-V3 Epoch 0395/400 [Hard Neg] | Loss: 0.6216 | Val Hits@20: 0.0043 | Test Hits@20: 0.0036 | Best Val: 0.0043 (epoch 395) | LR: 0.002500 🔥
+2025-12-08 05:03:09,798 - [DIAGNOSTICS Epoch 395] Emb: sim_mean=0.323 sim_std=0.250 norm=11.987 | Scores: pos=0.836 neg=0.141 gap=0.695 | Grad: norm=0.80
+2025-12-08 05:03:30,451 - GCN-Structural-V3 Epoch 0400/400 [Hard Neg] | Loss: 0.6153 | Val Hits@20: 0.0044 | Test Hits@20: 0.0036 | Best Val: 0.0044 (epoch 400) | LR: 0.002500 🔥
+2025-12-08 05:03:30,979 - [DIAGNOSTICS Epoch 400] Emb: sim_mean=0.313 sim_std=0.253 norm=11.841 | Scores: pos=0.840 neg=0.148 gap=0.692 | Grad: norm=0.66
+2025-12-08 05:03:30,986 - GCN-Structural-V3 FINAL: Best Val Hits@20 = 0.0044 | Test Hits@20 = 0.0036 (at epoch 400)
+2025-12-08 05:03:30,986 - 
+================================================================================
+2025-12-08 05:03:30,986 - FINAL RESULTS
+2025-12-08 05:03:30,986 - ================================================================================
+2025-12-08 05:03:30,986 - Model: GCN-Structural-V3
+2025-12-08 05:03:30,986 - Configuration: Hidden Dim=256, Layers=3, Dropout=0.2
+2025-12-08 05:03:30,986 - 
+2025-12-08 05:03:30,986 - GCN-Structural-V3:
+2025-12-08 05:03:30,986 -   Validation Hits@20: 0.0044
+2025-12-08 05:03:30,986 -   Test Hits@20: 0.0036
+2025-12-08 05:03:30,987 -   Val-Test Gap: 0.0008 (17.7% relative)
+2025-12-08 05:03:30,987 - ================================================================================
+2025-12-08 05:03:30,987 - Results logged to: logs/advanced_20251208_043332/advanced.log
