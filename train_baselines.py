@@ -8,7 +8,7 @@ from datetime import datetime
 
 from src.data import load_dataset
 from src.models.baselines import GCN, GraphSAGE, GraphTransformer, GAT
-from src.training import train_model
+from src.training import train_minimal_baseline
 from src.evals import evaluate
 
 # Setup logging
@@ -49,15 +49,16 @@ test_neg = split_edge['test']['edge_neg'].to(device)
 # Hyperparameters
 HIDDEN_DIM = 128
 NUM_LAYERS = 2
-DROPOUT = 0.5
-DECODER_DROPOUT = 0.3
+# Ultra-minimal defaults (see src/models/baselines/README.md)
+DROPOUT = 0.0
+DECODER_DROPOUT = 0.0
 EPOCHS = 200
 PATIENCE = 20
 LEARNING_RATE = 0.01
 WEIGHT_DECAY = 1e-4
 BATCH_SIZE = 50000
 EVAL_BATCH_SIZE = 50000
-GRADIENT_ACCUMULATION_STEPS = 1
+EVAL_EVERY = 5
 
 # Create evaluation function wrapper
 def evaluate_fn(model, pos_edges, neg_edges, batch_size):
@@ -68,10 +69,10 @@ results = {}
 
 # Train GCN
 logger.info("\n" + "=" * 80)
-logger.info("Training Simple GCN Baseline")
+logger.info("Training Simple GCN Baseline (minimal trainer)")
 logger.info("=" * 80)
 gcn_model = GCN(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-gcn_val, gcn_test = train_model(
+gcn_result = train_minimal_baseline(
     "GCN-Baseline",
     gcn_model,
     data,
@@ -80,26 +81,24 @@ gcn_val, gcn_test = train_model(
     valid_neg,
     test_pos,
     test_neg,
-    num_nodes,
     evaluate_fn,
     device=device,
     epochs=EPOCHS,
     lr=LEARNING_RATE,
     patience=PATIENCE,
-    use_hard_negatives=False,
     batch_size=BATCH_SIZE,
-    eval_batch_size=EVAL_BATCH_SIZE,
-    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
-    weight_decay=WEIGHT_DECAY
+    weight_decay=WEIGHT_DECAY,
+    eval_every=EVAL_EVERY,
+    eval_batch_size=EVAL_BATCH_SIZE
 )
-results['GCN'] = (gcn_val, gcn_test)
+results['GCN'] = gcn_result
 
 # Train GraphSAGE
 logger.info("\n" + "=" * 80)
-logger.info("Training GraphSAGE Baseline")
+logger.info("Training GraphSAGE Baseline (minimal trainer)")
 logger.info("=" * 80)
 sage_model = GraphSAGE(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-sage_val, sage_test = train_model(
+sage_result = train_minimal_baseline(
     "GraphSAGE-Baseline",
     sage_model,
     data,
@@ -108,26 +107,24 @@ sage_val, sage_test = train_model(
     valid_neg,
     test_pos,
     test_neg,
-    num_nodes,
     evaluate_fn,
     device=device,
     epochs=EPOCHS,
     lr=LEARNING_RATE,
     patience=PATIENCE,
-    use_hard_negatives=False,
     batch_size=BATCH_SIZE,
-    eval_batch_size=EVAL_BATCH_SIZE,
-    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
-    weight_decay=WEIGHT_DECAY
+    weight_decay=WEIGHT_DECAY,
+    eval_every=EVAL_EVERY,
+    eval_batch_size=EVAL_BATCH_SIZE
 )
-results['GraphSAGE'] = (sage_val, sage_test)
+results['GraphSAGE'] = sage_result
 
 # Train GraphTransformer
 logger.info("\n" + "=" * 80)
-logger.info("Training GraphTransformer Baseline")
+logger.info("Training GraphTransformer Baseline (minimal trainer)")
 logger.info("=" * 80)
 transformer_model = GraphTransformer(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-transformer_val, transformer_test = train_model(
+transformer_result = train_minimal_baseline(
     "GraphTransformer-Baseline",
     transformer_model,
     data,
@@ -136,26 +133,24 @@ transformer_val, transformer_test = train_model(
     valid_neg,
     test_pos,
     test_neg,
-    num_nodes,
     evaluate_fn,
     device=device,
     epochs=EPOCHS,
     lr=0.005,  # Lower LR for transformer
     patience=PATIENCE,
-    use_hard_negatives=False,
     batch_size=BATCH_SIZE,
-    eval_batch_size=EVAL_BATCH_SIZE,
-    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
-    weight_decay=WEIGHT_DECAY
+    weight_decay=WEIGHT_DECAY,
+    eval_every=EVAL_EVERY,
+    eval_batch_size=EVAL_BATCH_SIZE
 )
-results['GraphTransformer'] = (transformer_val, transformer_test)
+results['GraphTransformer'] = transformer_result
 
 # Train GAT
 logger.info("\n" + "=" * 80)
-logger.info("Training GAT Baseline")
+logger.info("Training GAT Baseline (minimal trainer)")
 logger.info("=" * 80)
 gat_model = GAT(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-gat_val, gat_test = train_model(
+gat_result = train_minimal_baseline(
     "GAT-Baseline",
     gat_model,
     data,
@@ -164,29 +159,28 @@ gat_val, gat_test = train_model(
     valid_neg,
     test_pos,
     test_neg,
-    num_nodes,
     evaluate_fn,
     device=device,
     epochs=EPOCHS,
     lr=0.005,  # Lower LR for attention
     patience=PATIENCE,
-    use_hard_negatives=False,
     batch_size=BATCH_SIZE,
-    eval_batch_size=EVAL_BATCH_SIZE,
-    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
-    weight_decay=WEIGHT_DECAY
+    weight_decay=WEIGHT_DECAY,
+    eval_every=EVAL_EVERY,
+    eval_batch_size=EVAL_BATCH_SIZE
 )
-results['GAT'] = (gat_val, gat_test)
+results['GAT'] = gat_result
 
 # Final results summary
 logger.info("\n" + "=" * 80)
 logger.info("FINAL RESULTS - BASELINES")
 logger.info("=" * 80)
-for model_name, (val_hits, test_hits) in results.items():
+for model_name, result in results.items():
     logger.info(f"{model_name}:")
-    logger.info(f"  Validation Hits@20: {val_hits:.4f}")
-    logger.info(f"  Test Hits@20: {test_hits:.4f}")
-    val_test_gap = val_hits - test_hits
-    logger.info(f"  Val-Test Gap: {val_test_gap:.4f} ({val_test_gap/val_hits*100:.1f}% relative)")
+    logger.info(f"  Validation Hits@20: {result.best_val_hits:.4f}")
+    logger.info(f"  Test Hits@20: {result.best_test_hits:.4f}")
+    val_test_gap = result.best_val_hits - result.best_test_hits
+    gap_pct = (val_test_gap / result.best_val_hits * 100) if result.best_val_hits != 0 else 0.0
+    logger.info(f"  Val-Test Gap: {val_test_gap:.4f} ({gap_pct:.1f}% relative)")
 logger.info("=" * 80)
 logger.info(f"Results logged to: {log_filename}")

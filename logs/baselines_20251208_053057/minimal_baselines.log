@@ -1,3 +1,4 @@
+Note: Suspiciously fast training times and really good results. Need to investigate more.
 2025-12-08 05:30:57,652 - Device: cuda
 2025-12-08 05:30:57,652 - Log file: logs/minimal_baselines_20251208_053057/minimal_baselines.log
 2025-12-08 05:30:57,652 - 
@@ -102,6 +103,7 @@ Best Model: GraphSAGE with 0.1713 Val Hits@20
 ================================================================================
 2025-12-08 05:31:26,173 - ANALYSIS
 2025-12-08 05:31:26,173 - ================================================================================
+Note: Suspiciously fast training times and really good results. Test outperforming val also doesn't seem right.
 2025-12-08 05:31:26,173 - ⚠️  MIXED RESULTS: Some models below 20%
 2025-12-08 05:31:26,173 -    → Poor performers: GCN, GraphSAGE, GAT, Transformer
 2025-12-08 05:31:26,173 -    → Focus on models that work well (>20%)

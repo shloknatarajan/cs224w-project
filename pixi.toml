@@ -9,6 +9,7 @@ version = "0.1.0"
 pytorch = ">=2.0,<3"
 ogb = ">=1.3.6,<2"
 ipykernel = ">=7.1.0,<8"
+pubchempy = ">=1.0.5,<2"
 
 # Linux-specific dependencies (CUDA support)
 [target.linux-64.dependencies]
@@ -23,7 +24,9 @@ torchaudio = ">=2.0,<3"
 
 [pypi-dependencies]
 torch-geometric = ">=2.7.0, <3"
+rdkit-pypi = ">=2022.9.5, <2023"
 
 [tasks]
-baselines = "python train_baselines.py"
-advanced = "python train_advanced.py"
+train-baselines = "python train_baselines.py"
+train-advanced = "python train_advanced.py"
+train-seal = "python train_seal.py"

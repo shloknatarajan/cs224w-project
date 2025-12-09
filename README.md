@@ -4,12 +4,19 @@ This project implements and compares three Graph Neural Network (GNN) architectu
 
 ## Overview
 
-The project performs link prediction using three different GNN models:
+The project performs link prediction using multiple GNN architectures:
+
+**Baseline Models:**
 - **GCN** (Graph Convolutional Network)
 - **GraphSAGE** (Graph Sample and Aggregate)
 - **GraphTransformer** (Transformer-based GNN)
+- **GAT** (Graph Attention Network)
 
-All models are evaluated using the Hits@20 metric on the OGBL-DDI dataset.
+**Advanced Models:**
+- **SEAL** (Subgraph Extraction and Labeling) - Structure-based link prediction
+
+Baseline models are evaluated using the Hits@20 metric on the OGBL-DDI dataset.
+SEAL uses a different evaluation approach based on subgraph classification.
 
 ## Key Features
 
@@ -73,6 +80,21 @@ Predicting drug-drug interactions is essential for:
 - Dropout (p=0.3)
 - Learnable node embeddings
 
+### GAT (Graph Attention Network)
+- Two-layer GAT with multi-head attention
+- Hidden dimension: 128
+- Batch normalization after each layer
+- Dropout (p=0.3)
+- Learnable node embeddings
+
+### SEAL (Subgraph Extraction and Labeling)
+- **Different approach**: Extracts local subgraphs around each link
+- **DRNL labeling**: Double Radius Node Labeling for structural roles
+- **GNN variants**: Supports both GCN and GIN architectures
+- **Graph pooling**: SortPool, Add, Mean, or Max pooling
+- **Classification**: Binary classifier on subgraph structure
+- See [docs/SEAL.md](docs/SEAL.md) for detailed documentation
+
 ## Training
 
 - **Epochs**: Up to 200 per model (with early stopping)
@@ -98,22 +120,33 @@ See `pixi.toml` for dependency management.
 
 ## Usage
 
-### Full Training
+### Training Baseline Models
 
-Run the main script (trains all 3 models with early stopping):
+Run the baseline training script:
 
 ```bash
-python 224w_project.py
+pixi run python train_baselines.py
 ```
 
-Or use the advanced trainer with more options:
+This trains GCN, GraphSAGE, GraphTransformer, and GAT models.
+
+### Training SEAL
+
+Run the SEAL training script:
 
 ```bash
-# Train GraphSAGE with custom parameters
-python trainer.py --model sage --hidden_dim 256 --epochs 200 --patience 20
+pixi run python train_seal.py
+```
 
-# Train GCN with different settings
-python trainer.py --model gcn --hidden_dim 128 --num_layers 3 --dropout 0.4
+SEAL uses a different training approach based on subgraph classification.
+See [docs/SEAL.md](docs/SEAL.md) for configuration options.
+
+### Testing SEAL
+
+Run the SEAL test suite:
+
+```bash
+pixi run python test_seal.py
 ```
 
 ### Results

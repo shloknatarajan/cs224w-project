@@ -91,3 +91,126 @@
 2025-12-09 17:02:40,147 - [GraphSAGE-Baseline] Epoch 0155 | loss 0.6424 | val@20 0.1445 | test@20 0.1021 | best 0.1445 (ep 155)
 2025-12-09 17:02:46,771 - [GraphSAGE-Baseline] Epoch 0160 | loss 0.6096 | val@20 0.0208 | test@20 0.0145 | best 0.1445 (ep 155)
 2025-12-09 17:02:53,407 - [GraphSAGE-Baseline] Epoch 0165 | loss 0.5921 | val@20 0.0773 | test@20 0.0575 | best 0.1445 (ep 155)
+2025-12-09 17:03:00,156 - [GraphSAGE-Baseline] Epoch 0170 | loss 0.5830 | val@20 0.1068 | test@20 0.0635 | best 0.1445 (ep 155)
+2025-12-09 17:03:06,782 - [GraphSAGE-Baseline] Epoch 0175 | loss 0.5727 | val@20 0.1205 | test@20 0.1111 | best 0.1445 (ep 155)
+2025-12-09 17:03:13,442 - [GraphSAGE-Baseline] Epoch 0180 | loss 0.5642 | val@20 0.0786 | test@20 0.0704 | best 0.1445 (ep 155)
+2025-12-09 17:03:20,191 - [GraphSAGE-Baseline] Epoch 0185 | loss 0.5568 | val@20 0.0817 | test@20 0.1028 | best 0.1445 (ep 155)
+2025-12-09 17:03:26,834 - [GraphSAGE-Baseline] Epoch 0190 | loss 0.5560 | val@20 0.0702 | test@20 0.0554 | best 0.1445 (ep 155)
+2025-12-09 17:03:33,470 - [GraphSAGE-Baseline] Epoch 0195 | loss 0.5544 | val@20 0.0895 | test@20 0.0687 | best 0.1445 (ep 155)
+2025-12-09 17:03:40,018 - [GraphSAGE-Baseline] Epoch 0200 | loss 0.5535 | val@20 0.1220 | test@20 0.0820 | best 0.1445 (ep 155)
+2025-12-09 17:03:40,018 - [GraphSAGE-Baseline] Done. Best val@20=0.1445 | test@20=0.1021 (epoch 155)
+2025-12-09 17:03:40,018 - 
+================================================================================
+2025-12-09 17:03:40,019 - Training GraphTransformer Baseline (minimal trainer)
+2025-12-09 17:03:40,019 - ================================================================================
+2025-12-09 17:03:40,058 - [GraphTransformer-Baseline] Starting minimal baseline training (epochs=200, lr=0.005, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 17:03:41,584 - [GraphTransformer-Baseline] Epoch 0001 | loss 1.3865 | val@20 0.0015 | test@20 0.0016 | best 0.0015 (ep 1)
+2025-12-09 17:03:47,156 - [GraphTransformer-Baseline] Epoch 0005 | loss 1.3774 | val@20 0.0205 | test@20 0.0114 | best 0.0205 (ep 5)
+2025-12-09 17:03:54,093 - [GraphTransformer-Baseline] Epoch 0010 | loss 1.2310 | val@20 0.0313 | test@20 0.0196 | best 0.0313 (ep 10)
+2025-12-09 17:04:00,909 - [GraphTransformer-Baseline] Epoch 0015 | loss 1.0695 | val@20 0.0128 | test@20 0.0154 | best 0.0313 (ep 10)
+2025-12-09 17:04:07,763 - [GraphTransformer-Baseline] Epoch 0020 | loss 0.9743 | val@20 0.0155 | test@20 0.0211 | best 0.0313 (ep 10)
+2025-12-09 17:04:14,614 - [GraphTransformer-Baseline] Epoch 0025 | loss 0.9517 | val@20 0.0189 | test@20 0.0296 | best 0.0313 (ep 10)
+2025-12-09 17:04:21,437 - [GraphTransformer-Baseline] Epoch 0030 | loss 0.9233 | val@20 0.0230 | test@20 0.0395 | best 0.0313 (ep 10)
+2025-12-09 17:04:28,319 - [GraphTransformer-Baseline] Epoch 0035 | loss 0.9073 | val@20 0.0254 | test@20 0.0461 | best 0.0313 (ep 10)
+2025-12-09 17:04:35,161 - [GraphTransformer-Baseline] Epoch 0040 | loss 0.8896 | val@20 0.0323 | test@20 0.0483 | best 0.0323 (ep 40)
+2025-12-09 17:04:42,012 - [GraphTransformer-Baseline] Epoch 0045 | loss 0.8723 | val@20 0.0149 | test@20 0.0002 | best 0.0323 (ep 40)
+2025-12-09 17:04:48,862 - [GraphTransformer-Baseline] Epoch 0050 | loss 0.8528 | val@20 0.0231 | test@20 0.0299 | best 0.0323 (ep 40)
+2025-12-09 17:04:55,675 - [GraphTransformer-Baseline] Epoch 0055 | loss 0.8297 | val@20 0.0200 | test@20 0.0231 | best 0.0323 (ep 40)
+2025-12-09 17:05:02,476 - [GraphTransformer-Baseline] Epoch 0060 | loss 0.8148 | val@20 0.0573 | test@20 0.0378 | best 0.0573 (ep 60)
+2025-12-09 17:05:09,280 - [GraphTransformer-Baseline] Epoch 0065 | loss 0.8401 | val@20 0.0316 | test@20 0.0060 | best 0.0573 (ep 60)
+2025-12-09 17:05:16,136 - [GraphTransformer-Baseline] Epoch 0070 | loss 0.7990 | val@20 0.0225 | test@20 0.0150 | best 0.0573 (ep 60)
+2025-12-09 17:05:22,984 - [GraphTransformer-Baseline] Epoch 0075 | loss 0.7821 | val@20 0.0380 | test@20 0.0161 | best 0.0573 (ep 60)
+2025-12-09 17:05:29,855 - [GraphTransformer-Baseline] Epoch 0080 | loss 0.7641 | val@20 0.0354 | test@20 0.0420 | best 0.0573 (ep 60)
+2025-12-09 17:05:36,709 - [GraphTransformer-Baseline] Epoch 0085 | loss 0.7405 | val@20 0.0476 | test@20 0.0560 | best 0.0573 (ep 60)
+2025-12-09 17:05:43,560 - [GraphTransformer-Baseline] Epoch 0090 | loss 0.7269 | val@20 0.0717 | test@20 0.0494 | best 0.0717 (ep 90)
+2025-12-09 17:05:50,398 - [GraphTransformer-Baseline] Epoch 0095 | loss 0.7342 | val@20 0.0898 | test@20 0.0356 | best 0.0898 (ep 95)
+2025-12-09 17:05:57,295 - [GraphTransformer-Baseline] Epoch 0100 | loss 0.7165 | val@20 0.0466 | test@20 0.0200 | best 0.0898 (ep 95)
+2025-12-09 17:06:04,225 - [GraphTransformer-Baseline] Epoch 0105 | loss 0.7044 | val@20 0.0598 | test@20 0.0371 | best 0.0898 (ep 95)
+2025-12-09 17:06:11,094 - [GraphTransformer-Baseline] Epoch 0110 | loss 0.6944 | val@20 0.0753 | test@20 0.0263 | best 0.0898 (ep 95)
+2025-12-09 17:06:17,937 - [GraphTransformer-Baseline] Epoch 0115 | loss 0.6851 | val@20 0.0783 | test@20 0.0300 | best 0.0898 (ep 95)
+2025-12-09 17:06:24,768 - [GraphTransformer-Baseline] Epoch 0120 | loss 0.6784 | val@20 0.0718 | test@20 0.0343 | best 0.0898 (ep 95)
+2025-12-09 17:06:31,617 - [GraphTransformer-Baseline] Epoch 0125 | loss 0.6760 | val@20 0.0509 | test@20 0.0258 | best 0.0898 (ep 95)
+2025-12-09 17:06:38,452 - [GraphTransformer-Baseline] Epoch 0130 | loss 0.6648 | val@20 0.0355 | test@20 0.0370 | best 0.0898 (ep 95)
+2025-12-09 17:06:45,310 - [GraphTransformer-Baseline] Epoch 0135 | loss 0.6592 | val@20 0.0315 | test@20 0.0572 | best 0.0898 (ep 95)
+2025-12-09 17:06:52,143 - [GraphTransformer-Baseline] Epoch 0140 | loss 0.6529 | val@20 0.0468 | test@20 0.0518 | best 0.0898 (ep 95)
+2025-12-09 17:06:58,986 - [GraphTransformer-Baseline] Epoch 0145 | loss 0.6451 | val@20 0.0597 | test@20 0.0414 | best 0.0898 (ep 95)
+2025-12-09 17:07:05,790 - [GraphTransformer-Baseline] Epoch 0150 | loss 0.6721 | val@20 0.1486 | test@20 0.0769 | best 0.1486 (ep 150)
+2025-12-09 17:07:12,615 - [GraphTransformer-Baseline] Epoch 0155 | loss 0.6499 | val@20 0.1092 | test@20 0.0680 | best 0.1486 (ep 150)
+2025-12-09 17:07:19,430 - [GraphTransformer-Baseline] Epoch 0160 | loss 0.6330 | val@20 0.1507 | test@20 0.1116 | best 0.1507 (ep 160)
+2025-12-09 17:07:26,254 - [GraphTransformer-Baseline] Epoch 0165 | loss 0.6204 | val@20 0.1114 | test@20 0.0586 | best 0.1507 (ep 160)
+2025-12-09 17:07:33,075 - [GraphTransformer-Baseline] Epoch 0170 | loss 0.6115 | val@20 0.1005 | test@20 0.0600 | best 0.1507 (ep 160)
+2025-12-09 17:07:39,898 - [GraphTransformer-Baseline] Epoch 0175 | loss 0.6037 | val@20 0.1054 | test@20 0.0407 | best 0.1507 (ep 160)
+2025-12-09 17:07:46,833 - [GraphTransformer-Baseline] Epoch 0180 | loss 0.5902 | val@20 0.1079 | test@20 0.0308 | best 0.1507 (ep 160)
+2025-12-09 17:07:53,803 - [GraphTransformer-Baseline] Epoch 0185 | loss 0.5889 | val@20 0.0802 | test@20 0.0226 | best 0.1507 (ep 160)
+2025-12-09 17:08:00,767 - [GraphTransformer-Baseline] Epoch 0190 | loss 0.6198 | val@20 0.1632 | test@20 0.0872 | best 0.1632 (ep 190)
+2025-12-09 17:08:07,730 - [GraphTransformer-Baseline] Epoch 0195 | loss 0.5818 | val@20 0.0876 | test@20 0.0369 | best 0.1632 (ep 190)
+2025-12-09 17:08:14,737 - [GraphTransformer-Baseline] Epoch 0200 | loss 0.5761 | val@20 0.0975 | test@20 0.0778 | best 0.1632 (ep 190)
+2025-12-09 17:08:14,737 - [GraphTransformer-Baseline] Done. Best val@20=0.1632 | test@20=0.0872 (epoch 190)
+2025-12-09 17:08:14,738 - 
+================================================================================
+2025-12-09 17:08:14,738 - Training GAT Baseline (minimal trainer)
+2025-12-09 17:08:14,738 - ================================================================================
+2025-12-09 17:08:14,900 - [GAT-Baseline] Starting minimal baseline training (epochs=200, lr=0.005, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 17:08:16,398 - [GAT-Baseline] Epoch 0001 | loss 1.3890 | val@20 0.0003 | test@20 0.0001 | best 0.0003 (ep 1)
+2025-12-09 17:08:21,844 - [GAT-Baseline] Epoch 0005 | loss 1.3854 | val@20 0.0040 | test@20 0.0010 | best 0.0040 (ep 5)
+2025-12-09 17:08:28,656 - [GAT-Baseline] Epoch 0010 | loss 1.3566 | val@20 0.0017 | test@20 0.0004 | best 0.0040 (ep 5)
+2025-12-09 17:08:35,447 - [GAT-Baseline] Epoch 0015 | loss 1.2744 | val@20 0.0004 | test@20 0.0002 | best 0.0040 (ep 5)
+2025-12-09 17:08:42,261 - [GAT-Baseline] Epoch 0020 | loss 1.1863 | val@20 0.0004 | test@20 0.0002 | best 0.0040 (ep 5)
+2025-12-09 17:08:49,007 - [GAT-Baseline] Epoch 0025 | loss 1.1417 | val@20 0.0023 | test@20 0.0011 | best 0.0040 (ep 5)
+2025-12-09 17:08:55,782 - [GAT-Baseline] Epoch 0030 | loss 1.0906 | val@20 0.0021 | test@20 0.0006 | best 0.0040 (ep 5)
+2025-12-09 17:09:02,602 - [GAT-Baseline] Epoch 0035 | loss 1.0177 | val@20 0.0021 | test@20 0.0008 | best 0.0040 (ep 5)
+2025-12-09 17:09:09,403 - [GAT-Baseline] Epoch 0040 | loss 0.9869 | val@20 0.0061 | test@20 0.0079 | best 0.0061 (ep 40)
+2025-12-09 17:09:16,198 - [GAT-Baseline] Epoch 0045 | loss 1.0362 | val@20 0.0035 | test@20 0.0047 | best 0.0061 (ep 40)
+2025-12-09 17:09:23,015 - [GAT-Baseline] Epoch 0050 | loss 0.9813 | val@20 0.0599 | test@20 0.0507 | best 0.0599 (ep 50)
+2025-12-09 17:09:29,821 - [GAT-Baseline] Epoch 0055 | loss 0.9726 | val@20 0.0186 | test@20 0.0315 | best 0.0599 (ep 50)
+2025-12-09 17:09:36,612 - [GAT-Baseline] Epoch 0060 | loss 0.9647 | val@20 0.0085 | test@20 0.0126 | best 0.0599 (ep 50)
+2025-12-09 17:09:43,418 - [GAT-Baseline] Epoch 0065 | loss 0.9537 | val@20 0.0289 | test@20 0.0364 | best 0.0599 (ep 50)
+2025-12-09 17:09:50,238 - [GAT-Baseline] Epoch 0070 | loss 0.9482 | val@20 0.0508 | test@20 0.0628 | best 0.0599 (ep 50)
+2025-12-09 17:09:57,048 - [GAT-Baseline] Epoch 0075 | loss 0.9245 | val@20 0.0729 | test@20 0.0741 | best 0.0729 (ep 75)
+2025-12-09 17:10:03,865 - [GAT-Baseline] Epoch 0080 | loss 0.9064 | val@20 0.0495 | test@20 0.0572 | best 0.0729 (ep 75)
+2025-12-09 17:10:10,637 - [GAT-Baseline] Epoch 0085 | loss 0.8946 | val@20 0.0770 | test@20 0.0733 | best 0.0770 (ep 85)
+2025-12-09 17:10:17,438 - [GAT-Baseline] Epoch 0090 | loss 0.8842 | val@20 0.1009 | test@20 0.0806 | best 0.1009 (ep 90)
+2025-12-09 17:10:24,243 - [GAT-Baseline] Epoch 0095 | loss 0.8654 | val@20 0.0885 | test@20 0.0754 | best 0.1009 (ep 90)
+2025-12-09 17:10:31,050 - [GAT-Baseline] Epoch 0100 | loss 0.8576 | val@20 0.0904 | test@20 0.0783 | best 0.1009 (ep 90)
+2025-12-09 17:10:37,840 - [GAT-Baseline] Epoch 0105 | loss 0.8471 | val@20 0.0939 | test@20 0.0943 | best 0.1009 (ep 90)
+2025-12-09 17:10:44,646 - [GAT-Baseline] Epoch 0110 | loss 0.8407 | val@20 0.0964 | test@20 0.0812 | best 0.1009 (ep 90)
+2025-12-09 17:10:51,505 - [GAT-Baseline] Epoch 0115 | loss 0.8272 | val@20 0.0782 | test@20 0.0732 | best 0.1009 (ep 90)
+2025-12-09 17:10:58,326 - [GAT-Baseline] Epoch 0120 | loss 0.8148 | val@20 0.0626 | test@20 0.0528 | best 0.1009 (ep 90)
+2025-12-09 17:11:05,170 - [GAT-Baseline] Epoch 0125 | loss 0.8090 | val@20 0.0517 | test@20 0.0481 | best 0.1009 (ep 90)
+2025-12-09 17:11:12,027 - [GAT-Baseline] Epoch 0130 | loss 0.8085 | val@20 0.0479 | test@20 0.0497 | best 0.1009 (ep 90)
+2025-12-09 17:11:18,873 - [GAT-Baseline] Epoch 0135 | loss 0.7985 | val@20 0.0527 | test@20 0.0481 | best 0.1009 (ep 90)
+2025-12-09 17:11:25,702 - [GAT-Baseline] Epoch 0140 | loss 0.8082 | val@20 0.0709 | test@20 0.0606 | best 0.1009 (ep 90)
+2025-12-09 17:11:32,562 - [GAT-Baseline] Epoch 0145 | loss 0.7903 | val@20 0.0595 | test@20 0.0425 | best 0.1009 (ep 90)
+2025-12-09 17:11:39,474 - [GAT-Baseline] Epoch 0150 | loss 0.7834 | val@20 0.0548 | test@20 0.0528 | best 0.1009 (ep 90)
+2025-12-09 17:11:47,731 - [GAT-Baseline] Epoch 0155 | loss 0.7851 | val@20 0.0644 | test@20 0.0584 | best 0.1009 (ep 90)
+2025-12-09 17:11:55,729 - [GAT-Baseline] Epoch 0160 | loss 0.7693 | val@20 0.0385 | test@20 0.0385 | best 0.1009 (ep 90)
+2025-12-09 17:12:02,668 - [GAT-Baseline] Epoch 0165 | loss 0.8027 | val@20 0.0772 | test@20 0.0587 | best 0.1009 (ep 90)
+2025-12-09 17:12:11,092 - [GAT-Baseline] Epoch 0170 | loss 0.7847 | val@20 0.0460 | test@20 0.0561 | best 0.1009 (ep 90)
+2025-12-09 17:12:18,750 - [GAT-Baseline] Epoch 0175 | loss 0.7617 | val@20 0.0389 | test@20 0.0442 | best 0.1009 (ep 90)
+2025-12-09 17:12:25,678 - [GAT-Baseline] Epoch 0180 | loss 0.7568 | val@20 0.0669 | test@20 0.0525 | best 0.1009 (ep 90)
+2025-12-09 17:12:32,976 - [GAT-Baseline] Epoch 0185 | loss 0.7510 | val@20 0.0639 | test@20 0.0369 | best 0.1009 (ep 90)
+2025-12-09 17:12:39,922 - [GAT-Baseline] Epoch 0190 | loss 0.7418 | val@20 0.0654 | test@20 0.0431 | best 0.1009 (ep 90)
+2025-12-09 17:12:39,923 - [GAT-Baseline] Early stopping at epoch 190 (no val improvement for 20 evals)
+2025-12-09 17:12:39,923 - [GAT-Baseline] Done. Best val@20=0.1009 | test@20=0.0806 (epoch 90)
+2025-12-09 17:12:39,923 - 
+================================================================================
+2025-12-09 17:12:39,923 - FINAL RESULTS - BASELINES
+2025-12-09 17:12:39,923 - ================================================================================
+2025-12-09 17:12:39,923 - GCN:
+2025-12-09 17:12:39,923 -   Validation Hits@20: 0.1260
+2025-12-09 17:12:39,924 -   Test Hits@20: 0.1259
+2025-12-09 17:12:39,924 -   Val-Test Gap: 0.0000 (0.0% relative)
+2025-12-09 17:12:39,924 - GraphSAGE:
+2025-12-09 17:12:39,924 -   Validation Hits@20: 0.1445
+2025-12-09 17:12:39,924 -   Test Hits@20: 0.1021
+2025-12-09 17:12:39,924 -   Val-Test Gap: 0.0423 (29.3% relative)
+2025-12-09 17:12:39,924 - GraphTransformer:
+2025-12-09 17:12:39,924 -   Validation Hits@20: 0.1632
+2025-12-09 17:12:39,924 -   Test Hits@20: 0.0872
+2025-12-09 17:12:39,924 -   Val-Test Gap: 0.0760 (46.6% relative)
+2025-12-09 17:12:39,924 - GAT:
+2025-12-09 17:12:39,924 -   Validation Hits@20: 0.1009
+2025-12-09 17:12:39,924 -   Test Hits@20: 0.0806
+2025-12-09 17:12:39,924 -   Val-Test Gap: 0.0203 (20.1% relative)
+2025-12-09 17:12:39,924 - ================================================================================
+2025-12-09 17:12:39,925 - Results logged to: logs/baselines_20251209_165450/baselines.log
