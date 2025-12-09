@@ -1,6 +1,27 @@
-from .gcn_structural import GCNStructural
-from .gcn_structural_v2 import GCNStructuralV2
-from .gcn_structural_v3 import GCNStructuralV3
-from .gcn_structural_v4 import GCNStructuralV4
+from .gcn_structural_variations import (
+    GCNStructural,
+    GCNStructuralV2,
+    GCNStructuralV3,
+    GCNStructuralV4
+)
 
-__all__ = ['GCNStructural', 'GCNStructuralV2', 'GCNStructuralV3', 'GCNStructuralV4']
+from .seal import SEALGCN, SEALGIN
+from .sage_variations import (
+    SAGEVariant1Baseline,
+    SAGEVariant2BatchNorm,
+    SAGEVariant3Depth,
+    SAGEVariant4Both
+)
+
+__all__ = [
+    'GCNStructural',
+    'GCNStructuralV2',
+    'GCNStructuralV3',
+    'GCNStructuralV4',
+    'SEALGCN',
+    'SEALGIN',
+    'SAGEVariant1Baseline',
+    'SAGEVariant2BatchNorm',
+    'SAGEVariant3Depth',
+    'SAGEVariant4Both'
+]

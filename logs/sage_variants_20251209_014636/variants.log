@@ -1,0 +1,268 @@
+2025-12-09 01:46:36,000 - Device: cuda
+2025-12-09 01:46:36,000 - Log file: logs/sage_variants_20251209_014636/variants.log
+2025-12-09 01:46:36,000 - 
+Loading ogbl-ddi dataset...
+2025-12-09 01:46:36,000 - Loading dataset ogbl-ddi...
+2025-12-09 01:46:36,086 - Dataset loaded: 4267 nodes
+2025-12-09 01:46:36,229 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 01:46:36,230 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 01:46:36,250 - Added self-loops: Total edges now = 1072178
+2025-12-09 01:46:36,257 - Nodes: 4267
+2025-12-09 01:46:36,257 - Train: 1067911 edges
+2025-12-09 01:46:36,257 - Valid: 133489 pos, 101882 neg
+2025-12-09 01:46:36,258 - Test: 133489 pos, 95599 neg
+2025-12-09 01:46:36,258 - 
+================================================================================
+2025-12-09 01:46:36,258 - GRAPHSAGE ARCHITECTURE VARIANTS - CONFIGURATION
+2025-12-09 01:46:36,258 - ================================================================================
+2025-12-09 01:46:36,258 - Fixed Settings (same as baseline):
+2025-12-09 01:46:36,258 -   - Learning rate: 0.01
+2025-12-09 01:46:36,258 -   - Hidden dim: 128
+2025-12-09 01:46:36,258 -   - Epochs: 100
+2025-12-09 01:46:36,258 -   - Batch size: 50000
+2025-12-09 01:46:36,258 -   - Decoder: Simple dot product
+2025-12-09 01:46:36,258 -   - Negative sampling: Random 1:1
+2025-12-09 01:46:36,258 -   - NO: early stopping, hard negatives, weight decay
+2025-12-09 01:46:36,258 - 
+Variants to test:
+2025-12-09 01:46:36,258 -   1. Baseline: 2 layers, no BatchNorm, dropout=0.0
+2025-12-09 01:46:36,258 -   2. BatchNorm: 2 layers, BatchNorm, dropout=0.0
+2025-12-09 01:46:36,258 -   3. Depth: 3 layers, no BatchNorm, dropout=0.0
+2025-12-09 01:46:36,258 -   4. Both: 3 layers, BatchNorm, dropout=0.0
+2025-12-09 01:46:36,259 - ================================================================================
+2025-12-09 01:46:36,259 - 
+================================================================================
+2025-12-09 01:46:36,259 - Training Variant 1: Baseline
+2025-12-09 01:46:36,259 - ================================================================================
+2025-12-09 01:46:36,297 - Model: SAGE-V1-Baseline (2L, no-BN, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:46:36,297 - Starting training for Variant 1: Baseline (epochs=100, lr=0.01, patience=None, hard_neg=False)
+2025-12-09 01:46:36,297 - Model description: SAGE-V1-Baseline (2L, no-BN, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:46:36,297 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 01:46:36,299 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 01:46:38,153 - Variant 1: Baseline Epoch 0001/100 [Random Neg] | Loss: 1.3868 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 1) | LR: 0.010000 🔥
+2025-12-09 01:46:38,549 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.994 sim_std=0.003 norm=0.687 | Scores: pos=0.503 neg=0.503 gap=0.000 | Grad: norm=0.03
+2025-12-09 01:46:38,549 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:46:38,549 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:46:44,281 - Variant 1: Baseline Epoch 0005/100 [Random Neg] | Loss: 1.3043 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 5) | LR: 0.010000 🔥
+2025-12-09 01:46:44,659 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.721 sim_std=0.322 norm=3.396 | Scores: pos=0.770 neg=0.602 gap=0.168 | Grad: norm=0.25
+2025-12-09 01:46:51,822 - Variant 1: Baseline Epoch 0010/100 [Random Neg] | Loss: 1.1279 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0001 (epoch 10) | LR: 0.010000 🔥
+2025-12-09 01:46:52,196 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.763 sim_std=0.236 norm=5.766 | Scores: pos=0.597 neg=0.234 gap=0.363 | Grad: norm=1.12
+2025-12-09 01:46:59,334 - Variant 1: Baseline Epoch 0015/100 [Random Neg] | Loss: 0.9810 | Val Hits@20: 0.0003 | Test Hits@20: 0.0002 | Best Val: 0.0003 (epoch 15) | LR: 0.010000 🔥
+2025-12-09 01:47:06,498 - Variant 1: Baseline Epoch 0020/100 [Random Neg] | Loss: 0.9448 | Val Hits@20: 0.0006 | Test Hits@20: 0.0004 | Best Val: 0.0006 (epoch 20) | LR: 0.010000 🔥
+2025-12-09 01:47:06,871 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.786 sim_std=0.221 norm=7.432 | Scores: pos=0.676 neg=0.288 gap=0.388 | Grad: norm=0.23
+2025-12-09 01:47:14,082 - Variant 1: Baseline Epoch 0025/100 [Random Neg] | Loss: 0.9057 | Val Hits@20: 0.0008 | Test Hits@20: 0.0008 | Best Val: 0.0008 (epoch 25) | LR: 0.010000 🔥
+2025-12-09 01:47:21,293 - Variant 1: Baseline Epoch 0030/100 [Random Neg] | Loss: 0.8966 | Val Hits@20: 0.0012 | Test Hits@20: 0.0012 | Best Val: 0.0012 (epoch 30) | LR: 0.010000 🔥
+2025-12-09 01:47:28,505 - Variant 1: Baseline Epoch 0035/100 [Random Neg] | Loss: 0.8891 | Val Hits@20: 0.0015 | Test Hits@20: 0.0014 | Best Val: 0.0015 (epoch 35) | LR: 0.010000 🔥
+2025-12-09 01:47:35,693 - Variant 1: Baseline Epoch 0040/100 [Random Neg] | Loss: 0.8660 | Val Hits@20: 0.0018 | Test Hits@20: 0.0016 | Best Val: 0.0018 (epoch 40) | LR: 0.010000 🔥
+2025-12-09 01:47:42,931 - Variant 1: Baseline Epoch 0045/100 [Random Neg] | Loss: 0.8478 | Val Hits@20: 0.0021 | Test Hits@20: 0.0021 | Best Val: 0.0021 (epoch 45) | LR: 0.010000 🔥
+2025-12-09 01:47:50,211 - Variant 1: Baseline Epoch 0050/100 [Random Neg] | Loss: 0.8174 | Val Hits@20: 0.0025 | Test Hits@20: 0.0021 | Best Val: 0.0025 (epoch 50) | LR: 0.010000 🔥
+2025-12-09 01:47:50,581 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.763 sim_std=0.191 norm=11.817 | Scores: pos=0.743 neg=0.287 gap=0.457 | Grad: norm=0.55
+2025-12-09 01:47:57,789 - Variant 1: Baseline Epoch 0055/100 [Random Neg] | Loss: 0.8003 | Val Hits@20: 0.0028 | Test Hits@20: 0.0025 | Best Val: 0.0028 (epoch 55) | LR: 0.010000 🔥
+2025-12-09 01:47:58,165 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.754 sim_std=0.182 norm=12.227 | Scores: pos=0.790 neg=0.277 gap=0.513 | Grad: norm=0.99
+2025-12-09 01:48:05,359 - Variant 1: Baseline Epoch 0060/100 [Random Neg] | Loss: 0.7916 | Val Hits@20: 0.0030 | Test Hits@20: 0.0027 | Best Val: 0.0030 (epoch 60) | LR: 0.010000 🔥
+2025-12-09 01:48:05,735 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.753 sim_std=0.183 norm=11.549 | Scores: pos=0.794 neg=0.260 gap=0.534 | Grad: norm=0.41
+2025-12-09 01:48:12,944 - Variant 1: Baseline Epoch 0065/100 [Random Neg] | Loss: 0.7822 | Val Hits@20: 0.0041 | Test Hits@20: 0.0031 | Best Val: 0.0041 (epoch 65) | LR: 0.010000 🔥
+2025-12-09 01:48:13,319 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.753 sim_std=0.177 norm=10.497 | Scores: pos=0.741 neg=0.243 gap=0.498 | Grad: norm=0.68
+2025-12-09 01:48:20,483 - Variant 1: Baseline Epoch 0070/100 [Random Neg] | Loss: 0.7636 | Val Hits@20: 0.0049 | Test Hits@20: 0.0033 | Best Val: 0.0049 (epoch 70) | LR: 0.010000 🔥
+2025-12-09 01:48:20,855 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.729 sim_std=0.181 norm=9.077 | Scores: pos=0.553 neg=0.177 gap=0.376 | Grad: norm=0.50
+2025-12-09 01:48:27,898 - Variant 1: Baseline Epoch 0075/100 [Random Neg] | Loss: 0.7865 | Val Hits@20: 0.0048 | Test Hits@20: 0.0040 | Best Val: 0.0049 (epoch 70) | LR: 0.010000 
+2025-12-09 01:48:28,248 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.669 sim_std=0.217 norm=9.386 | Scores: pos=0.762 neg=0.227 gap=0.536 | Grad: norm=0.43
+2025-12-09 01:48:35,240 - Variant 1: Baseline Epoch 0080/100 [Random Neg] | Loss: 0.7679 | Val Hits@20: 0.0052 | Test Hits@20: 0.0047 | Best Val: 0.0052 (epoch 80) | LR: 0.010000 🔥
+2025-12-09 01:48:35,583 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.634 sim_std=0.228 norm=8.703 | Scores: pos=0.726 neg=0.266 gap=0.460 | Grad: norm=0.35
+2025-12-09 01:48:42,582 - Variant 1: Baseline Epoch 0085/100 [Random Neg] | Loss: 0.7384 | Val Hits@20: 0.0055 | Test Hits@20: 0.0056 | Best Val: 0.0055 (epoch 85) | LR: 0.010000 🔥
+2025-12-09 01:48:42,929 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.632 sim_std=0.224 norm=9.015 | Scores: pos=0.770 neg=0.233 gap=0.537 | Grad: norm=0.45
+2025-12-09 01:48:49,897 - Variant 1: Baseline Epoch 0090/100 [Random Neg] | Loss: 0.7168 | Val Hits@20: 0.0065 | Test Hits@20: 0.0067 | Best Val: 0.0065 (epoch 90) | LR: 0.010000 🔥
+2025-12-09 01:48:50,240 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.638 sim_std=0.217 norm=9.427 | Scores: pos=0.742 neg=0.202 gap=0.540 | Grad: norm=0.22
+2025-12-09 01:48:57,233 - Variant 1: Baseline Epoch 0095/100 [Random Neg] | Loss: 0.7025 | Val Hits@20: 0.0076 | Test Hits@20: 0.0075 | Best Val: 0.0076 (epoch 95) | LR: 0.010000 🔥
+2025-12-09 01:48:57,576 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.643 sim_std=0.214 norm=9.756 | Scores: pos=0.768 neg=0.222 gap=0.546 | Grad: norm=0.21
+2025-12-09 01:49:04,575 - Variant 1: Baseline Epoch 0100/100 [Random Neg] | Loss: 0.6902 | Val Hits@20: 0.0079 | Test Hits@20: 0.0081 | Best Val: 0.0079 (epoch 100) | LR: 0.010000 🔥
+2025-12-09 01:49:04,920 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.635 sim_std=0.213 norm=9.936 | Scores: pos=0.786 neg=0.226 gap=0.560 | Grad: norm=0.17
+2025-12-09 01:49:04,923 - Variant 1: Baseline FINAL: Best Val Hits@20 = 0.0079 | Test Hits@20 = 0.0081 (at epoch 100)
+2025-12-09 01:49:04,924 - Variant 1: Baseline FINAL: Val Hits@20 = 0.0079 | Test Hits@20 = 0.0081
+2025-12-09 01:49:04,924 - 
+================================================================================
+2025-12-09 01:49:04,924 - Training Variant 2: BatchNorm
+2025-12-09 01:49:04,924 - ================================================================================
+2025-12-09 01:49:04,932 - Model: SAGE-V2-BatchNorm (2L, BN✓, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:49:04,932 - Starting training for Variant 2: BatchNorm (epochs=100, lr=0.01, patience=None, hard_neg=False)
+2025-12-09 01:49:04,932 - Model description: SAGE-V2-BatchNorm (2L, BN✓, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:49:04,932 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 01:49:04,934 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 01:49:06,392 - Variant 2: BatchNorm Epoch 0001/100 [Random Neg] | Loss: 1.3878 | Val Hits@20: 0.0002 | Test Hits@20: 0.0001 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 🔥
+2025-12-09 01:49:06,732 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.984 sim_std=0.008 norm=0.488 | Scores: pos=0.498 neg=0.498 gap=0.000 | Grad: norm=0.10
+2025-12-09 01:49:06,732 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:49:06,732 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:49:12,377 - Variant 2: BatchNorm Epoch 0005/100 [Random Neg] | Loss: 1.1205 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:49:12,714 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.942 sim_std=0.051 norm=1.814 | Scores: pos=0.551 neg=0.533 gap=0.018 | Grad: norm=0.37
+2025-12-09 01:49:12,714 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:49:19,750 - Variant 2: BatchNorm Epoch 0010/100 [Random Neg] | Loss: 0.8918 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:49:20,089 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.918 sim_std=0.077 norm=3.828 | Scores: pos=0.720 neg=0.662 gap=0.058 | Grad: norm=0.21
+2025-12-09 01:49:20,089 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:49:27,128 - Variant 2: BatchNorm Epoch 0015/100 [Random Neg] | Loss: 0.8906 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:49:34,157 - Variant 2: BatchNorm Epoch 0020/100 [Random Neg] | Loss: 0.8084 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:49:34,493 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.822 sim_std=0.113 norm=5.565 | Scores: pos=0.894 neg=0.859 gap=0.035 | Grad: norm=0.79
+2025-12-09 01:49:41,541 - Variant 2: BatchNorm Epoch 0025/100 [Random Neg] | Loss: 0.7747 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:49:48,582 - Variant 2: BatchNorm Epoch 0030/100 [Random Neg] | Loss: 0.7251 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:49:55,616 - Variant 2: BatchNorm Epoch 0035/100 [Random Neg] | Loss: 0.6968 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:02,621 - Variant 2: BatchNorm Epoch 0040/100 [Random Neg] | Loss: 0.6650 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:09,612 - Variant 2: BatchNorm Epoch 0045/100 [Random Neg] | Loss: 0.6208 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:16,622 - Variant 2: BatchNorm Epoch 0050/100 [Random Neg] | Loss: 0.5790 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:16,947 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.356 sim_std=0.199 norm=8.389 | Scores: pos=0.877 neg=0.234 gap=0.644 | Grad: norm=0.05
+2025-12-09 01:50:23,940 - Variant 2: BatchNorm Epoch 0055/100 [Random Neg] | Loss: 0.5454 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:24,264 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.355 sim_std=0.192 norm=8.830 | Scores: pos=0.889 neg=0.220 gap=0.669 | Grad: norm=0.03
+2025-12-09 01:50:31,236 - Variant 2: BatchNorm Epoch 0060/100 [Random Neg] | Loss: 0.5204 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:31,563 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.353 sim_std=0.187 norm=9.042 | Scores: pos=0.896 neg=0.203 gap=0.692 | Grad: norm=0.05
+2025-12-09 01:50:38,550 - Variant 2: BatchNorm Epoch 0065/100 [Random Neg] | Loss: 0.4995 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:38,874 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.360 sim_std=0.184 norm=9.097 | Scores: pos=0.878 neg=0.192 gap=0.686 | Grad: norm=0.07
+2025-12-09 01:50:45,878 - Variant 2: BatchNorm Epoch 0070/100 [Random Neg] | Loss: 0.4802 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:46,208 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.354 sim_std=0.182 norm=9.058 | Scores: pos=0.891 neg=0.178 gap=0.713 | Grad: norm=0.04
+2025-12-09 01:50:53,228 - Variant 2: BatchNorm Epoch 0075/100 [Random Neg] | Loss: 0.4712 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 1) | LR: 0.010000 
+2025-12-09 01:50:53,552 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.356 sim_std=0.180 norm=9.061 | Scores: pos=0.868 neg=0.143 gap=0.725 | Grad: norm=0.11
+2025-12-09 01:51:00,544 - Variant 2: BatchNorm Epoch 0080/100 [Random Neg] | Loss: 0.4583 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0002 (epoch 1) | LR: 0.005000 
+2025-12-09 01:51:00,873 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.350 sim_std=0.174 norm=9.067 | Scores: pos=0.882 neg=0.152 gap=0.730 | Grad: norm=0.14
+2025-12-09 01:51:07,889 - Variant 2: BatchNorm Epoch 0085/100 [Random Neg] | Loss: 0.4481 | Val Hits@20: 0.0002 | Test Hits@20: 0.0001 | Best Val: 0.0002 (epoch 85) | LR: 0.005000 🔥
+2025-12-09 01:51:08,214 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.351 sim_std=0.173 norm=8.951 | Scores: pos=0.878 neg=0.147 gap=0.731 | Grad: norm=0.06
+2025-12-09 01:51:15,241 - Variant 2: BatchNorm Epoch 0090/100 [Random Neg] | Loss: 0.4390 | Val Hits@20: 0.0002 | Test Hits@20: 0.0001 | Best Val: 0.0002 (epoch 90) | LR: 0.005000 🔥
+2025-12-09 01:51:15,568 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.350 sim_std=0.176 norm=8.893 | Scores: pos=0.881 neg=0.133 gap=0.748 | Grad: norm=0.05
+2025-12-09 01:51:22,569 - Variant 2: BatchNorm Epoch 0095/100 [Random Neg] | Loss: 0.4324 | Val Hits@20: 0.0002 | Test Hits@20: 0.0001 | Best Val: 0.0002 (epoch 95) | LR: 0.005000 🔥
+2025-12-09 01:51:22,898 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.349 sim_std=0.171 norm=8.855 | Scores: pos=0.885 neg=0.124 gap=0.761 | Grad: norm=0.04
+2025-12-09 01:51:29,907 - Variant 2: BatchNorm Epoch 0100/100 [Random Neg] | Loss: 0.4257 | Val Hits@20: 0.0002 | Test Hits@20: 0.0002 | Best Val: 0.0002 (epoch 100) | LR: 0.005000 🔥
+2025-12-09 01:51:30,234 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.352 sim_std=0.172 norm=8.809 | Scores: pos=0.879 neg=0.128 gap=0.751 | Grad: norm=0.03
+2025-12-09 01:51:30,237 - Variant 2: BatchNorm FINAL: Best Val Hits@20 = 0.0002 | Test Hits@20 = 0.0002 (at epoch 100)
+2025-12-09 01:51:30,237 - Variant 2: BatchNorm FINAL: Val Hits@20 = 0.0002 | Test Hits@20 = 0.0002
+2025-12-09 01:51:30,238 - 
+================================================================================
+2025-12-09 01:51:30,238 - Training Variant 3: Depth
+2025-12-09 01:51:30,238 - ================================================================================
+2025-12-09 01:51:30,246 - Model: SAGE-V3-Depth (3L, no-BN, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:51:30,246 - Starting training for Variant 3: Depth (epochs=100, lr=0.01, patience=None, hard_neg=False)
+2025-12-09 01:51:30,246 - Model description: SAGE-V3-Depth (3L, no-BN, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:51:30,246 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 01:51:30,248 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 01:51:31,709 - Variant 3: Depth Epoch 0001/100 [Random Neg] | Loss: 1.3863 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.010000 
+2025-12-09 01:51:32,044 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.999 sim_std=0.001 norm=0.734 | Scores: pos=0.514 neg=0.514 gap=0.000 | Grad: norm=0.00
+2025-12-09 01:51:32,044 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:51:32,044 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:51:37,695 - Variant 3: Depth Epoch 0005/100 [Random Neg] | Loss: 1.3079 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 5) | LR: 0.010000 🔥
+2025-12-09 01:51:38,027 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.746 sim_std=0.338 norm=5.567 | Scores: pos=0.879 neg=0.677 gap=0.202 | Grad: norm=0.26
+2025-12-09 01:51:45,063 - Variant 3: Depth Epoch 0010/100 [Random Neg] | Loss: 1.3136 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 5) | LR: 0.010000 
+2025-12-09 01:51:45,393 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.823 sim_std=0.182 norm=3.493 | Scores: pos=0.439 neg=0.369 gap=0.070 | Grad: norm=0.30
+2025-12-09 01:51:52,414 - Variant 3: Depth Epoch 0015/100 [Random Neg] | Loss: 1.2381 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 5) | LR: 0.010000 
+2025-12-09 01:51:59,495 - Variant 3: Depth Epoch 0020/100 [Random Neg] | Loss: 1.1145 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 20) | LR: 0.010000 🔥
+2025-12-09 01:51:59,824 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.766 sim_std=0.224 norm=6.762 | Scores: pos=0.516 neg=0.298 gap=0.218 | Grad: norm=0.36
+2025-12-09 01:52:06,834 - Variant 3: Depth Epoch 0025/100 [Random Neg] | Loss: 0.9581 | Val Hits@20: 0.0003 | Test Hits@20: 0.0012 | Best Val: 0.0003 (epoch 25) | LR: 0.010000 🔥
+2025-12-09 01:52:13,860 - Variant 3: Depth Epoch 0030/100 [Random Neg] | Loss: 0.9258 | Val Hits@20: 0.0007 | Test Hits@20: 0.0018 | Best Val: 0.0007 (epoch 30) | LR: 0.010000 🔥
+2025-12-09 01:52:20,893 - Variant 3: Depth Epoch 0035/100 [Random Neg] | Loss: 0.9422 | Val Hits@20: 0.0010 | Test Hits@20: 0.0021 | Best Val: 0.0010 (epoch 35) | LR: 0.010000 🔥
+2025-12-09 01:52:27,936 - Variant 3: Depth Epoch 0040/100 [Random Neg] | Loss: 0.9142 | Val Hits@20: 0.0013 | Test Hits@20: 0.0025 | Best Val: 0.0013 (epoch 40) | LR: 0.010000 🔥
+2025-12-09 01:52:34,978 - Variant 3: Depth Epoch 0045/100 [Random Neg] | Loss: 0.8801 | Val Hits@20: 0.0016 | Test Hits@20: 0.0028 | Best Val: 0.0016 (epoch 45) | LR: 0.010000 🔥
+2025-12-09 01:52:41,994 - Variant 3: Depth Epoch 0050/100 [Random Neg] | Loss: 0.8533 | Val Hits@20: 0.0021 | Test Hits@20: 0.0031 | Best Val: 0.0021 (epoch 50) | LR: 0.010000 🔥
+2025-12-09 01:52:42,322 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.768 sim_std=0.209 norm=7.348 | Scores: pos=0.727 neg=0.271 gap=0.457 | Grad: norm=0.42
+2025-12-09 01:52:49,358 - Variant 3: Depth Epoch 0055/100 [Random Neg] | Loss: 0.8217 | Val Hits@20: 0.0026 | Test Hits@20: 0.0034 | Best Val: 0.0026 (epoch 55) | LR: 0.010000 🔥
+2025-12-09 01:52:49,687 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.759 sim_std=0.217 norm=7.801 | Scores: pos=0.699 neg=0.256 gap=0.443 | Grad: norm=0.19
+2025-12-09 01:52:56,737 - Variant 3: Depth Epoch 0060/100 [Random Neg] | Loss: 0.8052 | Val Hits@20: 0.0030 | Test Hits@20: 0.0036 | Best Val: 0.0030 (epoch 60) | LR: 0.010000 🔥
+2025-12-09 01:52:57,063 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.747 sim_std=0.201 norm=8.063 | Scores: pos=0.729 neg=0.262 gap=0.467 | Grad: norm=0.40
+2025-12-09 01:53:04,114 - Variant 3: Depth Epoch 0065/100 [Random Neg] | Loss: 0.7954 | Val Hits@20: 0.0036 | Test Hits@20: 0.0043 | Best Val: 0.0036 (epoch 65) | LR: 0.010000 🔥
+2025-12-09 01:53:04,442 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.734 sim_std=0.199 norm=8.096 | Scores: pos=0.809 neg=0.318 gap=0.490 | Grad: norm=1.31
+2025-12-09 01:53:11,468 - Variant 3: Depth Epoch 0070/100 [Random Neg] | Loss: 0.7845 | Val Hits@20: 0.0044 | Test Hits@20: 0.0050 | Best Val: 0.0044 (epoch 70) | LR: 0.010000 🔥
+2025-12-09 01:53:11,798 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.711 sim_std=0.207 norm=7.602 | Scores: pos=0.755 neg=0.267 gap=0.487 | Grad: norm=0.61
+2025-12-09 01:53:18,808 - Variant 3: Depth Epoch 0075/100 [Random Neg] | Loss: 0.7544 | Val Hits@20: 0.0049 | Test Hits@20: 0.0056 | Best Val: 0.0049 (epoch 75) | LR: 0.010000 🔥
+2025-12-09 01:53:19,139 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.715 sim_std=0.196 norm=7.649 | Scores: pos=0.744 neg=0.220 gap=0.524 | Grad: norm=0.74
+2025-12-09 01:53:26,199 - Variant 3: Depth Epoch 0080/100 [Random Neg] | Loss: 0.7457 | Val Hits@20: 0.0057 | Test Hits@20: 0.0060 | Best Val: 0.0057 (epoch 80) | LR: 0.010000 🔥
+2025-12-09 01:53:26,532 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.704 sim_std=0.195 norm=7.718 | Scores: pos=0.749 neg=0.233 gap=0.516 | Grad: norm=0.60
+2025-12-09 01:53:33,586 - Variant 3: Depth Epoch 0085/100 [Random Neg] | Loss: 0.7344 | Val Hits@20: 0.0067 | Test Hits@20: 0.0068 | Best Val: 0.0067 (epoch 85) | LR: 0.010000 🔥
+2025-12-09 01:53:33,917 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.693 sim_std=0.197 norm=7.856 | Scores: pos=0.764 neg=0.224 gap=0.540 | Grad: norm=0.38
+2025-12-09 01:53:40,975 - Variant 3: Depth Epoch 0090/100 [Random Neg] | Loss: 0.7265 | Val Hits@20: 0.0075 | Test Hits@20: 0.0079 | Best Val: 0.0075 (epoch 90) | LR: 0.010000 🔥
+2025-12-09 01:53:41,305 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.691 sim_std=0.198 norm=8.336 | Scores: pos=0.784 neg=0.245 gap=0.539 | Grad: norm=0.44
+2025-12-09 01:53:48,307 - Variant 3: Depth Epoch 0095/100 [Random Neg] | Loss: 0.7135 | Val Hits@20: 0.0084 | Test Hits@20: 0.0092 | Best Val: 0.0084 (epoch 95) | LR: 0.010000 🔥
+2025-12-09 01:53:48,635 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.692 sim_std=0.194 norm=8.606 | Scores: pos=0.782 neg=0.218 gap=0.565 | Grad: norm=0.47
+2025-12-09 01:53:55,685 - Variant 3: Depth Epoch 0100/100 [Random Neg] | Loss: 0.6952 | Val Hits@20: 0.0095 | Test Hits@20: 0.0105 | Best Val: 0.0095 (epoch 100) | LR: 0.010000 🔥
+2025-12-09 01:53:56,016 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.677 sim_std=0.196 norm=8.986 | Scores: pos=0.779 neg=0.237 gap=0.542 | Grad: norm=0.04
+2025-12-09 01:53:56,018 - Variant 3: Depth FINAL: Best Val Hits@20 = 0.0095 | Test Hits@20 = 0.0105 (at epoch 100)
+2025-12-09 01:53:56,018 - Variant 3: Depth FINAL: Val Hits@20 = 0.0095 | Test Hits@20 = 0.0105
+2025-12-09 01:53:56,018 - 
+================================================================================
+2025-12-09 01:53:56,018 - Training Variant 4: Both
+2025-12-09 01:53:56,018 - ================================================================================
+2025-12-09 01:53:56,027 - Model: SAGE-V4-Both (3L, BN✓, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:53:56,027 - Starting training for Variant 4: Both (epochs=100, lr=0.01, patience=None, hard_neg=False)
+2025-12-09 01:53:56,027 - Model description: SAGE-V4-Both (3L, BN✓, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:53:56,027 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 01:53:56,030 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 01:53:57,502 - Variant 4: Both Epoch 0001/100 [Random Neg] | Loss: 1.3743 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-09 01:53:57,838 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.996 sim_std=0.004 norm=0.493 | Scores: pos=0.501 neg=0.501 gap=0.000 | Grad: norm=0.13
+2025-12-09 01:53:57,838 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:53:57,838 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:54:03,491 - Variant 4: Both Epoch 0005/100 [Random Neg] | Loss: 1.0829 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:03,819 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.990 sim_std=0.010 norm=1.892 | Scores: pos=0.580 neg=0.572 gap=0.008 | Grad: norm=0.36
+2025-12-09 01:54:03,819 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:54:03,819 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:54:10,893 - Variant 4: Both Epoch 0010/100 [Random Neg] | Loss: 0.9196 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:11,224 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.959 sim_std=0.044 norm=4.089 | Scores: pos=0.701 neg=0.652 gap=0.050 | Grad: norm=0.34
+2025-12-09 01:54:11,224 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:54:11,224 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:54:18,273 - Variant 4: Both Epoch 0015/100 [Random Neg] | Loss: 0.8427 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:25,316 - Variant 4: Both Epoch 0020/100 [Random Neg] | Loss: 0.7953 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:25,646 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.675 sim_std=0.241 norm=4.198 | Scores: pos=0.676 neg=0.401 gap=0.275 | Grad: norm=0.07
+2025-12-09 01:54:32,701 - Variant 4: Both Epoch 0025/100 [Random Neg] | Loss: 0.7587 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:39,741 - Variant 4: Both Epoch 0030/100 [Random Neg] | Loss: 0.7232 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:46,764 - Variant 4: Both Epoch 0035/100 [Random Neg] | Loss: 0.6868 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:54:53,788 - Variant 4: Both Epoch 0040/100 [Random Neg] | Loss: 0.6526 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:00,835 - Variant 4: Both Epoch 0045/100 [Random Neg] | Loss: 0.6226 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:07,836 - Variant 4: Both Epoch 0050/100 [Random Neg] | Loss: 0.6098 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:08,163 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.389 sim_std=0.233 norm=7.733 | Scores: pos=0.840 neg=0.234 gap=0.607 | Grad: norm=0.37
+2025-12-09 01:55:15,193 - Variant 4: Both Epoch 0055/100 [Random Neg] | Loss: 0.5766 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:15,522 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.379 sim_std=0.222 norm=7.976 | Scores: pos=0.847 neg=0.197 gap=0.650 | Grad: norm=0.25
+2025-12-09 01:55:22,556 - Variant 4: Both Epoch 0060/100 [Random Neg] | Loss: 0.5551 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:22,888 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.377 sim_std=0.219 norm=8.123 | Scores: pos=0.849 neg=0.196 gap=0.653 | Grad: norm=0.11
+2025-12-09 01:55:29,933 - Variant 4: Both Epoch 0065/100 [Random Neg] | Loss: 0.5307 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:30,265 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.374 sim_std=0.215 norm=8.193 | Scores: pos=0.834 neg=0.165 gap=0.669 | Grad: norm=0.06
+2025-12-09 01:55:37,317 - Variant 4: Both Epoch 0070/100 [Random Neg] | Loss: 0.5130 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 01:55:37,650 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.373 sim_std=0.214 norm=8.092 | Scores: pos=0.828 neg=0.156 gap=0.672 | Grad: norm=0.11
+2025-12-09 01:55:44,668 - Variant 4: Both Epoch 0075/100 [Random Neg] | Loss: 0.4962 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 75) | LR: 0.010000 🔥
+2025-12-09 01:55:45,003 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.375 sim_std=0.209 norm=8.080 | Scores: pos=0.808 neg=0.145 gap=0.664 | Grad: norm=0.16
+2025-12-09 01:55:52,026 - Variant 4: Both Epoch 0080/100 [Random Neg] | Loss: 0.5002 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 80) | LR: 0.010000 🔥
+2025-12-09 01:55:52,358 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.372 sim_std=0.202 norm=8.225 | Scores: pos=0.827 neg=0.137 gap=0.690 | Grad: norm=0.32
+2025-12-09 01:55:59,408 - Variant 4: Both Epoch 0085/100 [Random Neg] | Loss: 0.5194 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 85) | LR: 0.010000 🔥
+2025-12-09 01:55:59,741 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.358 sim_std=0.210 norm=8.493 | Scores: pos=0.798 neg=0.142 gap=0.655 | Grad: norm=0.17
+2025-12-09 01:56:06,766 - Variant 4: Both Epoch 0090/100 [Random Neg] | Loss: 0.4898 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 90) | LR: 0.010000 🔥
+2025-12-09 01:56:07,100 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.351 sim_std=0.207 norm=8.523 | Scores: pos=0.878 neg=0.157 gap=0.720 | Grad: norm=0.22
+2025-12-09 01:56:14,138 - Variant 4: Both Epoch 0095/100 [Random Neg] | Loss: 0.4655 | Val Hits@20: 0.0002 | Test Hits@20: 0.0000 | Best Val: 0.0002 (epoch 95) | LR: 0.010000 🔥
+2025-12-09 01:56:14,469 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.351 sim_std=0.201 norm=8.659 | Scores: pos=0.860 neg=0.126 gap=0.734 | Grad: norm=0.09
+2025-12-09 01:56:21,504 - Variant 4: Both Epoch 0100/100 [Random Neg] | Loss: 0.4536 | Val Hits@20: 0.0003 | Test Hits@20: 0.0001 | Best Val: 0.0003 (epoch 100) | LR: 0.010000 🔥
+2025-12-09 01:56:21,838 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.359 sim_std=0.200 norm=8.759 | Scores: pos=0.860 neg=0.123 gap=0.737 | Grad: norm=0.07
+2025-12-09 01:56:21,840 - Variant 4: Both FINAL: Best Val Hits@20 = 0.0003 | Test Hits@20 = 0.0001 (at epoch 100)
+2025-12-09 01:56:21,840 - Variant 4: Both FINAL: Val Hits@20 = 0.0003 | Test Hits@20 = 0.0001
+2025-12-09 01:56:21,840 - 
+================================================================================
+2025-12-09 01:56:21,840 - FINAL RESULTS COMPARISON
+2025-12-09 01:56:21,840 - ================================================================================
+2025-12-09 01:56:21,840 - Variant                   Val Hits@20     Test Hits@20   
+2025-12-09 01:56:21,840 - --------------------------------------------------------------------------------
+2025-12-09 01:56:21,840 - Variant 1: Baseline       0.0079          0.0081         
+2025-12-09 01:56:21,840 - Variant 2: BatchNorm      0.0002          0.0002         
+2025-12-09 01:56:21,840 - Variant 3: Depth          0.0095          0.0105         
+2025-12-09 01:56:21,840 - Variant 4: Both           0.0003          0.0001         
+2025-12-09 01:56:21,840 - --------------------------------------------------------------------------------
+2025-12-09 01:56:21,840 - Original Baseline         0.1713          0.2152         
+2025-12-09 01:56:21,840 - ================================================================================
+2025-12-09 01:56:21,841 - 
+================================================================================
+2025-12-09 01:56:21,841 - BEST VARIANT
+2025-12-09 01:56:21,841 - ================================================================================
+2025-12-09 01:56:21,841 - Winner: Variant 3: Depth
+2025-12-09 01:56:21,841 - Val Hits@20: 0.0095
+2025-12-09 01:56:21,841 - Test Hits@20: 0.0105
+2025-12-09 01:56:21,841 - 
+Improvement over original baseline:
+2025-12-09 01:56:21,841 -   Validation: -94.47%
+2025-12-09 01:56:21,841 -   Test: -95.13%
+2025-12-09 01:56:21,841 - 
+================================================================================
+2025-12-09 01:56:21,841 - RECOMMENDATION
+2025-12-09 01:56:21,841 - ================================================================================
+2025-12-09 01:56:21,841 - ✓ Stick with original baseline architecture
+2025-12-09 01:56:21,841 -   Architectural changes didn't improve performance
+2025-12-09 01:56:21,841 - 
+================================================================================
+2025-12-09 01:56:21,841 - Log saved to: logs/sage_variants_20251209_014636/variants.log
+2025-12-09 01:56:21,842 - ================================================================================

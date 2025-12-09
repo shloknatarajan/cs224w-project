@@ -155,7 +155,7 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
                 num_nodes, evaluate_fn, device='cpu', epochs=200, lr=0.01, patience=20,
                 eval_every=5, use_hard_negatives=True, hard_neg_ratio=0.3, batch_size=20000,
                 eval_batch_size=50000, gradient_accumulation_steps=3, weight_decay=5e-5,
-                neg_sampling_strategy='hard', k_hop=2):
+                neg_sampling_strategy='hard', k_hop=2, use_ema=True, ema_decay=0.999):
     """
     Train model with early stopping, validation, and hard negative mining.
 
@@ -183,6 +183,8 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
         weight_decay: Weight decay for optimizer
         neg_sampling_strategy: Negative sampling strategy ('random', 'hard', 'khop', 'mixed')
         k_hop: Number of hops for k-hop negative sampling
+        use_ema: Whether to evaluate with EMA weights
+        ema_decay: EMA decay factor (make smaller if there are very few optimizer steps)
 
     Returns:
         tuple: (best_val_hits, best_test_hits)
@@ -201,9 +203,13 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
         optimizer, mode='max', factor=0.5, patience=15, verbose=True
     )
 
-    # Initialize EMA
-    ema = ExponentialMovingAverage(model, decay=0.999)
-    logger.info("Initialized EMA with decay=0.999 for stable checkpointing")
+    # Initialize EMA (optional)
+    ema = None
+    if use_ema:
+        ema = ExponentialMovingAverage(model, decay=ema_decay)
+        logger.info(f"Initialized EMA with decay={ema_decay} for stable checkpointing")
+    else:
+        logger.info("EMA disabled for this run")
 
     best_val_hits = 0
     best_test_hits = 0
@@ -301,10 +307,9 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             )
             loss = pos_loss + neg_loss
 
-            # Add L2 regularization on embeddings
-            emb_reg_weight = 0.005
-            emb_reg_loss = emb_reg_weight * torch.norm(model.emb.weight, p=2)
-            loss = loss + emb_reg_loss
+            # REMOVED: Direct L2 regularization on embeddings was causing collapse
+            # Embeddings need freedom to learn diverse representations
+            # Weight decay in AdamW optimizer provides sufficient regularization
 
             # Add diversity loss if model supports it (for GCNStructuralV2)
             if hasattr(model, 'compute_diversity_loss') and hasattr(model, 'diversity_weight'):
@@ -319,7 +324,7 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             loss.backward()
 
             # Clear intermediate tensors
-            del z, neg_samples, pos_out, neg_out, pos_loss, neg_loss, emb_reg_loss, loss
+            del z, neg_samples, pos_out, neg_out, pos_loss, neg_loss, loss
             # Clear cache for CUDA devices
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
@@ -339,7 +344,8 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
         optimizer.zero_grad()
 
         # Update EMA
-        ema.update()
+        if ema is not None:
+            ema.update()
 
         # Run diagnostics at key points
         run_diagnostics = (
@@ -350,10 +356,12 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
 
         # Evaluation
         if epoch % eval_every == 0 or epoch == 1:
-            ema.apply_shadow()
+            if ema is not None:
+                ema.apply_shadow()
             val_hits = evaluate_fn(model, valid_pos, valid_neg, batch_size=eval_batch_size)
             test_hits = evaluate_fn(model, test_pos, test_neg, batch_size=eval_batch_size)
-            ema.restore()
+            if ema is not None:
+                ema.restore()
 
             # Clear cache for CUDA and MPS devices
             if torch.cuda.is_available():
@@ -388,7 +396,8 @@ def train_model(name, model, data, train_pos, valid_pos, valid_neg, test_pos, te
             if run_diagnostics:
                 log_diagnostics(model, data, train_pos, num_nodes, epoch, device, grad_norm=grad_norm_before_clip)
 
-            if epochs_no_improve >= patience:
+            # Early stopping (only if patience is specified)
+            if patience is not None and epochs_no_improve >= patience:
                 logger.info(f"{name}: Early stopping at epoch {epoch} (no improvement for {patience} eval steps)")
                 break
 

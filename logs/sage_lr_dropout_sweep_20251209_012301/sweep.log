@@ -1,0 +1,70 @@
+2025-12-09 01:23:01,208 - Device: cuda
+2025-12-09 01:23:01,209 - Log directory: logs/sage_lr_dropout_sweep_20251209_012301
+2025-12-09 01:23:01,209 - Loading dataset...
+2025-12-09 01:23:01,209 - Loading dataset ogbl-ddi...
+2025-12-09 01:23:01,295 - Dataset loaded: 4267 nodes
+2025-12-09 01:23:01,439 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 01:23:01,439 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 01:23:01,460 - Added self-loops: Total edges now = 1072178
+2025-12-09 01:23:01,467 - 
+================================================================================
+2025-12-09 01:23:01,467 - HYPERPARAMETER SWEEP CONFIGURATION
+2025-12-09 01:23:01,467 - ================================================================================
+2025-12-09 01:23:01,467 - Model: GraphSAGE
+2025-12-09 01:23:01,467 - Learning Rates: [0.0001, 0.0005, 0.001, 0.005, 0.01]
+2025-12-09 01:23:01,467 - Dropouts: [0.0, 0.2, 0.4]
+2025-12-09 01:23:01,467 - Total Configurations: 15
+2025-12-09 01:23:01,467 - 
+Fixed Parameters:
+2025-12-09 01:23:01,468 -   Hidden Dim: 128
+2025-12-09 01:23:01,468 -   Num Layers: 2
+2025-12-09 01:23:01,468 -   Batch Norm: True
+2025-12-09 01:23:01,468 -   Decoder Dropout: 0.3
+2025-12-09 01:23:01,468 -   Epochs: 200
+2025-12-09 01:23:01,468 -   Patience: 20
+2025-12-09 01:23:01,468 -   Weight Decay: 0.0001
+2025-12-09 01:23:01,468 -   Batch Size: 50000
+2025-12-09 01:23:01,468 - ================================================================================
+2025-12-09 01:23:01,468 - 
+================================================================================
+2025-12-09 01:23:01,468 - CONFIG 1/15
+2025-12-09 01:23:01,468 - ================================================================================
+2025-12-09 01:23:01,468 - Learning Rate: 0.0001
+2025-12-09 01:23:01,468 - Dropout: 0.0
+2025-12-09 01:23:01,468 - ================================================================================
+2025-12-09 01:23:01,507 - Starting training for GraphSAGE-LR0.0001-Drop0.0 (epochs=200, lr=0.0001, patience=20, hard_neg=False)
+2025-12-09 01:23:01,507 - Model description: GraphSAGE (2 layers, dropout=0.0, BN) | hidden_dim=128, decoder=simple
+2025-12-09 01:23:01,507 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 01:23:01,509 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 01:23:03,397 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0001/200 [Random Neg] | Loss: 1.4648 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 1) | LR: 0.000100 🔥
+2025-12-09 01:23:03,794 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.992 sim_std=0.003 norm=0.468 | Scores: pos=0.517 neg=0.517 gap=0.000 | Grad: norm=0.11
+2025-12-09 01:23:03,794 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:23:03,794 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:23:09,773 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0005/200 [Random Neg] | Loss: 1.4526 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 1) | LR: 0.000100 
+2025-12-09 01:23:10,139 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.996 sim_std=0.002 norm=1.112 | Scores: pos=0.517 neg=0.517 gap=0.000 | Grad: norm=0.11
+2025-12-09 01:23:10,140 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:23:10,140 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:23:18,571 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0010/200 [Random Neg] | Loss: 1.4376 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0001 (epoch 1) | LR: 0.000100 
+2025-12-09 01:23:18,978 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.998 sim_std=0.001 norm=2.259 | Scores: pos=0.519 neg=0.519 gap=0.000 | Grad: norm=0.13
+2025-12-09 01:23:18,978 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:23:18,978 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:23:26,931 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0015/200 [Random Neg] | Loss: 1.4223 | Val Hits@20: 0.0004 | Test Hits@20: 0.0003 | Best Val: 0.0004 (epoch 15) | LR: 0.000100 🔥
+2025-12-09 01:23:34,881 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0020/200 [Random Neg] | Loss: 1.4056 | Val Hits@20: 0.0003 | Test Hits@20: 0.0004 | Best Val: 0.0004 (epoch 15) | LR: 0.000100 
+2025-12-09 01:23:35,324 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.997 sim_std=0.001 norm=4.269 | Scores: pos=0.522 neg=0.521 gap=0.001 | Grad: norm=0.18
+2025-12-09 01:23:35,324 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:23:35,324 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:23:43,931 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0025/200 [Random Neg] | Loss: 1.3871 | Val Hits@20: 0.0003 | Test Hits@20: 0.0004 | Best Val: 0.0004 (epoch 15) | LR: 0.000100 
+2025-12-09 01:23:52,344 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0030/200 [Random Neg] | Loss: 1.3671 | Val Hits@20: 0.0005 | Test Hits@20: 0.0003 | Best Val: 0.0005 (epoch 30) | LR: 0.000100 🔥
+2025-12-09 01:24:00,600 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0035/200 [Random Neg] | Loss: 1.3457 | Val Hits@20: 0.0005 | Test Hits@20: 0.0002 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 🔥
+2025-12-09 01:24:08,839 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0040/200 [Random Neg] | Loss: 1.3236 | Val Hits@20: 0.0004 | Test Hits@20: 0.0001 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 
+2025-12-09 01:24:17,163 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0045/200 [Random Neg] | Loss: 1.3010 | Val Hits@20: 0.0002 | Test Hits@20: 0.0000 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 
+2025-12-09 01:24:25,531 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0050/200 [Random Neg] | Loss: 1.2784 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 
+2025-12-09 01:24:25,954 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.937 sim_std=0.031 norm=5.612 | Scores: pos=0.569 neg=0.546 gap=0.023 | Grad: norm=0.35
+2025-12-09 01:24:25,954 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:24:25,954 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 01:24:33,886 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0055/200 [Random Neg] | Loss: 1.2556 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 
+2025-12-09 01:24:34,241 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.893 sim_std=0.050 norm=5.420 | Scores: pos=0.579 neg=0.543 gap=0.036 | Grad: norm=0.36
+2025-12-09 01:24:41,656 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0060/200 [Random Neg] | Loss: 1.2339 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 
+2025-12-09 01:24:42,012 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.823 sim_std=0.080 norm=5.232 | Scores: pos=0.584 neg=0.539 gap=0.045 | Grad: norm=0.37
+2025-12-09 01:24:49,401 - GraphSAGE-LR0.0001-Drop0.0 Epoch 0065/200 [Random Neg] | Loss: 1.2135 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0005 (epoch 35) | LR: 0.000100 
+2025-12-09 01:24:49,756 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.719 sim_std=0.112 norm=5.117 | Scores: pos=0.594 neg=0.529 gap=0.065 | Grad: norm=0.37

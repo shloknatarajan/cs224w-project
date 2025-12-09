@@ -1,0 +1,382 @@
+2025-12-09 02:36:56,324 - Using device: cuda
+2025-12-09 02:36:56,324 - Logging results to: logs/baselines_20251209_023656/baselines.log
+2025-12-09 02:36:56,324 - Loading dataset ogbl-ddi...
+2025-12-09 02:36:56,409 - Dataset loaded: 4267 nodes
+2025-12-09 02:36:56,554 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 02:36:56,554 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 02:36:56,574 - Added self-loops: Total edges now = 1072178
+2025-12-09 02:36:56,582 - 
+================================================================================
+2025-12-09 02:36:56,582 - Training Simple GCN Baseline
+2025-12-09 02:36:56,582 - ================================================================================
+2025-12-09 02:36:56,621 - Starting training for GCN-Baseline (epochs=200, lr=0.01, patience=20, hard_neg=False)
+2025-12-09 02:36:56,621 - Model description: Ultra-minimal GCN (2 layers, dropout=0.0) | hidden_dim=128, num_layers=2, decoder=simple
+2025-12-09 02:36:56,621 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 02:36:56,623 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 02:36:58,440 - GCN-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.3863 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-09 02:36:58,826 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.957 sim_std=0.053 norm=0.340 | Scores: pos=0.507 neg=0.506 gap=0.001 | Grad: norm=0.01
+2025-12-09 02:36:58,826 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:37:04,605 - GCN-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.7051 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 02:37:04,961 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.831 sim_std=0.299 norm=2.913 | Scores: pos=0.699 neg=0.574 gap=0.125 | Grad: norm=3.57
+2025-12-09 02:37:12,115 - GCN-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.3715 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0001 (epoch 10) | LR: 0.010000 🔥
+2025-12-09 02:37:12,473 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.707 sim_std=0.335 norm=1.023 | Scores: pos=0.476 neg=0.465 gap=0.011 | Grad: norm=0.15
+2025-12-09 02:37:19,645 - GCN-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.2831 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 15) | LR: 0.010000 🔥
+2025-12-09 02:37:26,768 - GCN-Baseline Epoch 0020/200 [Random Neg] | Loss: 1.1402 | Val Hits@20: 0.0001 | Test Hits@20: 0.0002 | Best Val: 0.0001 (epoch 20) | LR: 0.010000 🔥
+2025-12-09 02:37:27,125 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.749 sim_std=0.303 norm=3.634 | Scores: pos=0.597 neg=0.416 gap=0.181 | Grad: norm=0.55
+2025-12-09 02:37:34,401 - GCN-Baseline Epoch 0025/200 [Random Neg] | Loss: 1.0119 | Val Hits@20: 0.0002 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 25) | LR: 0.010000 🔥
+2025-12-09 02:37:41,663 - GCN-Baseline Epoch 0030/200 [Random Neg] | Loss: 0.9783 | Val Hits@20: 0.0004 | Test Hits@20: 0.0004 | Best Val: 0.0004 (epoch 30) | LR: 0.010000 🔥
+2025-12-09 02:37:48,916 - GCN-Baseline Epoch 0035/200 [Random Neg] | Loss: 0.9346 | Val Hits@20: 0.0005 | Test Hits@20: 0.0005 | Best Val: 0.0005 (epoch 35) | LR: 0.010000 🔥
+2025-12-09 02:37:56,139 - GCN-Baseline Epoch 0040/200 [Random Neg] | Loss: 0.8875 | Val Hits@20: 0.0006 | Test Hits@20: 0.0006 | Best Val: 0.0006 (epoch 40) | LR: 0.010000 🔥
+2025-12-09 02:38:03,465 - GCN-Baseline Epoch 0045/200 [Random Neg] | Loss: 0.9205 | Val Hits@20: 0.0008 | Test Hits@20: 0.0008 | Best Val: 0.0008 (epoch 45) | LR: 0.010000 🔥
+2025-12-09 02:38:10,831 - GCN-Baseline Epoch 0050/200 [Random Neg] | Loss: 0.8940 | Val Hits@20: 0.0009 | Test Hits@20: 0.0010 | Best Val: 0.0009 (epoch 50) | LR: 0.010000 🔥
+2025-12-09 02:38:11,208 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.744 sim_std=0.239 norm=4.491 | Scores: pos=0.690 neg=0.283 gap=0.407 | Grad: norm=1.14
+2025-12-09 02:38:18,341 - GCN-Baseline Epoch 0055/200 [Random Neg] | Loss: 0.8402 | Val Hits@20: 0.0013 | Test Hits@20: 0.0012 | Best Val: 0.0013 (epoch 55) | LR: 0.010000 🔥
+2025-12-09 02:38:18,702 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.729 sim_std=0.232 norm=4.386 | Scores: pos=0.667 neg=0.241 gap=0.426 | Grad: norm=0.41
+2025-12-09 02:38:25,895 - GCN-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.8233 | Val Hits@20: 0.0016 | Test Hits@20: 0.0014 | Best Val: 0.0016 (epoch 60) | LR: 0.010000 🔥
+2025-12-09 02:38:26,243 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.741 sim_std=0.218 norm=5.036 | Scores: pos=0.758 neg=0.269 gap=0.489 | Grad: norm=1.08
+2025-12-09 02:38:33,501 - GCN-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.8043 | Val Hits@20: 0.0019 | Test Hits@20: 0.0015 | Best Val: 0.0019 (epoch 65) | LR: 0.010000 🔥
+2025-12-09 02:38:33,855 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.740 sim_std=0.217 norm=5.112 | Scores: pos=0.724 neg=0.257 gap=0.467 | Grad: norm=0.52
+2025-12-09 02:38:41,241 - GCN-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.7896 | Val Hits@20: 0.0023 | Test Hits@20: 0.0020 | Best Val: 0.0023 (epoch 70) | LR: 0.010000 🔥
+2025-12-09 02:38:41,592 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.738 sim_std=0.216 norm=5.465 | Scores: pos=0.794 neg=0.285 gap=0.509 | Grad: norm=0.39
+2025-12-09 02:38:48,878 - GCN-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.7837 | Val Hits@20: 0.0027 | Test Hits@20: 0.0026 | Best Val: 0.0027 (epoch 75) | LR: 0.010000 🔥
+2025-12-09 02:38:49,242 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.745 sim_std=0.218 norm=5.614 | Scores: pos=0.783 neg=0.283 gap=0.500 | Grad: norm=0.71
+2025-12-09 02:38:56,547 - GCN-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.7776 | Val Hits@20: 0.0032 | Test Hits@20: 0.0028 | Best Val: 0.0032 (epoch 80) | LR: 0.010000 🔥
+2025-12-09 02:38:56,900 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.752 sim_std=0.216 norm=5.708 | Scores: pos=0.797 neg=0.283 gap=0.514 | Grad: norm=1.00
+2025-12-09 02:39:04,149 - GCN-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.7642 | Val Hits@20: 0.0044 | Test Hits@20: 0.0034 | Best Val: 0.0044 (epoch 85) | LR: 0.010000 🔥
+2025-12-09 02:39:04,506 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.733 sim_std=0.222 norm=5.651 | Scores: pos=0.775 neg=0.247 gap=0.529 | Grad: norm=0.69
+2025-12-09 02:39:11,756 - GCN-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.7538 | Val Hits@20: 0.0050 | Test Hits@20: 0.0041 | Best Val: 0.0050 (epoch 90) | LR: 0.010000 🔥
+2025-12-09 02:39:12,106 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.734 sim_std=0.222 norm=5.651 | Scores: pos=0.735 neg=0.228 gap=0.507 | Grad: norm=0.05
+2025-12-09 02:39:19,313 - GCN-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.7492 | Val Hits@20: 0.0058 | Test Hits@20: 0.0047 | Best Val: 0.0058 (epoch 95) | LR: 0.010000 🔥
+2025-12-09 02:39:19,663 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.735 sim_std=0.226 norm=5.827 | Scores: pos=0.748 neg=0.229 gap=0.519 | Grad: norm=0.25
+2025-12-09 02:39:26,914 - GCN-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.7460 | Val Hits@20: 0.0073 | Test Hits@20: 0.0056 | Best Val: 0.0073 (epoch 100) | LR: 0.010000 🔥
+2025-12-09 02:39:27,274 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.717 sim_std=0.233 norm=5.991 | Scores: pos=0.747 neg=0.236 gap=0.511 | Grad: norm=0.23
+2025-12-09 02:39:34,508 - GCN-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.7479 | Val Hits@20: 0.0085 | Test Hits@20: 0.0057 | Best Val: 0.0085 (epoch 105) | LR: 0.010000 🔥
+2025-12-09 02:39:34,861 - [DIAGNOSTICS Epoch 105] Emb: sim_mean=0.718 sim_std=0.235 norm=6.146 | Scores: pos=0.782 neg=0.244 gap=0.537 | Grad: norm=0.91
+2025-12-09 02:39:42,160 - GCN-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.7415 | Val Hits@20: 0.0099 | Test Hits@20: 0.0062 | Best Val: 0.0099 (epoch 110) | LR: 0.010000 🔥
+2025-12-09 02:39:42,507 - [DIAGNOSTICS Epoch 110] Emb: sim_mean=0.720 sim_std=0.238 norm=6.247 | Scores: pos=0.790 neg=0.252 gap=0.538 | Grad: norm=0.75
+2025-12-09 02:39:49,807 - GCN-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.7351 | Val Hits@20: 0.0110 | Test Hits@20: 0.0069 | Best Val: 0.0110 (epoch 115) | LR: 0.010000 🔥
+2025-12-09 02:39:50,159 - [DIAGNOSTICS Epoch 115] Emb: sim_mean=0.717 sim_std=0.244 norm=6.207 | Scores: pos=0.769 neg=0.226 gap=0.544 | Grad: norm=0.27
+2025-12-09 02:39:57,355 - GCN-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.7472 | Val Hits@20: 0.0123 | Test Hits@20: 0.0078 | Best Val: 0.0123 (epoch 120) | LR: 0.010000 🔥
+2025-12-09 02:39:57,702 - [DIAGNOSTICS Epoch 120] Emb: sim_mean=0.716 sim_std=0.238 norm=6.204 | Scores: pos=0.694 neg=0.188 gap=0.506 | Grad: norm=1.34
+2025-12-09 02:40:04,915 - GCN-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.7494 | Val Hits@20: 0.0125 | Test Hits@20: 0.0095 | Best Val: 0.0125 (epoch 125) | LR: 0.010000 🔥
+2025-12-09 02:40:05,289 - [DIAGNOSTICS Epoch 125] Emb: sim_mean=0.687 sim_std=0.247 norm=6.064 | Scores: pos=0.804 neg=0.281 gap=0.523 | Grad: norm=0.75
+2025-12-09 02:40:12,572 - GCN-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.7600 | Val Hits@20: 0.0131 | Test Hits@20: 0.0105 | Best Val: 0.0131 (epoch 130) | LR: 0.010000 🔥
+2025-12-09 02:40:12,943 - [DIAGNOSTICS Epoch 130] Emb: sim_mean=0.690 sim_std=0.254 norm=5.873 | Scores: pos=0.789 neg=0.238 gap=0.551 | Grad: norm=1.15
+2025-12-09 02:40:20,043 - GCN-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.7291 | Val Hits@20: 0.0135 | Test Hits@20: 0.0116 | Best Val: 0.0135 (epoch 135) | LR: 0.010000 🔥
+2025-12-09 02:40:20,377 - [DIAGNOSTICS Epoch 135] Emb: sim_mean=0.685 sim_std=0.251 norm=5.616 | Scores: pos=0.719 neg=0.183 gap=0.536 | Grad: norm=0.11
+2025-12-09 02:40:27,428 - GCN-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.7329 | Val Hits@20: 0.0150 | Test Hits@20: 0.0134 | Best Val: 0.0150 (epoch 140) | LR: 0.010000 🔥
+2025-12-09 02:40:27,763 - [DIAGNOSTICS Epoch 140] Emb: sim_mean=0.692 sim_std=0.254 norm=5.890 | Scores: pos=0.792 neg=0.258 gap=0.534 | Grad: norm=0.63
+2025-12-09 02:40:34,836 - GCN-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.7286 | Val Hits@20: 0.0175 | Test Hits@20: 0.0147 | Best Val: 0.0175 (epoch 145) | LR: 0.010000 🔥
+2025-12-09 02:40:35,173 - [DIAGNOSTICS Epoch 145] Emb: sim_mean=0.683 sim_std=0.250 norm=5.919 | Scores: pos=0.759 neg=0.226 gap=0.533 | Grad: norm=0.61
+2025-12-09 02:40:42,221 - GCN-Baseline Epoch 0150/200 [Random Neg] | Loss: 0.7229 | Val Hits@20: 0.0188 | Test Hits@20: 0.0160 | Best Val: 0.0188 (epoch 150) | LR: 0.010000 🔥
+2025-12-09 02:40:42,557 - [DIAGNOSTICS Epoch 150] Emb: sim_mean=0.682 sim_std=0.255 norm=6.178 | Scores: pos=0.785 neg=0.238 gap=0.547 | Grad: norm=0.60
+2025-12-09 02:40:49,617 - GCN-Baseline Epoch 0155/200 [Random Neg] | Loss: 0.7145 | Val Hits@20: 0.0201 | Test Hits@20: 0.0180 | Best Val: 0.0201 (epoch 155) | LR: 0.010000 🔥
+2025-12-09 02:40:49,950 - [DIAGNOSTICS Epoch 155] Emb: sim_mean=0.688 sim_std=0.249 norm=6.367 | Scores: pos=0.750 neg=0.209 gap=0.542 | Grad: norm=0.26
+2025-12-09 02:40:56,993 - GCN-Baseline Epoch 0160/200 [Random Neg] | Loss: 0.7071 | Val Hits@20: 0.0211 | Test Hits@20: 0.0202 | Best Val: 0.0211 (epoch 160) | LR: 0.010000 🔥
+2025-12-09 02:40:57,341 - [DIAGNOSTICS Epoch 160] Emb: sim_mean=0.686 sim_std=0.245 norm=6.618 | Scores: pos=0.760 neg=0.205 gap=0.555 | Grad: norm=0.18
+2025-12-09 02:41:04,395 - GCN-Baseline Epoch 0165/200 [Random Neg] | Loss: 0.7107 | Val Hits@20: 0.0206 | Test Hits@20: 0.0225 | Best Val: 0.0211 (epoch 160) | LR: 0.010000 
+2025-12-09 02:41:04,732 - [DIAGNOSTICS Epoch 165] Emb: sim_mean=0.677 sim_std=0.242 norm=6.724 | Scores: pos=0.782 neg=0.245 gap=0.537 | Grad: norm=1.04
+2025-12-09 02:41:11,792 - GCN-Baseline Epoch 0170/200 [Random Neg] | Loss: 0.7014 | Val Hits@20: 0.0229 | Test Hits@20: 0.0252 | Best Val: 0.0229 (epoch 170) | LR: 0.010000 🔥
+2025-12-09 02:41:12,123 - [DIAGNOSTICS Epoch 170] Emb: sim_mean=0.684 sim_std=0.236 norm=6.749 | Scores: pos=0.787 neg=0.221 gap=0.566 | Grad: norm=0.98
+2025-12-09 02:41:19,158 - GCN-Baseline Epoch 0175/200 [Random Neg] | Loss: 0.6917 | Val Hits@20: 0.0235 | Test Hits@20: 0.0271 | Best Val: 0.0235 (epoch 175) | LR: 0.010000 🔥
+2025-12-09 02:41:19,488 - [DIAGNOSTICS Epoch 175] Emb: sim_mean=0.675 sim_std=0.229 norm=6.785 | Scores: pos=0.785 neg=0.208 gap=0.577 | Grad: norm=0.68
+2025-12-09 02:41:26,530 - GCN-Baseline Epoch 0180/200 [Random Neg] | Loss: 0.6892 | Val Hits@20: 0.0239 | Test Hits@20: 0.0272 | Best Val: 0.0239 (epoch 180) | LR: 0.010000 🔥
+2025-12-09 02:41:26,863 - [DIAGNOSTICS Epoch 180] Emb: sim_mean=0.678 sim_std=0.221 norm=6.963 | Scores: pos=0.831 neg=0.247 gap=0.584 | Grad: norm=1.07
+2025-12-09 02:41:33,893 - GCN-Baseline Epoch 0185/200 [Random Neg] | Loss: 0.6982 | Val Hits@20: 0.0242 | Test Hits@20: 0.0294 | Best Val: 0.0242 (epoch 185) | LR: 0.010000 🔥
+2025-12-09 02:41:34,223 - [DIAGNOSTICS Epoch 185] Emb: sim_mean=0.669 sim_std=0.227 norm=6.889 | Scores: pos=0.829 neg=0.270 gap=0.558 | Grad: norm=1.49
+2025-12-09 02:41:41,443 - GCN-Baseline Epoch 0190/200 [Random Neg] | Loss: 0.7116 | Val Hits@20: 0.0254 | Test Hits@20: 0.0319 | Best Val: 0.0254 (epoch 190) | LR: 0.010000 🔥
+2025-12-09 02:41:41,775 - [DIAGNOSTICS Epoch 190] Emb: sim_mean=0.644 sim_std=0.238 norm=6.392 | Scores: pos=0.721 neg=0.174 gap=0.548 | Grad: norm=1.19
+2025-12-09 02:41:48,834 - GCN-Baseline Epoch 0195/200 [Random Neg] | Loss: 0.6794 | Val Hits@20: 0.0264 | Test Hits@20: 0.0359 | Best Val: 0.0264 (epoch 195) | LR: 0.010000 🔥
+2025-12-09 02:41:49,167 - [DIAGNOSTICS Epoch 195] Emb: sim_mean=0.633 sim_std=0.238 norm=6.321 | Scores: pos=0.721 neg=0.177 gap=0.544 | Grad: norm=0.58
+2025-12-09 02:41:56,216 - GCN-Baseline Epoch 0200/200 [Random Neg] | Loss: 0.6890 | Val Hits@20: 0.0282 | Test Hits@20: 0.0390 | Best Val: 0.0282 (epoch 200) | LR: 0.010000 🔥
+2025-12-09 02:41:56,551 - [DIAGNOSTICS Epoch 200] Emb: sim_mean=0.627 sim_std=0.239 norm=6.315 | Scores: pos=0.804 neg=0.233 gap=0.571 | Grad: norm=1.24
+2025-12-09 02:41:56,554 - GCN-Baseline FINAL: Best Val Hits@20 = 0.0282 | Test Hits@20 = 0.0390 (at epoch 200)
+2025-12-09 02:41:56,554 - 
+================================================================================
+2025-12-09 02:41:56,554 - Training GraphSAGE Baseline
+2025-12-09 02:41:56,554 - ================================================================================
+2025-12-09 02:41:56,589 - Starting training for GraphSAGE-Baseline (epochs=200, lr=0.01, patience=20, hard_neg=False)
+2025-12-09 02:41:56,589 - Model description: GraphSAGE (2 layers, dropout=0.0, no-BN) | hidden_dim=128, decoder=simple
+2025-12-09 02:41:56,589 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 02:41:56,590 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 02:41:58,047 - GraphSAGE-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.3867 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 🔥
+2025-12-09 02:41:58,373 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.996 sim_std=0.003 norm=0.748 | Scores: pos=0.504 neg=0.503 gap=0.000 | Grad: norm=0.02
+2025-12-09 02:41:58,373 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:41:58,373 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 02:42:04,053 - GraphSAGE-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.2812 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 1) | LR: 0.010000 
+2025-12-09 02:42:04,382 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.731 sim_std=0.339 norm=3.585 | Scores: pos=0.855 neg=0.645 gap=0.210 | Grad: norm=0.26
+2025-12-09 02:42:11,485 - GraphSAGE-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.2581 | Val Hits@20: 0.0000 | Test Hits@20: 0.0001 | Best Val: 0.0000 (epoch 10) | LR: 0.010000 🔥
+2025-12-09 02:42:11,815 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.704 sim_std=0.299 norm=3.475 | Scores: pos=0.463 neg=0.313 gap=0.149 | Grad: norm=0.36
+2025-12-09 02:42:18,944 - GraphSAGE-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.0208 | Val Hits@20: 0.0001 | Test Hits@20: 0.0004 | Best Val: 0.0001 (epoch 15) | LR: 0.010000 🔥
+2025-12-09 02:42:26,075 - GraphSAGE-Baseline Epoch 0020/200 [Random Neg] | Loss: 0.9861 | Val Hits@20: 0.0002 | Test Hits@20: 0.0009 | Best Val: 0.0002 (epoch 20) | LR: 0.010000 🔥
+2025-12-09 02:42:26,408 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.704 sim_std=0.284 norm=5.319 | Scores: pos=0.601 neg=0.291 gap=0.310 | Grad: norm=0.36
+2025-12-09 02:42:33,576 - GraphSAGE-Baseline Epoch 0025/200 [Random Neg] | Loss: 0.9281 | Val Hits@20: 0.0005 | Test Hits@20: 0.0011 | Best Val: 0.0005 (epoch 25) | LR: 0.010000 🔥
+2025-12-09 02:42:40,690 - GraphSAGE-Baseline Epoch 0030/200 [Random Neg] | Loss: 0.9115 | Val Hits@20: 0.0009 | Test Hits@20: 0.0014 | Best Val: 0.0009 (epoch 30) | LR: 0.010000 🔥
+2025-12-09 02:42:47,794 - GraphSAGE-Baseline Epoch 0035/200 [Random Neg] | Loss: 0.8708 | Val Hits@20: 0.0011 | Test Hits@20: 0.0016 | Best Val: 0.0011 (epoch 35) | LR: 0.010000 🔥
+2025-12-09 02:42:54,910 - GraphSAGE-Baseline Epoch 0040/200 [Random Neg] | Loss: 0.8273 | Val Hits@20: 0.0011 | Test Hits@20: 0.0018 | Best Val: 0.0011 (epoch 40) | LR: 0.010000 🔥
+2025-12-09 02:43:02,061 - GraphSAGE-Baseline Epoch 0045/200 [Random Neg] | Loss: 0.8953 | Val Hits@20: 0.0012 | Test Hits@20: 0.0017 | Best Val: 0.0012 (epoch 45) | LR: 0.010000 🔥
+2025-12-09 02:43:09,191 - GraphSAGE-Baseline Epoch 0050/200 [Random Neg] | Loss: 0.8395 | Val Hits@20: 0.0015 | Test Hits@20: 0.0020 | Best Val: 0.0015 (epoch 50) | LR: 0.010000 🔥
+2025-12-09 02:43:09,519 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.720 sim_std=0.237 norm=7.731 | Scores: pos=0.717 neg=0.275 gap=0.442 | Grad: norm=0.54
+2025-12-09 02:43:16,646 - GraphSAGE-Baseline Epoch 0055/200 [Random Neg] | Loss: 0.8176 | Val Hits@20: 0.0020 | Test Hits@20: 0.0021 | Best Val: 0.0020 (epoch 55) | LR: 0.010000 🔥
+2025-12-09 02:43:16,972 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.685 sim_std=0.257 norm=7.381 | Scores: pos=0.764 neg=0.296 gap=0.468 | Grad: norm=0.32
+2025-12-09 02:43:24,132 - GraphSAGE-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.8087 | Val Hits@20: 0.0020 | Test Hits@20: 0.0023 | Best Val: 0.0020 (epoch 55) | LR: 0.010000 
+2025-12-09 02:43:24,459 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.690 sim_std=0.240 norm=7.550 | Scores: pos=0.719 neg=0.236 gap=0.483 | Grad: norm=0.39
+2025-12-09 02:43:31,553 - GraphSAGE-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.7881 | Val Hits@20: 0.0021 | Test Hits@20: 0.0030 | Best Val: 0.0021 (epoch 65) | LR: 0.010000 🔥
+2025-12-09 02:43:31,882 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.698 sim_std=0.224 norm=7.985 | Scores: pos=0.728 neg=0.244 gap=0.484 | Grad: norm=0.29
+2025-12-09 02:43:39,004 - GraphSAGE-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.7634 | Val Hits@20: 0.0025 | Test Hits@20: 0.0034 | Best Val: 0.0025 (epoch 70) | LR: 0.010000 🔥
+2025-12-09 02:43:39,334 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.708 sim_std=0.200 norm=8.638 | Scores: pos=0.758 neg=0.230 gap=0.528 | Grad: norm=0.22
+2025-12-09 02:43:46,438 - GraphSAGE-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.7437 | Val Hits@20: 0.0033 | Test Hits@20: 0.0038 | Best Val: 0.0033 (epoch 75) | LR: 0.010000 🔥
+2025-12-09 02:43:46,764 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.704 sim_std=0.190 norm=9.240 | Scores: pos=0.782 neg=0.253 gap=0.529 | Grad: norm=0.35
+2025-12-09 02:43:53,844 - GraphSAGE-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.7295 | Val Hits@20: 0.0041 | Test Hits@20: 0.0044 | Best Val: 0.0041 (epoch 80) | LR: 0.010000 🔥
+2025-12-09 02:43:54,174 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.714 sim_std=0.179 norm=9.310 | Scores: pos=0.779 neg=0.235 gap=0.544 | Grad: norm=0.45
+2025-12-09 02:44:01,264 - GraphSAGE-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.7156 | Val Hits@20: 0.0046 | Test Hits@20: 0.0048 | Best Val: 0.0046 (epoch 85) | LR: 0.010000 🔥
+2025-12-09 02:44:01,591 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.713 sim_std=0.176 norm=9.420 | Scores: pos=0.783 neg=0.232 gap=0.551 | Grad: norm=0.39
+2025-12-09 02:44:08,664 - GraphSAGE-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.7030 | Val Hits@20: 0.0056 | Test Hits@20: 0.0055 | Best Val: 0.0056 (epoch 90) | LR: 0.010000 🔥
+2025-12-09 02:44:08,991 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.712 sim_std=0.175 norm=9.573 | Scores: pos=0.765 neg=0.227 gap=0.538 | Grad: norm=0.47
+2025-12-09 02:44:16,087 - GraphSAGE-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.6938 | Val Hits@20: 0.0064 | Test Hits@20: 0.0063 | Best Val: 0.0064 (epoch 95) | LR: 0.010000 🔥
+2025-12-09 02:44:16,415 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.707 sim_std=0.176 norm=9.825 | Scores: pos=0.766 neg=0.212 gap=0.553 | Grad: norm=0.74
+2025-12-09 02:44:23,520 - GraphSAGE-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.6732 | Val Hits@20: 0.0067 | Test Hits@20: 0.0072 | Best Val: 0.0067 (epoch 100) | LR: 0.010000 🔥
+2025-12-09 02:44:23,848 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.696 sim_std=0.178 norm=10.088 | Scores: pos=0.799 neg=0.241 gap=0.558 | Grad: norm=0.22
+2025-12-09 02:44:30,939 - GraphSAGE-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.6648 | Val Hits@20: 0.0079 | Test Hits@20: 0.0082 | Best Val: 0.0079 (epoch 105) | LR: 0.010000 🔥
+2025-12-09 02:44:31,266 - [DIAGNOSTICS Epoch 105] Emb: sim_mean=0.692 sim_std=0.176 norm=10.284 | Scores: pos=0.819 neg=0.238 gap=0.581 | Grad: norm=0.39
+2025-12-09 02:44:38,393 - GraphSAGE-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.6566 | Val Hits@20: 0.0092 | Test Hits@20: 0.0093 | Best Val: 0.0092 (epoch 110) | LR: 0.010000 🔥
+2025-12-09 02:44:38,723 - [DIAGNOSTICS Epoch 110] Emb: sim_mean=0.679 sim_std=0.179 norm=10.471 | Scores: pos=0.815 neg=0.218 gap=0.597 | Grad: norm=0.40
+2025-12-09 02:44:45,842 - GraphSAGE-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.6497 | Val Hits@20: 0.0105 | Test Hits@20: 0.0103 | Best Val: 0.0105 (epoch 115) | LR: 0.010000 🔥
+2025-12-09 02:44:46,171 - [DIAGNOSTICS Epoch 115] Emb: sim_mean=0.673 sim_std=0.181 norm=10.578 | Scores: pos=0.817 neg=0.217 gap=0.600 | Grad: norm=0.41
+2025-12-09 02:44:53,248 - GraphSAGE-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.6433 | Val Hits@20: 0.0114 | Test Hits@20: 0.0111 | Best Val: 0.0114 (epoch 120) | LR: 0.010000 🔥
+2025-12-09 02:44:53,577 - [DIAGNOSTICS Epoch 120] Emb: sim_mean=0.677 sim_std=0.179 norm=10.757 | Scores: pos=0.833 neg=0.237 gap=0.597 | Grad: norm=0.68
+2025-12-09 02:45:00,694 - GraphSAGE-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.6373 | Val Hits@20: 0.0123 | Test Hits@20: 0.0116 | Best Val: 0.0123 (epoch 125) | LR: 0.010000 🔥
+2025-12-09 02:45:01,020 - [DIAGNOSTICS Epoch 125] Emb: sim_mean=0.666 sim_std=0.182 norm=11.004 | Scores: pos=0.838 neg=0.252 gap=0.586 | Grad: norm=0.81
+2025-12-09 02:45:08,116 - GraphSAGE-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.6365 | Val Hits@20: 0.0127 | Test Hits@20: 0.0125 | Best Val: 0.0127 (epoch 130) | LR: 0.010000 🔥
+2025-12-09 02:45:08,441 - [DIAGNOSTICS Epoch 130] Emb: sim_mean=0.661 sim_std=0.180 norm=11.115 | Scores: pos=0.844 neg=0.235 gap=0.608 | Grad: norm=1.10
+2025-12-09 02:45:15,536 - GraphSAGE-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.6175 | Val Hits@20: 0.0141 | Test Hits@20: 0.0125 | Best Val: 0.0141 (epoch 135) | LR: 0.010000 🔥
+2025-12-09 02:45:15,865 - [DIAGNOSTICS Epoch 135] Emb: sim_mean=0.660 sim_std=0.178 norm=11.166 | Scores: pos=0.749 neg=0.177 gap=0.572 | Grad: norm=0.21
+2025-12-09 02:45:22,973 - GraphSAGE-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.6375 | Val Hits@20: 0.0133 | Test Hits@20: 0.0136 | Best Val: 0.0141 (epoch 135) | LR: 0.010000 
+2025-12-09 02:45:23,303 - [DIAGNOSTICS Epoch 140] Emb: sim_mean=0.643 sim_std=0.184 norm=10.893 | Scores: pos=0.842 neg=0.236 gap=0.607 | Grad: norm=0.97
+2025-12-09 02:45:30,396 - GraphSAGE-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.6317 | Val Hits@20: 0.0133 | Test Hits@20: 0.0141 | Best Val: 0.0141 (epoch 135) | LR: 0.010000 
+2025-12-09 02:45:30,725 - [DIAGNOSTICS Epoch 145] Emb: sim_mean=0.632 sim_std=0.187 norm=10.500 | Scores: pos=0.746 neg=0.175 gap=0.571 | Grad: norm=0.54
+2025-12-09 02:45:37,843 - GraphSAGE-Baseline Epoch 0150/200 [Random Neg] | Loss: 0.6210 | Val Hits@20: 0.0132 | Test Hits@20: 0.0152 | Best Val: 0.0141 (epoch 135) | LR: 0.010000 
+2025-12-09 02:45:38,169 - [DIAGNOSTICS Epoch 150] Emb: sim_mean=0.637 sim_std=0.178 norm=11.067 | Scores: pos=0.844 neg=0.187 gap=0.657 | Grad: norm=0.58
+2025-12-09 02:45:45,250 - GraphSAGE-Baseline Epoch 0155/200 [Random Neg] | Loss: 0.6036 | Val Hits@20: 0.0144 | Test Hits@20: 0.0161 | Best Val: 0.0144 (epoch 155) | LR: 0.010000 🔥
+2025-12-09 02:45:45,577 - [DIAGNOSTICS Epoch 155] Emb: sim_mean=0.633 sim_std=0.180 norm=10.938 | Scores: pos=0.797 neg=0.200 gap=0.597 | Grad: norm=0.35
+2025-12-09 02:45:52,677 - GraphSAGE-Baseline Epoch 0160/200 [Random Neg] | Loss: 0.5896 | Val Hits@20: 0.0146 | Test Hits@20: 0.0167 | Best Val: 0.0146 (epoch 160) | LR: 0.010000 🔥
+2025-12-09 02:45:53,004 - [DIAGNOSTICS Epoch 160] Emb: sim_mean=0.632 sim_std=0.176 norm=11.486 | Scores: pos=0.833 neg=0.198 gap=0.635 | Grad: norm=0.25
+2025-12-09 02:46:00,118 - GraphSAGE-Baseline Epoch 0165/200 [Random Neg] | Loss: 0.5784 | Val Hits@20: 0.0146 | Test Hits@20: 0.0172 | Best Val: 0.0146 (epoch 165) | LR: 0.010000 🔥
+2025-12-09 02:46:00,446 - [DIAGNOSTICS Epoch 165] Emb: sim_mean=0.622 sim_std=0.178 norm=11.744 | Scores: pos=0.823 neg=0.170 gap=0.653 | Grad: norm=0.30
+2025-12-09 02:46:07,555 - GraphSAGE-Baseline Epoch 0170/200 [Random Neg] | Loss: 0.5676 | Val Hits@20: 0.0150 | Test Hits@20: 0.0182 | Best Val: 0.0150 (epoch 170) | LR: 0.010000 🔥
+2025-12-09 02:46:07,882 - [DIAGNOSTICS Epoch 170] Emb: sim_mean=0.621 sim_std=0.178 norm=12.135 | Scores: pos=0.846 neg=0.198 gap=0.648 | Grad: norm=0.43
+2025-12-09 02:46:15,006 - GraphSAGE-Baseline Epoch 0175/200 [Random Neg] | Loss: 0.5641 | Val Hits@20: 0.0155 | Test Hits@20: 0.0190 | Best Val: 0.0155 (epoch 175) | LR: 0.010000 🔥
+2025-12-09 02:46:15,333 - [DIAGNOSTICS Epoch 175] Emb: sim_mean=0.626 sim_std=0.172 norm=12.376 | Scores: pos=0.792 neg=0.152 gap=0.640 | Grad: norm=0.73
+2025-12-09 02:46:22,479 - GraphSAGE-Baseline Epoch 0180/200 [Random Neg] | Loss: 0.5497 | Val Hits@20: 0.0169 | Test Hits@20: 0.0197 | Best Val: 0.0169 (epoch 180) | LR: 0.010000 🔥
+2025-12-09 02:46:22,808 - [DIAGNOSTICS Epoch 180] Emb: sim_mean=0.615 sim_std=0.173 norm=12.550 | Scores: pos=0.829 neg=0.171 gap=0.658 | Grad: norm=0.33
+2025-12-09 02:46:29,898 - GraphSAGE-Baseline Epoch 0185/200 [Random Neg] | Loss: 0.5592 | Val Hits@20: 0.0167 | Test Hits@20: 0.0200 | Best Val: 0.0169 (epoch 180) | LR: 0.010000 
+2025-12-09 02:46:30,223 - [DIAGNOSTICS Epoch 185] Emb: sim_mean=0.600 sim_std=0.176 norm=12.791 | Scores: pos=0.872 neg=0.199 gap=0.673 | Grad: norm=1.34
+2025-12-09 02:46:37,346 - GraphSAGE-Baseline Epoch 0190/200 [Random Neg] | Loss: 0.5606 | Val Hits@20: 0.0159 | Test Hits@20: 0.0202 | Best Val: 0.0169 (epoch 180) | LR: 0.010000 
+2025-12-09 02:46:37,674 - [DIAGNOSTICS Epoch 190] Emb: sim_mean=0.608 sim_std=0.170 norm=12.540 | Scores: pos=0.779 neg=0.138 gap=0.641 | Grad: norm=0.48
+2025-12-09 02:46:44,785 - GraphSAGE-Baseline Epoch 0195/200 [Random Neg] | Loss: 0.5923 | Val Hits@20: 0.0157 | Test Hits@20: 0.0206 | Best Val: 0.0169 (epoch 180) | LR: 0.010000 
+2025-12-09 02:46:45,111 - [DIAGNOSTICS Epoch 195] Emb: sim_mean=0.576 sim_std=0.186 norm=12.470 | Scores: pos=0.821 neg=0.220 gap=0.601 | Grad: norm=0.39
+2025-12-09 02:46:52,233 - GraphSAGE-Baseline Epoch 0200/200 [Random Neg] | Loss: 0.5930 | Val Hits@20: 0.0168 | Test Hits@20: 0.0214 | Best Val: 0.0169 (epoch 180) | LR: 0.010000 
+2025-12-09 02:46:52,560 - [DIAGNOSTICS Epoch 200] Emb: sim_mean=0.573 sim_std=0.180 norm=11.924 | Scores: pos=0.840 neg=0.191 gap=0.649 | Grad: norm=0.53
+2025-12-09 02:46:52,563 - GraphSAGE-Baseline FINAL: Best Val Hits@20 = 0.0169 | Test Hits@20 = 0.0197 (at epoch 180)
+2025-12-09 02:46:52,563 - 
+================================================================================
+2025-12-09 02:46:52,563 - Training GraphTransformer Baseline
+2025-12-09 02:46:52,563 - ================================================================================
+2025-12-09 02:46:52,601 - Starting training for GraphTransformer-Baseline (epochs=200, lr=0.005, patience=20, hard_neg=False)
+2025-12-09 02:46:52,601 - Model description: Ultra-minimal Transformer (2 layers, 4 heads, dropout=0.0) | hidden_dim=128, num_layers=2, decoder=simple
+2025-12-09 02:46:52,601 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 02:46:52,603 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 02:46:54,178 - GraphTransformer-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.3898 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0001 (epoch 1) | LR: 0.005000 🔥
+2025-12-09 02:46:54,535 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.996 sim_std=0.002 norm=0.761 | Scores: pos=0.479 neg=0.479 gap=0.000 | Grad: norm=0.07
+2025-12-09 02:46:54,535 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:46:54,535 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 02:47:00,593 - GraphTransformer-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.3742 | Val Hits@20: 0.0001 | Test Hits@20: 0.0001 | Best Val: 0.0001 (epoch 5) | LR: 0.005000 🔥
+2025-12-09 02:47:00,948 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.988 sim_std=0.015 norm=1.965 | Scores: pos=0.559 neg=0.536 gap=0.023 | Grad: norm=0.08
+2025-12-09 02:47:00,948 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:47:00,948 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 02:47:08,491 - GraphTransformer-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.2220 | Val Hits@20: 0.0002 | Test Hits@20: 0.0003 | Best Val: 0.0002 (epoch 10) | LR: 0.005000 🔥
+2025-12-09 02:47:08,846 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.668 sim_std=0.324 norm=2.426 | Scores: pos=0.697 neg=0.536 gap=0.161 | Grad: norm=0.27
+2025-12-09 02:47:16,413 - GraphTransformer-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.1585 | Val Hits@20: 0.0003 | Test Hits@20: 0.0004 | Best Val: 0.0003 (epoch 15) | LR: 0.005000 🔥
+2025-12-09 02:47:23,976 - GraphTransformer-Baseline Epoch 0020/200 [Random Neg] | Loss: 1.0895 | Val Hits@20: 0.0006 | Test Hits@20: 0.0007 | Best Val: 0.0006 (epoch 20) | LR: 0.005000 🔥
+2025-12-09 02:47:24,332 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.806 sim_std=0.192 norm=6.622 | Scores: pos=0.626 neg=0.262 gap=0.363 | Grad: norm=1.20
+2025-12-09 02:47:31,896 - GraphTransformer-Baseline Epoch 0025/200 [Random Neg] | Loss: 0.9990 | Val Hits@20: 0.0008 | Test Hits@20: 0.0010 | Best Val: 0.0008 (epoch 25) | LR: 0.005000 🔥
+2025-12-09 02:47:39,470 - GraphTransformer-Baseline Epoch 0030/200 [Random Neg] | Loss: 0.9424 | Val Hits@20: 0.0011 | Test Hits@20: 0.0011 | Best Val: 0.0011 (epoch 30) | LR: 0.005000 🔥
+2025-12-09 02:47:47,020 - GraphTransformer-Baseline Epoch 0035/200 [Random Neg] | Loss: 0.9188 | Val Hits@20: 0.0014 | Test Hits@20: 0.0014 | Best Val: 0.0014 (epoch 35) | LR: 0.005000 🔥
+2025-12-09 02:47:54,546 - GraphTransformer-Baseline Epoch 0040/200 [Random Neg] | Loss: 0.8876 | Val Hits@20: 0.0017 | Test Hits@20: 0.0014 | Best Val: 0.0017 (epoch 40) | LR: 0.005000 🔥
+2025-12-09 02:48:02,086 - GraphTransformer-Baseline Epoch 0045/200 [Random Neg] | Loss: 0.8681 | Val Hits@20: 0.0021 | Test Hits@20: 0.0016 | Best Val: 0.0021 (epoch 45) | LR: 0.005000 🔥
+2025-12-09 02:48:09,647 - GraphTransformer-Baseline Epoch 0050/200 [Random Neg] | Loss: 0.8453 | Val Hits@20: 0.0022 | Test Hits@20: 0.0018 | Best Val: 0.0022 (epoch 50) | LR: 0.005000 🔥
+2025-12-09 02:48:10,002 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.803 sim_std=0.181 norm=12.258 | Scores: pos=0.718 neg=0.265 gap=0.454 | Grad: norm=0.55
+2025-12-09 02:48:17,569 - GraphTransformer-Baseline Epoch 0055/200 [Random Neg] | Loss: 0.8124 | Val Hits@20: 0.0028 | Test Hits@20: 0.0021 | Best Val: 0.0028 (epoch 55) | LR: 0.005000 🔥
+2025-12-09 02:48:17,928 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.820 sim_std=0.158 norm=12.824 | Scores: pos=0.731 neg=0.262 gap=0.469 | Grad: norm=0.16
+2025-12-09 02:48:25,491 - GraphTransformer-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.8125 | Val Hits@20: 0.0032 | Test Hits@20: 0.0021 | Best Val: 0.0032 (epoch 60) | LR: 0.005000 🔥
+2025-12-09 02:48:25,844 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.833 sim_std=0.143 norm=12.948 | Scores: pos=0.684 neg=0.229 gap=0.456 | Grad: norm=1.32
+2025-12-09 02:48:33,445 - GraphTransformer-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.7820 | Val Hits@20: 0.0040 | Test Hits@20: 0.0027 | Best Val: 0.0040 (epoch 65) | LR: 0.005000 🔥
+2025-12-09 02:48:33,796 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.830 sim_std=0.139 norm=13.220 | Scores: pos=0.748 neg=0.244 gap=0.503 | Grad: norm=0.64
+2025-12-09 02:48:41,382 - GraphTransformer-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.7714 | Val Hits@20: 0.0043 | Test Hits@20: 0.0028 | Best Val: 0.0043 (epoch 70) | LR: 0.005000 🔥
+2025-12-09 02:48:41,743 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.831 sim_std=0.138 norm=12.986 | Scores: pos=0.811 neg=0.283 gap=0.528 | Grad: norm=1.20
+2025-12-09 02:48:49,321 - GraphTransformer-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.7700 | Val Hits@20: 0.0042 | Test Hits@20: 0.0032 | Best Val: 0.0043 (epoch 70) | LR: 0.005000 
+2025-12-09 02:48:49,681 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.835 sim_std=0.126 norm=12.333 | Scores: pos=0.745 neg=0.238 gap=0.507 | Grad: norm=1.72
+2025-12-09 02:48:57,268 - GraphTransformer-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.7534 | Val Hits@20: 0.0049 | Test Hits@20: 0.0042 | Best Val: 0.0049 (epoch 80) | LR: 0.005000 🔥
+2025-12-09 02:48:57,624 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.848 sim_std=0.119 norm=12.033 | Scores: pos=0.764 neg=0.241 gap=0.523 | Grad: norm=0.77
+2025-12-09 02:49:05,209 - GraphTransformer-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.7322 | Val Hits@20: 0.0059 | Test Hits@20: 0.0046 | Best Val: 0.0059 (epoch 85) | LR: 0.005000 🔥
+2025-12-09 02:49:05,568 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.843 sim_std=0.124 norm=12.123 | Scores: pos=0.760 neg=0.233 gap=0.527 | Grad: norm=0.31
+2025-12-09 02:49:13,148 - GraphTransformer-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.7318 | Val Hits@20: 0.0068 | Test Hits@20: 0.0053 | Best Val: 0.0068 (epoch 90) | LR: 0.005000 🔥
+2025-12-09 02:49:13,501 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.832 sim_std=0.131 norm=11.951 | Scores: pos=0.719 neg=0.206 gap=0.513 | Grad: norm=0.51
+2025-12-09 02:49:21,064 - GraphTransformer-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.7185 | Val Hits@20: 0.0074 | Test Hits@20: 0.0058 | Best Val: 0.0074 (epoch 95) | LR: 0.005000 🔥
+2025-12-09 02:49:21,420 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.819 sim_std=0.139 norm=12.039 | Scores: pos=0.801 neg=0.248 gap=0.553 | Grad: norm=0.41
+2025-12-09 02:49:29,012 - GraphTransformer-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.7127 | Val Hits@20: 0.0077 | Test Hits@20: 0.0071 | Best Val: 0.0077 (epoch 100) | LR: 0.005000 🔥
+2025-12-09 02:49:29,373 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.827 sim_std=0.129 norm=11.632 | Scores: pos=0.746 neg=0.206 gap=0.539 | Grad: norm=0.52
+2025-12-09 02:49:36,957 - GraphTransformer-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.7028 | Val Hits@20: 0.0080 | Test Hits@20: 0.0080 | Best Val: 0.0080 (epoch 105) | LR: 0.005000 🔥
+2025-12-09 02:49:37,311 - [DIAGNOSTICS Epoch 105] Emb: sim_mean=0.819 sim_std=0.133 norm=11.964 | Scores: pos=0.782 neg=0.255 gap=0.527 | Grad: norm=0.43
+2025-12-09 02:49:44,993 - GraphTransformer-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.6977 | Val Hits@20: 0.0089 | Test Hits@20: 0.0091 | Best Val: 0.0089 (epoch 110) | LR: 0.005000 🔥
+2025-12-09 02:49:45,349 - [DIAGNOSTICS Epoch 110] Emb: sim_mean=0.819 sim_std=0.129 norm=12.103 | Scores: pos=0.803 neg=0.235 gap=0.567 | Grad: norm=0.43
+2025-12-09 02:49:52,951 - GraphTransformer-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.6918 | Val Hits@20: 0.0100 | Test Hits@20: 0.0110 | Best Val: 0.0100 (epoch 115) | LR: 0.005000 🔥
+2025-12-09 02:49:53,306 - [DIAGNOSTICS Epoch 115] Emb: sim_mean=0.810 sim_std=0.132 norm=12.355 | Scores: pos=0.799 neg=0.241 gap=0.558 | Grad: norm=0.75
+2025-12-09 02:50:00,911 - GraphTransformer-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.6864 | Val Hits@20: 0.0103 | Test Hits@20: 0.0117 | Best Val: 0.0103 (epoch 120) | LR: 0.005000 🔥
+2025-12-09 02:50:01,266 - [DIAGNOSTICS Epoch 120] Emb: sim_mean=0.806 sim_std=0.133 norm=12.403 | Scores: pos=0.814 neg=0.220 gap=0.595 | Grad: norm=0.84
+2025-12-09 02:50:09,380 - GraphTransformer-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.6793 | Val Hits@20: 0.0108 | Test Hits@20: 0.0126 | Best Val: 0.0108 (epoch 125) | LR: 0.005000 🔥
+2025-12-09 02:50:09,739 - [DIAGNOSTICS Epoch 125] Emb: sim_mean=0.809 sim_std=0.126 norm=12.441 | Scores: pos=0.809 neg=0.230 gap=0.579 | Grad: norm=0.92
+2025-12-09 02:50:17,304 - GraphTransformer-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.6756 | Val Hits@20: 0.0125 | Test Hits@20: 0.0143 | Best Val: 0.0125 (epoch 130) | LR: 0.005000 🔥
+2025-12-09 02:50:17,659 - [DIAGNOSTICS Epoch 130] Emb: sim_mean=0.804 sim_std=0.128 norm=12.575 | Scores: pos=0.828 neg=0.240 gap=0.588 | Grad: norm=1.23
+2025-12-09 02:50:25,197 - GraphTransformer-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.6659 | Val Hits@20: 0.0137 | Test Hits@20: 0.0168 | Best Val: 0.0137 (epoch 135) | LR: 0.005000 🔥
+2025-12-09 02:50:25,552 - [DIAGNOSTICS Epoch 135] Emb: sim_mean=0.806 sim_std=0.124 norm=12.631 | Scores: pos=0.798 neg=0.220 gap=0.579 | Grad: norm=0.75
+2025-12-09 02:50:33,159 - GraphTransformer-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.6628 | Val Hits@20: 0.0152 | Test Hits@20: 0.0186 | Best Val: 0.0152 (epoch 140) | LR: 0.005000 🔥
+2025-12-09 02:50:33,512 - [DIAGNOSTICS Epoch 140] Emb: sim_mean=0.801 sim_std=0.123 norm=12.703 | Scores: pos=0.789 neg=0.218 gap=0.571 | Grad: norm=1.17
+2025-12-09 02:50:41,121 - GraphTransformer-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.6544 | Val Hits@20: 0.0161 | Test Hits@20: 0.0198 | Best Val: 0.0161 (epoch 145) | LR: 0.005000 🔥
+2025-12-09 02:50:41,476 - [DIAGNOSTICS Epoch 145] Emb: sim_mean=0.797 sim_std=0.127 norm=12.850 | Scores: pos=0.791 neg=0.199 gap=0.593 | Grad: norm=0.90
+2025-12-09 02:50:49,034 - GraphTransformer-Baseline Epoch 0150/200 [Random Neg] | Loss: 0.6420 | Val Hits@20: 0.0162 | Test Hits@20: 0.0205 | Best Val: 0.0162 (epoch 150) | LR: 0.005000 🔥
+2025-12-09 02:50:49,390 - [DIAGNOSTICS Epoch 150] Emb: sim_mean=0.799 sim_std=0.122 norm=13.031 | Scores: pos=0.796 neg=0.196 gap=0.600 | Grad: norm=0.25
+2025-12-09 02:50:56,972 - GraphTransformer-Baseline Epoch 0155/200 [Random Neg] | Loss: 0.6438 | Val Hits@20: 0.0175 | Test Hits@20: 0.0212 | Best Val: 0.0175 (epoch 155) | LR: 0.005000 🔥
+2025-12-09 02:50:57,324 - [DIAGNOSTICS Epoch 155] Emb: sim_mean=0.785 sim_std=0.129 norm=12.881 | Scores: pos=0.772 neg=0.195 gap=0.577 | Grad: norm=0.57
+2025-12-09 02:51:04,900 - GraphTransformer-Baseline Epoch 0160/200 [Random Neg] | Loss: 0.6355 | Val Hits@20: 0.0176 | Test Hits@20: 0.0212 | Best Val: 0.0176 (epoch 160) | LR: 0.005000 🔥
+2025-12-09 02:51:05,261 - [DIAGNOSTICS Epoch 160] Emb: sim_mean=0.787 sim_std=0.126 norm=13.075 | Scores: pos=0.768 neg=0.177 gap=0.591 | Grad: norm=1.04
+2025-12-09 02:51:13,019 - GraphTransformer-Baseline Epoch 0165/200 [Random Neg] | Loss: 0.6401 | Val Hits@20: 0.0178 | Test Hits@20: 0.0228 | Best Val: 0.0178 (epoch 165) | LR: 0.005000 🔥
+2025-12-09 02:51:13,380 - [DIAGNOSTICS Epoch 165] Emb: sim_mean=0.780 sim_std=0.130 norm=12.943 | Scores: pos=0.810 neg=0.189 gap=0.621 | Grad: norm=0.64
+2025-12-09 02:51:20,948 - GraphTransformer-Baseline Epoch 0170/200 [Random Neg] | Loss: 0.6242 | Val Hits@20: 0.0183 | Test Hits@20: 0.0245 | Best Val: 0.0183 (epoch 170) | LR: 0.005000 🔥
+2025-12-09 02:51:21,304 - [DIAGNOSTICS Epoch 170] Emb: sim_mean=0.775 sim_std=0.135 norm=12.688 | Scores: pos=0.802 neg=0.197 gap=0.605 | Grad: norm=0.20
+2025-12-09 02:51:28,875 - GraphTransformer-Baseline Epoch 0175/200 [Random Neg] | Loss: 0.6159 | Val Hits@20: 0.0193 | Test Hits@20: 0.0266 | Best Val: 0.0193 (epoch 175) | LR: 0.005000 🔥
+2025-12-09 02:51:29,230 - [DIAGNOSTICS Epoch 175] Emb: sim_mean=0.781 sim_std=0.125 norm=13.017 | Scores: pos=0.808 neg=0.177 gap=0.631 | Grad: norm=0.14
+2025-12-09 02:51:36,834 - GraphTransformer-Baseline Epoch 0180/200 [Random Neg] | Loss: 0.6114 | Val Hits@20: 0.0193 | Test Hits@20: 0.0289 | Best Val: 0.0193 (epoch 180) | LR: 0.005000 🔥
+2025-12-09 02:51:37,190 - [DIAGNOSTICS Epoch 180] Emb: sim_mean=0.775 sim_std=0.130 norm=13.023 | Scores: pos=0.795 neg=0.194 gap=0.601 | Grad: norm=0.47
+2025-12-09 02:51:44,791 - GraphTransformer-Baseline Epoch 0185/200 [Random Neg] | Loss: 0.6071 | Val Hits@20: 0.0194 | Test Hits@20: 0.0305 | Best Val: 0.0194 (epoch 185) | LR: 0.005000 🔥
+2025-12-09 02:51:45,147 - [DIAGNOSTICS Epoch 185] Emb: sim_mean=0.776 sim_std=0.129 norm=13.332 | Scores: pos=0.786 neg=0.158 gap=0.628 | Grad: norm=0.78
+2025-12-09 02:51:52,723 - GraphTransformer-Baseline Epoch 0190/200 [Random Neg] | Loss: 0.6013 | Val Hits@20: 0.0195 | Test Hits@20: 0.0317 | Best Val: 0.0195 (epoch 190) | LR: 0.005000 🔥
+2025-12-09 02:51:53,082 - [DIAGNOSTICS Epoch 190] Emb: sim_mean=0.783 sim_std=0.121 norm=13.599 | Scores: pos=0.780 neg=0.170 gap=0.610 | Grad: norm=0.89
+2025-12-09 02:52:00,655 - GraphTransformer-Baseline Epoch 0195/200 [Random Neg] | Loss: 0.6085 | Val Hits@20: 0.0197 | Test Hits@20: 0.0327 | Best Val: 0.0197 (epoch 195) | LR: 0.005000 🔥
+2025-12-09 02:52:01,013 - [DIAGNOSTICS Epoch 195] Emb: sim_mean=0.772 sim_std=0.126 norm=13.347 | Scores: pos=0.806 neg=0.169 gap=0.638 | Grad: norm=1.24
+2025-12-09 02:52:08,579 - GraphTransformer-Baseline Epoch 0200/200 [Random Neg] | Loss: 0.6133 | Val Hits@20: 0.0211 | Test Hits@20: 0.0346 | Best Val: 0.0211 (epoch 200) | LR: 0.005000 🔥
+2025-12-09 02:52:08,933 - [DIAGNOSTICS Epoch 200] Emb: sim_mean=0.754 sim_std=0.131 norm=13.274 | Scores: pos=0.858 neg=0.247 gap=0.611 | Grad: norm=2.03
+2025-12-09 02:52:08,943 - GraphTransformer-Baseline FINAL: Best Val Hits@20 = 0.0211 | Test Hits@20 = 0.0346 (at epoch 200)
+2025-12-09 02:52:08,943 - 
+================================================================================
+2025-12-09 02:52:08,943 - Training GAT Baseline
+2025-12-09 02:52:08,943 - ================================================================================
+2025-12-09 02:52:09,103 - Starting training for GAT-Baseline (epochs=200, lr=0.005, patience=20, hard_neg=False)
+2025-12-09 02:52:09,103 - Model description: Ultra-minimal GAT (2 layers, 4 heads, dropout=0.0) | hidden_dim=128, num_layers=2, decoder=simple
+2025-12-09 02:52:09,103 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 02:52:09,104 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 02:52:10,623 - GAT-Baseline Epoch 0001/200 [Random Neg] | Loss: 1.3863 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:52:10,958 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.965 sim_std=0.070 norm=0.058 | Scores: pos=0.495 neg=0.495 gap=0.000 | Grad: norm=0.00
+2025-12-09 02:52:10,958 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:52:10,958 -   ⚠️  EMBEDDING VANISHING (norm < 0.1)
+2025-12-09 02:52:16,822 - GAT-Baseline Epoch 0005/200 [Random Neg] | Loss: 1.3862 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:52:17,159 - [DIAGNOSTICS Epoch 5] Emb: sim_mean=0.983 sim_std=0.028 norm=0.305 | Scores: pos=0.502 neg=0.502 gap=0.000 | Grad: norm=0.01
+2025-12-09 02:52:17,159 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:52:17,159 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)
+2025-12-09 02:52:24,488 - GAT-Baseline Epoch 0010/200 [Random Neg] | Loss: 1.3738 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:52:24,824 - [DIAGNOSTICS Epoch 10] Emb: sim_mean=0.982 sim_std=0.063 norm=1.631 | Scores: pos=0.477 neg=0.462 gap=0.015 | Grad: norm=0.06
+2025-12-09 02:52:24,825 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:52:32,145 - GAT-Baseline Epoch 0015/200 [Random Neg] | Loss: 1.3008 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:52:39,449 - GAT-Baseline Epoch 0020/200 [Random Neg] | Loss: 1.2316 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:52:39,786 - [DIAGNOSTICS Epoch 20] Emb: sim_mean=0.922 sim_std=0.092 norm=3.141 | Scores: pos=0.544 neg=0.415 gap=0.129 | Grad: norm=0.54
+2025-12-09 02:52:39,786 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 02:52:47,099 - GAT-Baseline Epoch 0025/200 [Random Neg] | Loss: 1.1442 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:52:54,453 - GAT-Baseline Epoch 0030/200 [Random Neg] | Loss: 1.1069 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:53:01,852 - GAT-Baseline Epoch 0035/200 [Random Neg] | Loss: 1.0358 | Val Hits@20: 0.0000 | Test Hits@20: 0.0000 | Best Val: 0.0000 (epoch 0) | LR: 0.005000 
+2025-12-09 02:53:09,186 - GAT-Baseline Epoch 0040/200 [Random Neg] | Loss: 0.9962 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 40) | LR: 0.005000 🔥
+2025-12-09 02:53:16,489 - GAT-Baseline Epoch 0045/200 [Random Neg] | Loss: 0.9804 | Val Hits@20: 0.0002 | Test Hits@20: 0.0001 | Best Val: 0.0002 (epoch 45) | LR: 0.005000 🔥
+2025-12-09 02:53:23,808 - GAT-Baseline Epoch 0050/200 [Random Neg] | Loss: 0.9547 | Val Hits@20: 0.0007 | Test Hits@20: 0.0005 | Best Val: 0.0007 (epoch 50) | LR: 0.005000 🔥
+2025-12-09 02:53:24,144 - [DIAGNOSTICS Epoch 50] Emb: sim_mean=0.856 sim_std=0.141 norm=5.687 | Scores: pos=0.696 neg=0.330 gap=0.366 | Grad: norm=0.21
+2025-12-09 02:53:31,463 - GAT-Baseline Epoch 0055/200 [Random Neg] | Loss: 0.9331 | Val Hits@20: 0.0013 | Test Hits@20: 0.0011 | Best Val: 0.0013 (epoch 55) | LR: 0.005000 🔥
+2025-12-09 02:53:31,801 - [DIAGNOSTICS Epoch 55] Emb: sim_mean=0.865 sim_std=0.128 norm=5.891 | Scores: pos=0.690 neg=0.307 gap=0.383 | Grad: norm=0.18
+2025-12-09 02:53:39,163 - GAT-Baseline Epoch 0060/200 [Random Neg] | Loss: 0.9144 | Val Hits@20: 0.0026 | Test Hits@20: 0.0016 | Best Val: 0.0026 (epoch 60) | LR: 0.005000 🔥
+2025-12-09 02:53:39,500 - [DIAGNOSTICS Epoch 60] Emb: sim_mean=0.869 sim_std=0.119 norm=6.022 | Scores: pos=0.679 neg=0.283 gap=0.396 | Grad: norm=0.12
+2025-12-09 02:53:46,833 - GAT-Baseline Epoch 0065/200 [Random Neg] | Loss: 0.8998 | Val Hits@20: 0.0041 | Test Hits@20: 0.0020 | Best Val: 0.0041 (epoch 65) | LR: 0.005000 🔥
+2025-12-09 02:53:47,169 - [DIAGNOSTICS Epoch 65] Emb: sim_mean=0.876 sim_std=0.108 norm=6.101 | Scores: pos=0.699 neg=0.302 gap=0.397 | Grad: norm=0.17
+2025-12-09 02:53:54,484 - GAT-Baseline Epoch 0070/200 [Random Neg] | Loss: 0.8943 | Val Hits@20: 0.0049 | Test Hits@20: 0.0022 | Best Val: 0.0049 (epoch 70) | LR: 0.005000 🔥
+2025-12-09 02:53:54,820 - [DIAGNOSTICS Epoch 70] Emb: sim_mean=0.886 sim_std=0.099 norm=6.244 | Scores: pos=0.673 neg=0.246 gap=0.426 | Grad: norm=0.53
+2025-12-09 02:54:02,144 - GAT-Baseline Epoch 0075/200 [Random Neg] | Loss: 0.8970 | Val Hits@20: 0.0055 | Test Hits@20: 0.0026 | Best Val: 0.0055 (epoch 75) | LR: 0.005000 🔥
+2025-12-09 02:54:02,482 - [DIAGNOSTICS Epoch 75] Emb: sim_mean=0.879 sim_std=0.101 norm=6.058 | Scores: pos=0.702 neg=0.282 gap=0.420 | Grad: norm=0.82
+2025-12-09 02:54:09,802 - GAT-Baseline Epoch 0080/200 [Random Neg] | Loss: 0.8901 | Val Hits@20: 0.0062 | Test Hits@20: 0.0030 | Best Val: 0.0062 (epoch 80) | LR: 0.005000 🔥
+2025-12-09 02:54:10,138 - [DIAGNOSTICS Epoch 80] Emb: sim_mean=0.870 sim_std=0.108 norm=6.040 | Scores: pos=0.735 neg=0.315 gap=0.420 | Grad: norm=0.99
+2025-12-09 02:54:17,455 - GAT-Baseline Epoch 0085/200 [Random Neg] | Loss: 0.8764 | Val Hits@20: 0.0061 | Test Hits@20: 0.0030 | Best Val: 0.0062 (epoch 80) | LR: 0.005000 
+2025-12-09 02:54:17,792 - [DIAGNOSTICS Epoch 85] Emb: sim_mean=0.879 sim_std=0.100 norm=6.119 | Scores: pos=0.683 neg=0.266 gap=0.416 | Grad: norm=0.57
+2025-12-09 02:54:25,100 - GAT-Baseline Epoch 0090/200 [Random Neg] | Loss: 0.8576 | Val Hits@20: 0.0060 | Test Hits@20: 0.0032 | Best Val: 0.0062 (epoch 80) | LR: 0.005000 
+2025-12-09 02:54:25,437 - [DIAGNOSTICS Epoch 90] Emb: sim_mean=0.874 sim_std=0.104 norm=6.111 | Scores: pos=0.764 neg=0.289 gap=0.475 | Grad: norm=0.37
+2025-12-09 02:54:32,761 - GAT-Baseline Epoch 0095/200 [Random Neg] | Loss: 0.8508 | Val Hits@20: 0.0059 | Test Hits@20: 0.0033 | Best Val: 0.0062 (epoch 80) | LR: 0.005000 
+2025-12-09 02:54:33,097 - [DIAGNOSTICS Epoch 95] Emb: sim_mean=0.882 sim_std=0.095 norm=6.186 | Scores: pos=0.747 neg=0.271 gap=0.476 | Grad: norm=0.61
+2025-12-09 02:54:40,419 - GAT-Baseline Epoch 0100/200 [Random Neg] | Loss: 0.8439 | Val Hits@20: 0.0059 | Test Hits@20: 0.0033 | Best Val: 0.0062 (epoch 80) | LR: 0.005000 
+2025-12-09 02:54:40,758 - [DIAGNOSTICS Epoch 100] Emb: sim_mean=0.885 sim_std=0.092 norm=6.175 | Scores: pos=0.779 neg=0.311 gap=0.468 | Grad: norm=0.84
+2025-12-09 02:54:48,067 - GAT-Baseline Epoch 0105/200 [Random Neg] | Loss: 0.8394 | Val Hits@20: 0.0073 | Test Hits@20: 0.0033 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 🔥
+2025-12-09 02:54:48,403 - [DIAGNOSTICS Epoch 105] Emb: sim_mean=0.878 sim_std=0.093 norm=6.084 | Scores: pos=0.775 neg=0.306 gap=0.468 | Grad: norm=0.84
+2025-12-09 02:54:55,721 - GAT-Baseline Epoch 0110/200 [Random Neg] | Loss: 0.8190 | Val Hits@20: 0.0073 | Test Hits@20: 0.0033 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:54:56,056 - [DIAGNOSTICS Epoch 110] Emb: sim_mean=0.881 sim_std=0.090 norm=6.318 | Scores: pos=0.687 neg=0.228 gap=0.459 | Grad: norm=0.13
+2025-12-09 02:55:03,388 - GAT-Baseline Epoch 0115/200 [Random Neg] | Loss: 0.8238 | Val Hits@20: 0.0068 | Test Hits@20: 0.0035 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:03,724 - [DIAGNOSTICS Epoch 115] Emb: sim_mean=0.881 sim_std=0.088 norm=6.279 | Scores: pos=0.711 neg=0.265 gap=0.445 | Grad: norm=0.92
+2025-12-09 02:55:11,007 - GAT-Baseline Epoch 0120/200 [Random Neg] | Loss: 0.8015 | Val Hits@20: 0.0067 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:11,344 - [DIAGNOSTICS Epoch 120] Emb: sim_mean=0.875 sim_std=0.090 norm=6.365 | Scores: pos=0.772 neg=0.253 gap=0.519 | Grad: norm=0.10
+2025-12-09 02:55:18,658 - GAT-Baseline Epoch 0125/200 [Random Neg] | Loss: 0.7947 | Val Hits@20: 0.0067 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:18,995 - [DIAGNOSTICS Epoch 125] Emb: sim_mean=0.875 sim_std=0.090 norm=6.443 | Scores: pos=0.784 neg=0.265 gap=0.519 | Grad: norm=0.41
+2025-12-09 02:55:26,298 - GAT-Baseline Epoch 0130/200 [Random Neg] | Loss: 0.7853 | Val Hits@20: 0.0067 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:26,633 - [DIAGNOSTICS Epoch 130] Emb: sim_mean=0.874 sim_std=0.087 norm=6.542 | Scores: pos=0.751 neg=0.259 gap=0.492 | Grad: norm=0.27
+2025-12-09 02:55:33,949 - GAT-Baseline Epoch 0135/200 [Random Neg] | Loss: 0.8074 | Val Hits@20: 0.0066 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:34,285 - [DIAGNOSTICS Epoch 135] Emb: sim_mean=0.875 sim_std=0.086 norm=6.630 | Scores: pos=0.699 neg=0.214 gap=0.486 | Grad: norm=1.56
+2025-12-09 02:55:41,621 - GAT-Baseline Epoch 0140/200 [Random Neg] | Loss: 0.7799 | Val Hits@20: 0.0064 | Test Hits@20: 0.0033 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:41,958 - [DIAGNOSTICS Epoch 140] Emb: sim_mean=0.869 sim_std=0.090 norm=6.669 | Scores: pos=0.748 neg=0.252 gap=0.496 | Grad: norm=1.01
+2025-12-09 02:55:49,265 - GAT-Baseline Epoch 0145/200 [Random Neg] | Loss: 0.7759 | Val Hits@20: 0.0065 | Test Hits@20: 0.0032 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:49,601 - [DIAGNOSTICS Epoch 145] Emb: sim_mean=0.862 sim_std=0.092 norm=6.763 | Scores: pos=0.737 neg=0.238 gap=0.499 | Grad: norm=1.25
+2025-12-09 02:55:56,935 - GAT-Baseline Epoch 0150/200 [Random Neg] | Loss: 0.7677 | Val Hits@20: 0.0064 | Test Hits@20: 0.0033 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:55:57,271 - [DIAGNOSTICS Epoch 150] Emb: sim_mean=0.864 sim_std=0.089 norm=6.825 | Scores: pos=0.734 neg=0.223 gap=0.511 | Grad: norm=1.27
+2025-12-09 02:56:04,596 - GAT-Baseline Epoch 0155/200 [Random Neg] | Loss: 0.7573 | Val Hits@20: 0.0066 | Test Hits@20: 0.0033 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:56:04,933 - [DIAGNOSTICS Epoch 155] Emb: sim_mean=0.866 sim_std=0.086 norm=6.919 | Scores: pos=0.726 neg=0.203 gap=0.523 | Grad: norm=1.27
+2025-12-09 02:56:12,254 - GAT-Baseline Epoch 0160/200 [Random Neg] | Loss: 0.7651 | Val Hits@20: 0.0063 | Test Hits@20: 0.0035 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:56:12,591 - [DIAGNOSTICS Epoch 160] Emb: sim_mean=0.868 sim_std=0.082 norm=7.089 | Scores: pos=0.695 neg=0.205 gap=0.490 | Grad: norm=1.74
+2025-12-09 02:56:19,895 - GAT-Baseline Epoch 0165/200 [Random Neg] | Loss: 0.7631 | Val Hits@20: 0.0059 | Test Hits@20: 0.0036 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:56:20,231 - [DIAGNOSTICS Epoch 165] Emb: sim_mean=0.857 sim_std=0.087 norm=6.920 | Scores: pos=0.757 neg=0.231 gap=0.526 | Grad: norm=1.69
+2025-12-09 02:56:27,544 - GAT-Baseline Epoch 0170/200 [Random Neg] | Loss: 0.7738 | Val Hits@20: 0.0059 | Test Hits@20: 0.0036 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:56:27,880 - [DIAGNOSTICS Epoch 170] Emb: sim_mean=0.841 sim_std=0.099 norm=6.751 | Scores: pos=0.808 neg=0.279 gap=0.529 | Grad: norm=2.24
+2025-12-09 02:56:35,194 - GAT-Baseline Epoch 0175/200 [Random Neg] | Loss: 0.7493 | Val Hits@20: 0.0053 | Test Hits@20: 0.0037 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:56:35,531 - [DIAGNOSTICS Epoch 175] Emb: sim_mean=0.841 sim_std=0.099 norm=6.765 | Scores: pos=0.760 neg=0.234 gap=0.526 | Grad: norm=1.22
+2025-12-09 02:56:42,835 - GAT-Baseline Epoch 0180/200 [Random Neg] | Loss: 0.7236 | Val Hits@20: 0.0049 | Test Hits@20: 0.0036 | Best Val: 0.0073 (epoch 105) | LR: 0.005000 
+2025-12-09 02:56:43,174 - [DIAGNOSTICS Epoch 180] Emb: sim_mean=0.847 sim_std=0.093 norm=6.855 | Scores: pos=0.752 neg=0.189 gap=0.563 | Grad: norm=0.87
+2025-12-09 02:56:50,477 - GAT-Baseline Epoch 0185/200 [Random Neg] | Loss: 0.7097 | Val Hits@20: 0.0044 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.002500 
+2025-12-09 02:56:50,814 - [DIAGNOSTICS Epoch 185] Emb: sim_mean=0.842 sim_std=0.093 norm=6.887 | Scores: pos=0.796 neg=0.243 gap=0.553 | Grad: norm=0.48
+2025-12-09 02:56:58,153 - GAT-Baseline Epoch 0190/200 [Random Neg] | Loss: 0.7066 | Val Hits@20: 0.0037 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.002500 
+2025-12-09 02:56:58,489 - [DIAGNOSTICS Epoch 190] Emb: sim_mean=0.844 sim_std=0.095 norm=6.942 | Scores: pos=0.799 neg=0.233 gap=0.567 | Grad: norm=0.47
+2025-12-09 02:57:05,808 - GAT-Baseline Epoch 0195/200 [Random Neg] | Loss: 0.7009 | Val Hits@20: 0.0042 | Test Hits@20: 0.0036 | Best Val: 0.0073 (epoch 105) | LR: 0.002500 
+2025-12-09 02:57:06,142 - [DIAGNOSTICS Epoch 195] Emb: sim_mean=0.855 sim_std=0.087 norm=7.091 | Scores: pos=0.792 neg=0.229 gap=0.563 | Grad: norm=0.49
+2025-12-09 02:57:13,485 - GAT-Baseline Epoch 0200/200 [Random Neg] | Loss: 0.6974 | Val Hits@20: 0.0037 | Test Hits@20: 0.0034 | Best Val: 0.0073 (epoch 105) | LR: 0.002500 
+2025-12-09 02:57:13,821 - [DIAGNOSTICS Epoch 200] Emb: sim_mean=0.854 sim_std=0.088 norm=7.213 | Scores: pos=0.775 neg=0.210 gap=0.565 | Grad: norm=0.38
+2025-12-09 02:57:13,825 - GAT-Baseline FINAL: Best Val Hits@20 = 0.0073 | Test Hits@20 = 0.0033 (at epoch 105)
+2025-12-09 02:57:13,825 - 
+================================================================================
+2025-12-09 02:57:13,825 - FINAL RESULTS - BASELINES
+2025-12-09 02:57:13,825 - ================================================================================
+2025-12-09 02:57:13,825 - GCN:
+2025-12-09 02:57:13,825 -   Validation Hits@20: 0.0282
+2025-12-09 02:57:13,825 -   Test Hits@20: 0.0390
+2025-12-09 02:57:13,825 -   Val-Test Gap: -0.0107 (-38.1% relative)
+2025-12-09 02:57:13,825 - GraphSAGE:
+2025-12-09 02:57:13,825 -   Validation Hits@20: 0.0169
+2025-12-09 02:57:13,825 -   Test Hits@20: 0.0197
+2025-12-09 02:57:13,825 -   Val-Test Gap: -0.0028 (-16.6% relative)
+2025-12-09 02:57:13,825 - GraphTransformer:
+2025-12-09 02:57:13,826 -   Validation Hits@20: 0.0211
+2025-12-09 02:57:13,826 -   Test Hits@20: 0.0346
+2025-12-09 02:57:13,826 -   Val-Test Gap: -0.0135 (-63.7% relative)
+2025-12-09 02:57:13,826 - GAT:
+2025-12-09 02:57:13,826 -   Validation Hits@20: 0.0073
+2025-12-09 02:57:13,826 -   Test Hits@20: 0.0033
+2025-12-09 02:57:13,826 -   Val-Test Gap: 0.0040 (55.0% relative)
+2025-12-09 02:57:13,826 - ================================================================================
+2025-12-09 02:57:13,826 - Results logged to: logs/baselines_20251209_023656/baselines.log

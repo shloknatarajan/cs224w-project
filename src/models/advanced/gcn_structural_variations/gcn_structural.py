@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv
 from torch_geometric.utils import dropout_edge
-from ..base import BaseModel
+from ...base import BaseModel
 
 
 class GCNStructural(BaseModel):

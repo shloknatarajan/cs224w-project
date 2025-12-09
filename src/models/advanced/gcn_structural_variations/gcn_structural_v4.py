@@ -3,34 +3,36 @@ import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv
 from torch_geometric.utils import dropout_edge
-from ..base import BaseModel
+from ...base import BaseModel
 
 
-class GCNStructuralV2(BaseModel):
+class GCNStructuralV4(BaseModel):
     """
-    Advanced GCN model V2 with structural features and critical fixes.
+    Advanced GCN model V4 with multi-strategy decoder.
 
-    Key Improvements from V1:
-    - LayerNorm instead of BatchNorm (fixes gradient vanishing)
-    - Reduced dropout (0.2 default vs 0.5) (fixes gradient vanishing)
-    - Reduced depth (2 layers default vs 3) (fixes over-smoothing)
-    - Increased hidden dim (256 default vs 192) (fixes embedding collapse)
-    - Embedding diversity loss (fixes embedding collapse)
-    - Better skip connections
-    - Gradient clipping support
+    Key Improvements from V3:
+    - **Multi-strategy decoder enabled** (was disabled in V3) - combines Hadamard, Concat, and Bilinear scoring
+    - **Reduced diversity loss** (0.02 default vs 0.05) - we achieved good diversity, can lower weight
+    - **Kept from V3**: 3 layers, LeakyReLU, full residuals, LayerNorm
 
-    Features:
-    - Incorporates structural features (degree, clustering, core number, PageRank, neighbor stats)
+    Architecture Details:
+    - 3 GCN layers with residual connections at ALL layers
+    - LeakyReLU activation (prevents dead neurons)
     - Layer normalization for stable training
-    - Residual connections for better gradient flow
+    - Structural features (degree, clustering, core number, PageRank, neighbor stats)
     - Edge dropout for regularization
-    - Feature projection for structural features
     - Embedding diversity regularization
+    - Multi-strategy edge decoder (3 strategies combined with learnable weights)
+
+    The multi-strategy decoder is critical for ogbl-ddi's dense graph structure:
+    - Hadamard: captures feature interactions
+    - Concatenation: preserves all information
+    - Bilinear: learns relation-specific patterns
     """
 
-    def __init__(self, num_nodes, hidden_dim=256, num_layers=2, dropout=0.2, decoder_dropout=0.3,
+    def __init__(self, num_nodes, hidden_dim=256, num_layers=3, dropout=0.2, decoder_dropout=0.3,
                  use_structural_features=True, num_structural_features=6, structural_features=None,
-                 use_multi_strategy=True, diversity_weight=0.01):
+                 use_multi_strategy=True, diversity_weight=0.02):
         super().__init__(hidden_dim, decoder_dropout=decoder_dropout, use_multi_strategy=use_multi_strategy)
         self.hidden_dim = hidden_dim
         self.dropout = dropout
@@ -44,7 +46,7 @@ class GCNStructuralV2(BaseModel):
         decoder_type = "multi-strategy" if use_multi_strategy else "simple"
         struct_status = f"with {num_structural_features} structural features" if use_structural_features else "without structural features"
         self.description = (
-            f"GCN-V2 {struct_status}, layer norm, residual connections, diversity loss | "
+            f"GCN-V4 {struct_status}, multi-strategy decoder, layer norm, LeakyReLU, full residuals | "
             f"hidden_dim={hidden_dim}, num_layers={num_layers}, dropout={dropout}, "
             f"decoder_dropout={decoder_dropout}, decoder={decoder_type}, diversity_weight={diversity_weight}"
         )
@@ -59,17 +61,17 @@ class GCNStructuralV2(BaseModel):
         if use_structural_features:
             self.feature_proj = nn.Sequential(
                 nn.Linear(num_structural_features, num_structural_features),
-                nn.LayerNorm(num_structural_features),  # Use LayerNorm instead of BatchNorm
-                nn.ReLU(),
+                nn.LayerNorm(num_structural_features),
+                nn.LeakyReLU(0.2),  # LeakyReLU instead of ReLU
                 nn.Dropout(dropout * 0.5)
             )
 
-        # Multiple GCN layers with LayerNorm (not BatchNorm)
+        # Multiple GCN layers with LayerNorm
         self.convs = nn.ModuleList()
-        self.lns = nn.ModuleList()  # LayerNorm instead of BatchNorm
+        self.lns = nn.ModuleList()
         for _ in range(num_layers):
             self.convs.append(GCNConv(hidden_dim, hidden_dim, add_self_loops=False))
-            self.lns.append(nn.LayerNorm(hidden_dim))  # LayerNorm for better gradient flow
+            self.lns.append(nn.LayerNorm(hidden_dim))
 
     def encode(self, edge_index):
         x = self.emb.weight
@@ -85,16 +87,18 @@ class GCNStructuralV2(BaseModel):
         if self.training:
             edge_index, _ = dropout_edge(edge_index, p=0.15, training=self.training)
 
-        # GCN layers with residual connections
+        # GCN layers with residual connections on ALL layers
         for i, (conv, ln) in enumerate(zip(self.convs, self.lns)):
             x_prev = x
             x = conv(x, edge_index)
-            x = ln(x)  # LayerNorm instead of BatchNorm
-            x = F.relu(x)
+            x = ln(x)
+            # Use LeakyReLU instead of ReLU to prevent dead neurons
+            x = F.leaky_relu(x, negative_slope=0.2)
             x = F.dropout(x, p=self.dropout, training=self.training)
-            # Residual connection with better scaling
-            if i > 0:
-                x = x + 0.3 * x_prev  # Reduced scaling factor for stability
+
+            # Residual connection on ALL layers (including first layer)
+            # Scale factor helps with gradient flow
+            x = x + 0.5 * x_prev
 
         return x
 
@@ -144,7 +148,7 @@ class GCNStructuralV2(BaseModel):
         # Compute diversity loss
         diversity_loss = self.compute_diversity_loss(z) if self.training else torch.tensor(0.0, device=z.device)
 
-        # Decode edges
+        # Decode edges using multi-strategy decoder
         pos_pred = self.decode(z, pos_edge)
         neg_pred = self.decode(z, neg_edge)
 

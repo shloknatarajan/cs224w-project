@@ -3,36 +3,37 @@ import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv
 from torch_geometric.utils import dropout_edge
-from ..base import BaseModel
+from ...base import BaseModel
 
 
-class GCNStructuralV4(BaseModel):
+class GCNStructuralV3(BaseModel):
     """
-    Advanced GCN model V4 with multi-strategy decoder.
+    Advanced GCN model V3 with comprehensive gradient flow fixes.
 
-    Key Improvements from V3:
-    - **Multi-strategy decoder enabled** (was disabled in V3) - combines Hadamard, Concat, and Bilinear scoring
-    - **Reduced diversity loss** (0.02 default vs 0.05) - we achieved good diversity, can lower weight
-    - **Kept from V3**: 3 layers, LeakyReLU, full residuals, LayerNorm
+    Key Improvements from V2:
+    - **3 layers** (vs 2 in V2) - more capacity
+    - **LeakyReLU** instead of ReLU - prevents dead neurons
+    - **Residual connections on ALL layers** - better gradient flow
+    - **Stronger diversity loss** (0.05 default vs 0.01) - fights collapse more
+    - **Kept from V2**: LayerNorm, reduced dropout, diversity loss
 
-    Architecture Details:
-    - 3 GCN layers with residual connections at ALL layers
-    - LeakyReLU activation (prevents dead neurons)
+    Diagnostic Issue Fixed:
+    - Gradient norm showing 0.00 was due to checking AFTER zero_grad()
+    - Not a real gradient vanishing issue, just measurement timing bug
+
+    Features:
+    - Incorporates structural features (degree, clustering, core number, PageRank, neighbor stats)
     - Layer normalization for stable training
-    - Structural features (degree, clustering, core number, PageRank, neighbor stats)
+    - Residual connections at EVERY layer for better gradient flow
+    - LeakyReLU to prevent dead neurons
     - Edge dropout for regularization
-    - Embedding diversity regularization
-    - Multi-strategy edge decoder (3 strategies combined with learnable weights)
-
-    The multi-strategy decoder is critical for ogbl-ddi's dense graph structure:
-    - Hadamard: captures feature interactions
-    - Concatenation: preserves all information
-    - Bilinear: learns relation-specific patterns
+    - Feature projection for structural features
+    - Stronger embedding diversity regularization
     """
 
     def __init__(self, num_nodes, hidden_dim=256, num_layers=3, dropout=0.2, decoder_dropout=0.3,
                  use_structural_features=True, num_structural_features=6, structural_features=None,
-                 use_multi_strategy=True, diversity_weight=0.02):
+                 use_multi_strategy=True, diversity_weight=0.05):
         super().__init__(hidden_dim, decoder_dropout=decoder_dropout, use_multi_strategy=use_multi_strategy)
         self.hidden_dim = hidden_dim
         self.dropout = dropout
@@ -46,7 +47,7 @@ class GCNStructuralV4(BaseModel):
         decoder_type = "multi-strategy" if use_multi_strategy else "simple"
         struct_status = f"with {num_structural_features} structural features" if use_structural_features else "without structural features"
         self.description = (
-            f"GCN-V4 {struct_status}, multi-strategy decoder, layer norm, LeakyReLU, full residuals | "
+            f"GCN-V3 {struct_status}, layer norm, LeakyReLU, full residuals, strong diversity loss | "
             f"hidden_dim={hidden_dim}, num_layers={num_layers}, dropout={dropout}, "
             f"decoder_dropout={decoder_dropout}, decoder={decoder_type}, diversity_weight={diversity_weight}"
         )
@@ -148,7 +149,7 @@ class GCNStructuralV4(BaseModel):
         # Compute diversity loss
         diversity_loss = self.compute_diversity_loss(z) if self.training else torch.tensor(0.0, device=z.device)
 
-        # Decode edges using multi-strategy decoder
+        # Decode edges
         pos_pred = self.decode(z, pos_edge)
         neg_pred = self.decode(z, neg_edge)
 

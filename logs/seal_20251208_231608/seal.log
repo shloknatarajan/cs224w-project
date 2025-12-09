@@ -1,0 +1,59 @@
+2025-12-08 23:16:08,707 - Using device: cuda
+2025-12-08 23:16:08,707 - Logging results to: logs/seal_20251208_231608/seal.log
+2025-12-08 23:16:08,707 - Loading dataset ogbl-ddi...
+2025-12-08 23:16:08,793 - Dataset loaded: 4267 nodes
+2025-12-08 23:16:08,793 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-08 23:16:08,793 - Valid neg edges: 101882, Test neg: 95599
+2025-12-08 23:16:08,814 - Added self-loops: Total edges now = 1072178
+2025-12-08 23:16:08,819 - Subsampling training data to 10% (106791 edges)
+2025-12-08 23:16:08,819 - Train pos edges: 106791
+2025-12-08 23:16:08,819 - Valid pos edges: 133489, Valid neg edges: 101882
+2025-12-08 23:16:08,819 - Test pos edges: 133489, Test neg edges: 95599
+2025-12-08 23:16:08,820 - 
+================================================================================
+2025-12-08 23:16:08,820 - SEAL Configuration
+2025-12-08 23:16:08,820 - ================================================================================
+2025-12-08 23:16:08,820 - Model type: GIN
+2025-12-08 23:16:08,820 - Subgraph hops: 1
+2025-12-08 23:16:08,820 - Hidden dim: 32
+2025-12-08 23:16:08,820 - Num layers: 3
+2025-12-08 23:16:08,820 - Pooling: sort (k=30)
+2025-12-08 23:16:08,820 - Dropout: 0.5
+2025-12-08 23:16:08,820 - Batch size: 32
+2025-12-08 23:16:08,820 - Learning rate: 0.0001
+2025-12-08 23:16:08,821 - ================================================================================
+2025-12-08 23:16:08,821 - Generating training negative samples...
+2025-12-08 23:16:08,910 - Generated 106791 training negative samples
+2025-12-08 23:16:08,910 - Creating SEAL datasets (this may take a while)...
+2025-12-08 23:16:08,911 - Train dataset created: 213582 samples
+2025-12-08 23:16:08,911 - Valid dataset created: 10000 samples
+2025-12-08 23:16:08,911 - Test dataset created: 10000 samples
+2025-12-08 23:16:09,084 - Model: SEAL-GIN (layers=3, hidden=32, pooling=sort, k=30)
+2025-12-08 23:16:09,084 - Total parameters: 69860
+2025-12-08 23:16:09,084 - GPU: NVIDIA A10G
+2025-12-08 23:16:09,084 - GPU Memory: 23.68 GB total
+2025-12-08 23:16:09,084 - GPU Memory Allocated: 0.0003 GB
+2025-12-08 23:16:09,085 - GPU Memory Cached: 0.0021 GB
+2025-12-08 23:16:09,085 - 
+================================================================================
+2025-12-08 23:16:09,085 - Starting SEAL Training
+2025-12-08 23:16:09,085 - ================================================================================
+2025-12-08 23:21:04,437 -   Epoch 1 - Batch 1000/6675 (15.0%) - Avg Loss: 0.5619 - GPU Mem: 0.02GB
+2025-12-08 23:26:00,502 -   Epoch 1 - Batch 2000/6675 (30.0%) - Avg Loss: 0.5194 - GPU Mem: 0.02GB
+2025-12-08 23:30:56,451 -   Epoch 1 - Batch 3000/6675 (44.9%) - Avg Loss: 0.4913 - GPU Mem: 0.02GB
+2025-12-08 23:35:51,710 -   Epoch 1 - Batch 4000/6675 (59.9%) - Avg Loss: 0.4730 - GPU Mem: 0.02GB
+2025-12-08 23:40:47,381 -   Epoch 1 - Batch 5000/6675 (74.9%) - Avg Loss: 0.4575 - GPU Mem: 0.02GB
+2025-12-08 23:46:17,262 -   Epoch 1 - Batch 6000/6675 (89.9%) - Avg Loss: 0.4458 - GPU Mem: 0.02GB
+2025-12-08 23:54:27,787 - Epoch 001/50 | Train Loss: 0.4385 | Val Acc: 0.7391 (Loss: 0.5677) | Test Acc: 0.7247 (Loss: 0.5512) | Best Val: 0.7391 (epoch 1) 🔥
+2025-12-09 00:00:40,109 -   Epoch 2 - Batch 1000/6675 (15.0%) - Avg Loss: 0.3664 - GPU Mem: 0.02GB
+2025-12-09 00:07:00,946 -   Epoch 2 - Batch 2000/6675 (30.0%) - Avg Loss: 0.3626 - GPU Mem: 0.02GB
+2025-12-09 00:13:03,005 -   Epoch 2 - Batch 3000/6675 (44.9%) - Avg Loss: 0.3585 - GPU Mem: 0.02GB
+2025-12-09 00:19:17,690 -   Epoch 2 - Batch 4000/6675 (59.9%) - Avg Loss: 0.3563 - GPU Mem: 0.02GB
+2025-12-09 00:25:35,795 -   Epoch 2 - Batch 5000/6675 (74.9%) - Avg Loss: 0.3540 - GPU Mem: 0.02GB
+2025-12-09 00:31:51,508 -   Epoch 2 - Batch 6000/6675 (89.9%) - Avg Loss: 0.3528 - GPU Mem: 0.02GB
+2025-12-09 00:40:30,685 - Epoch 002/50 | Train Loss: 0.3516 | Val Acc: 0.7600 (Loss: 0.5585) | Test Acc: 0.7617 (Loss: 0.5314) | Best Val: 0.7600 (epoch 2) 🔥
+2025-12-09 00:46:43,895 -   Epoch 3 - Batch 1000/6675 (15.0%) - Avg Loss: 0.3435 - GPU Mem: 0.02GB
+2025-12-09 00:53:04,029 -   Epoch 3 - Batch 2000/6675 (30.0%) - Avg Loss: 0.3400 - GPU Mem: 0.02GB
+2025-12-09 00:59:03,906 -   Epoch 3 - Batch 3000/6675 (44.9%) - Avg Loss: 0.3375 - GPU Mem: 0.02GB
+2025-12-09 01:05:15,284 -   Epoch 3 - Batch 4000/6675 (59.9%) - Avg Loss: 0.3385 - GPU Mem: 0.02GB
+2025-12-09 01:11:18,530 -   Epoch 3 - Batch 5000/6675 (74.9%) - Avg Loss: 0.3382 - GPU Mem: 0.02GB

@@ -1,0 +1,45 @@
+2025-12-09 01:42:47,440 - Device: cuda
+2025-12-09 01:42:47,440 - Log file: logs/sage_variants_20251209_014247/variants.log
+2025-12-09 01:42:47,440 - 
+Loading ogbl-ddi dataset...
+2025-12-09 01:42:47,440 - Loading dataset ogbl-ddi...
+2025-12-09 01:42:47,527 - Dataset loaded: 4267 nodes
+2025-12-09 01:42:47,671 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 01:42:47,671 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 01:42:47,691 - Added self-loops: Total edges now = 1072178
+2025-12-09 01:42:47,698 - Nodes: 4267
+2025-12-09 01:42:47,699 - Train: 1067911 edges
+2025-12-09 01:42:47,699 - Valid: 133489 pos, 101882 neg
+2025-12-09 01:42:47,699 - Test: 133489 pos, 95599 neg
+2025-12-09 01:42:47,699 - 
+================================================================================
+2025-12-09 01:42:47,699 - GRAPHSAGE ARCHITECTURE VARIANTS - CONFIGURATION
+2025-12-09 01:42:47,699 - ================================================================================
+2025-12-09 01:42:47,699 - Fixed Settings (same as baseline):
+2025-12-09 01:42:47,699 -   - Learning rate: 0.01
+2025-12-09 01:42:47,699 -   - Hidden dim: 128
+2025-12-09 01:42:47,699 -   - Epochs: 100
+2025-12-09 01:42:47,699 -   - Batch size: 50000
+2025-12-09 01:42:47,699 -   - Decoder: Simple dot product
+2025-12-09 01:42:47,699 -   - Negative sampling: Random 1:1
+2025-12-09 01:42:47,699 -   - NO: early stopping, hard negatives, weight decay
+2025-12-09 01:42:47,699 - 
+Variants to test:
+2025-12-09 01:42:47,699 -   1. Baseline: 2 layers, no BatchNorm, dropout=0.0
+2025-12-09 01:42:47,699 -   2. BatchNorm: 2 layers, BatchNorm, dropout=0.0
+2025-12-09 01:42:47,700 -   3. Depth: 3 layers, no BatchNorm, dropout=0.0
+2025-12-09 01:42:47,700 -   4. Both: 3 layers, BatchNorm, dropout=0.0
+2025-12-09 01:42:47,700 - ================================================================================
+2025-12-09 01:42:47,700 - 
+================================================================================
+2025-12-09 01:42:47,700 - Training Variant 1: Baseline
+2025-12-09 01:42:47,700 - ================================================================================
+2025-12-09 01:42:47,738 - Model: SAGE-V1-Baseline (2L, no-BN, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:42:47,738 - Starting training for Variant 1: Baseline (epochs=100, lr=0.01, patience=None, hard_neg=False)
+2025-12-09 01:42:47,738 - Model description: SAGE-V1-Baseline (2L, no-BN, drop=0.0) | hidden_dim=128, decoder=simple
+2025-12-09 01:42:47,738 - Memory optimization: batch_size=50000, gradient_accumulation=1
+2025-12-09 01:42:47,740 - Initialized EMA with decay=0.999 for stable checkpointing
+2025-12-09 01:42:49,531 - Variant 1: Baseline Epoch 0001/100 [Random Neg] | Loss: 1.4686 | Val Hits@20: 0.0001 | Test Hits@20: 0.0000 | Best Val: 0.0001 (epoch 1) | LR: 0.010000 🔥
+2025-12-09 01:42:49,935 - [DIAGNOSTICS Epoch 1] Emb: sim_mean=0.999 sim_std=0.000 norm=0.720 | Scores: pos=0.486 neg=0.486 gap=0.000 | Grad: norm=0.07
+2025-12-09 01:42:49,936 -   ⚠️  EMBEDDING COLLAPSE (similarity > 0.9)
+2025-12-09 01:42:49,936 -   ⚠️  LOW EMBEDDING DIVERSITY (std < 0.05)

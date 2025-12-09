@@ -1,0 +1,13 @@
+================================================================================
+HYPERPARAMETER SWEEP SUMMARY
+================================================================================
+
+Best Configuration:
+  LR: 0.01
+  Dropout: 0.4
+  Val Hits@20: 0.0056
+  Test Hits@20: 0.0034
+
+Total Configurations: 15
+Successful Runs: 15
+Failed Runs: 0
