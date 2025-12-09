@@ -138,3 +138,96 @@
 2025-12-09 21:37:56,194 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0085 | loss 0.9184 | val@20 0.0087 | test@20 0.0114 | best 0.0088 (ep 70)
 2025-12-09 21:38:02,674 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0090 | loss 0.9120 | val@20 0.0078 | test@20 0.0125 | best 0.0088 (ep 70)
 2025-12-09 21:38:09,118 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0095 | loss 0.9034 | val@20 0.0087 | test@20 0.0152 | best 0.0088 (ep 70)
+2025-12-09 21:38:15,619 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0100 | loss 0.8973 | val@20 0.0090 | test@20 0.0176 | best 0.0090 (ep 100)
+2025-12-09 21:38:22,204 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0105 | loss 0.8888 | val@20 0.0101 | test@20 0.0213 | best 0.0101 (ep 105)
+2025-12-09 21:38:28,861 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0110 | loss 0.8711 | val@20 0.0122 | test@20 0.0196 | best 0.0122 (ep 110)
+2025-12-09 21:38:35,320 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0115 | loss 0.8430 | val@20 0.0151 | test@20 0.0139 | best 0.0151 (ep 115)
+2025-12-09 21:38:41,766 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0120 | loss 0.8241 | val@20 0.0191 | test@20 0.0204 | best 0.0191 (ep 120)
+2025-12-09 21:38:48,191 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0125 | loss 0.8029 | val@20 0.0160 | test@20 0.0217 | best 0.0191 (ep 120)
+2025-12-09 21:38:54,627 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0130 | loss 0.7870 | val@20 0.0186 | test@20 0.0189 | best 0.0191 (ep 120)
+2025-12-09 21:39:01,081 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0135 | loss 0.7779 | val@20 0.0418 | test@20 0.0231 | best 0.0418 (ep 135)
+2025-12-09 21:39:07,524 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0140 | loss 0.7717 | val@20 0.0262 | test@20 0.0336 | best 0.0418 (ep 135)
+2025-12-09 21:39:13,985 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0145 | loss 0.7598 | val@20 0.0270 | test@20 0.0372 | best 0.0418 (ep 135)
+2025-12-09 21:39:20,453 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0150 | loss 0.7471 | val@20 0.0371 | test@20 0.0338 | best 0.0418 (ep 135)
+2025-12-09 21:39:26,939 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0155 | loss 0.7371 | val@20 0.0528 | test@20 0.0306 | best 0.0528 (ep 155)
+2025-12-09 21:39:33,460 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0160 | loss 0.7422 | val@20 0.0656 | test@20 0.0391 | best 0.0656 (ep 160)
+2025-12-09 21:39:40,137 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0165 | loss 0.7229 | val@20 0.0554 | test@20 0.0439 | best 0.0656 (ep 160)
+2025-12-09 21:39:46,799 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0170 | loss 0.7229 | val@20 0.0605 | test@20 0.0469 | best 0.0656 (ep 160)
+2025-12-09 21:39:53,528 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0175 | loss 0.7145 | val@20 0.0586 | test@20 0.0322 | best 0.0656 (ep 160)
+2025-12-09 21:40:00,288 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0180 | loss 0.7068 | val@20 0.0842 | test@20 0.0540 | best 0.0842 (ep 180)
+2025-12-09 21:40:07,089 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0185 | loss 0.7032 | val@20 0.0941 | test@20 0.0499 | best 0.0941 (ep 185)
+2025-12-09 21:40:13,852 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0190 | loss 0.6947 | val@20 0.0815 | test@20 0.0535 | best 0.0941 (ep 185)
+2025-12-09 21:40:20,612 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0195 | loss 0.6907 | val@20 0.0554 | test@20 0.0485 | best 0.0941 (ep 185)
+2025-12-09 21:40:27,340 - [ChemBERTa-GraphTransformer-Fallback] Epoch 0200 | loss 0.6795 | val@20 0.0458 | test@20 0.0492 | best 0.0941 (ep 185)
+2025-12-09 21:40:27,340 - [ChemBERTa-GraphTransformer-Fallback] Done. Best val@20=0.0941 | test@20=0.0499 (epoch 185)
+2025-12-09 21:40:27,341 - 
+================================================================================
+2025-12-09 21:40:27,341 - Training ChemBERTa-GAT-Fallback
+2025-12-09 21:40:27,342 - ================================================================================
+2025-12-09 21:40:27,417 - [ChemBERTa-GAT-Fallback] Starting minimal baseline training (epochs=200, lr=0.005, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 21:40:28,907 - [ChemBERTa-GAT-Fallback] Epoch 0001 | loss 1.3865 | val@20 0.0006 | test@20 0.0002 | best 0.0006 (ep 1)
+2025-12-09 21:40:34,221 - [ChemBERTa-GAT-Fallback] Epoch 0005 | loss 1.3827 | val@20 0.0000 | test@20 0.0000 | best 0.0006 (ep 1)
+2025-12-09 21:40:40,841 - [ChemBERTa-GAT-Fallback] Epoch 0010 | loss 1.3363 | val@20 0.0001 | test@20 0.0001 | best 0.0006 (ep 1)
+2025-12-09 21:40:47,455 - [ChemBERTa-GAT-Fallback] Epoch 0015 | loss 1.2918 | val@20 0.0005 | test@20 0.0004 | best 0.0006 (ep 1)
+2025-12-09 21:40:54,029 - [ChemBERTa-GAT-Fallback] Epoch 0020 | loss 1.3282 | val@20 0.0000 | test@20 0.0001 | best 0.0006 (ep 1)
+2025-12-09 21:41:00,586 - [ChemBERTa-GAT-Fallback] Epoch 0025 | loss 1.3528 | val@20 0.0001 | test@20 0.0002 | best 0.0006 (ep 1)
+2025-12-09 21:41:07,223 - [ChemBERTa-GAT-Fallback] Epoch 0030 | loss 1.3105 | val@20 0.0001 | test@20 0.0000 | best 0.0006 (ep 1)
+2025-12-09 21:41:16,416 - [ChemBERTa-GAT-Fallback] Epoch 0035 | loss 1.2156 | val@20 0.0013 | test@20 0.0007 | best 0.0013 (ep 35)
+2025-12-09 21:41:25,060 - [ChemBERTa-GAT-Fallback] Epoch 0040 | loss 1.3257 | val@20 0.0000 | test@20 0.0000 | best 0.0013 (ep 35)
+2025-12-09 21:41:31,763 - [ChemBERTa-GAT-Fallback] Epoch 0045 | loss 1.3210 | val@20 0.0013 | test@20 0.0017 | best 0.0013 (ep 45)
+2025-12-09 21:41:38,495 - [ChemBERTa-GAT-Fallback] Epoch 0050 | loss 1.2088 | val@20 0.0004 | test@20 0.0016 | best 0.0013 (ep 45)
+2025-12-09 21:41:45,238 - [ChemBERTa-GAT-Fallback] Epoch 0055 | loss 1.3013 | val@20 0.0004 | test@20 0.0006 | best 0.0013 (ep 45)
+2025-12-09 21:41:52,049 - [ChemBERTa-GAT-Fallback] Epoch 0060 | loss 1.2363 | val@20 0.0005 | test@20 0.0007 | best 0.0013 (ep 45)
+2025-12-09 21:41:58,775 - [ChemBERTa-GAT-Fallback] Epoch 0065 | loss 1.1533 | val@20 0.0009 | test@20 0.0010 | best 0.0013 (ep 45)
+2025-12-09 21:42:05,471 - [ChemBERTa-GAT-Fallback] Epoch 0070 | loss 1.3288 | val@20 0.0005 | test@20 0.0008 | best 0.0013 (ep 45)
+2025-12-09 21:42:12,193 - [ChemBERTa-GAT-Fallback] Epoch 0075 | loss 1.1385 | val@20 0.0004 | test@20 0.0006 | best 0.0013 (ep 45)
+2025-12-09 21:42:18,975 - [ChemBERTa-GAT-Fallback] Epoch 0080 | loss 1.0943 | val@20 0.0000 | test@20 0.0000 | best 0.0013 (ep 45)
+2025-12-09 21:42:25,726 - [ChemBERTa-GAT-Fallback] Epoch 0085 | loss 1.0225 | val@20 0.0000 | test@20 0.0000 | best 0.0013 (ep 45)
+2025-12-09 21:42:32,449 - [ChemBERTa-GAT-Fallback] Epoch 0090 | loss 0.9949 | val@20 0.0000 | test@20 0.0000 | best 0.0013 (ep 45)
+2025-12-09 21:42:40,278 - [ChemBERTa-GAT-Fallback] Epoch 0095 | loss 0.9720 | val@20 0.0000 | test@20 0.0000 | best 0.0013 (ep 45)
+2025-12-09 21:42:47,040 - [ChemBERTa-GAT-Fallback] Epoch 0100 | loss 0.9471 | val@20 0.0083 | test@20 0.0017 | best 0.0083 (ep 100)
+2025-12-09 21:42:53,825 - [ChemBERTa-GAT-Fallback] Epoch 0105 | loss 0.9309 | val@20 0.0202 | test@20 0.0047 | best 0.0202 (ep 105)
+2025-12-09 21:43:00,621 - [ChemBERTa-GAT-Fallback] Epoch 0110 | loss 0.9182 | val@20 0.0228 | test@20 0.0047 | best 0.0228 (ep 110)
+2025-12-09 21:43:07,395 - [ChemBERTa-GAT-Fallback] Epoch 0115 | loss 0.9078 | val@20 0.0260 | test@20 0.0050 | best 0.0260 (ep 115)
+2025-12-09 21:43:14,176 - [ChemBERTa-GAT-Fallback] Epoch 0120 | loss 0.9008 | val@20 0.0099 | test@20 0.0037 | best 0.0260 (ep 115)
+2025-12-09 21:43:20,961 - [ChemBERTa-GAT-Fallback] Epoch 0125 | loss 0.8952 | val@20 0.0219 | test@20 0.0045 | best 0.0260 (ep 115)
+2025-12-09 21:43:27,784 - [ChemBERTa-GAT-Fallback] Epoch 0130 | loss 0.8888 | val@20 0.0242 | test@20 0.0047 | best 0.0260 (ep 115)
+2025-12-09 21:43:34,564 - [ChemBERTa-GAT-Fallback] Epoch 0135 | loss 0.8845 | val@20 0.0135 | test@20 0.0042 | best 0.0260 (ep 115)
+2025-12-09 21:43:41,345 - [ChemBERTa-GAT-Fallback] Epoch 0140 | loss 0.8795 | val@20 0.0266 | test@20 0.0053 | best 0.0266 (ep 140)
+2025-12-09 21:43:48,129 - [ChemBERTa-GAT-Fallback] Epoch 0145 | loss 0.8751 | val@20 0.0092 | test@20 0.0037 | best 0.0266 (ep 140)
+2025-12-09 21:43:54,893 - [ChemBERTa-GAT-Fallback] Epoch 0150 | loss 0.8732 | val@20 0.0262 | test@20 0.0052 | best 0.0266 (ep 140)
+2025-12-09 21:44:01,663 - [ChemBERTa-GAT-Fallback] Epoch 0155 | loss 0.8688 | val@20 0.0229 | test@20 0.0049 | best 0.0266 (ep 140)
+2025-12-09 21:44:08,500 - [ChemBERTa-GAT-Fallback] Epoch 0160 | loss 0.8637 | val@20 0.0283 | test@20 0.0061 | best 0.0283 (ep 160)
+2025-12-09 21:44:15,392 - [ChemBERTa-GAT-Fallback] Epoch 0165 | loss 0.8606 | val@20 0.0166 | test@20 0.0045 | best 0.0283 (ep 160)
+2025-12-09 21:44:22,265 - [ChemBERTa-GAT-Fallback] Epoch 0170 | loss 0.8574 | val@20 0.0136 | test@20 0.0193 | best 0.0283 (ep 160)
+2025-12-09 21:44:29,128 - [ChemBERTa-GAT-Fallback] Epoch 0175 | loss 0.8522 | val@20 0.0231 | test@20 0.0188 | best 0.0283 (ep 160)
+2025-12-09 21:44:36,012 - [ChemBERTa-GAT-Fallback] Epoch 0180 | loss 0.8721 | val@20 0.0619 | test@20 0.0260 | best 0.0619 (ep 180)
+2025-12-09 21:44:42,811 - [ChemBERTa-GAT-Fallback] Epoch 0185 | loss 0.8552 | val@20 0.0268 | test@20 0.0049 | best 0.0619 (ep 180)
+2025-12-09 21:44:49,473 - [ChemBERTa-GAT-Fallback] Epoch 0190 | loss 0.8551 | val@20 0.0276 | test@20 0.0057 | best 0.0619 (ep 180)
+2025-12-09 21:44:56,134 - [ChemBERTa-GAT-Fallback] Epoch 0195 | loss 0.8465 | val@20 0.0413 | test@20 0.0088 | best 0.0619 (ep 180)
+2025-12-09 21:45:02,776 - [ChemBERTa-GAT-Fallback] Epoch 0200 | loss 0.8401 | val@20 0.0378 | test@20 0.0208 | best 0.0619 (ep 180)
+2025-12-09 21:45:02,776 - [ChemBERTa-GAT-Fallback] Done. Best val@20=0.0619 | test@20=0.0260 (epoch 180)
+2025-12-09 21:45:02,777 - 
+================================================================================
+2025-12-09 21:45:02,777 - FINAL RESULTS - CHEMBERTA FALLBACK MODELS
+2025-12-09 21:45:02,777 - ================================================================================
+2025-12-09 21:45:02,777 - NOTE: These models use learnable fallback embeddings for 46% of nodes without SMILES
+2025-12-09 21:45:02,777 - 
+2025-12-09 21:45:02,777 - ChemBERTa-GCN-Fallback:
+2025-12-09 21:45:02,777 -   Validation Hits@20: 0.1137
+2025-12-09 21:45:02,777 -   Test Hits@20: 0.0694
+2025-12-09 21:45:02,777 -   Val-Test Gap: 0.0443 (39.0% relative)
+2025-12-09 21:45:02,777 - ChemBERTa-GraphSAGE-Fallback:
+2025-12-09 21:45:02,777 -   Validation Hits@20: 0.1129
+2025-12-09 21:45:02,778 -   Test Hits@20: 0.0907
+2025-12-09 21:45:02,778 -   Val-Test Gap: 0.0222 (19.6% relative)
+2025-12-09 21:45:02,778 - ChemBERTa-GraphTransformer-Fallback:
+2025-12-09 21:45:02,778 -   Validation Hits@20: 0.0941
+2025-12-09 21:45:02,778 -   Test Hits@20: 0.0499
+2025-12-09 21:45:02,778 -   Val-Test Gap: 0.0442 (47.0% relative)
+2025-12-09 21:45:02,778 - ChemBERTa-GAT-Fallback:
+2025-12-09 21:45:02,778 -   Validation Hits@20: 0.0619
+2025-12-09 21:45:02,778 -   Test Hits@20: 0.0260
+2025-12-09 21:45:02,778 -   Val-Test Gap: 0.0359 (57.9% relative)
+2025-12-09 21:45:02,778 - ================================================================================
+2025-12-09 21:45:02,778 - Results logged to: logs/chemberta_fallback_20251209_212319/chemberta_fallback.log

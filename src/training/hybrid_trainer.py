@@ -85,10 +85,11 @@ def train_hybrid_model(
             method="sparse",
         ).t().to(device)
         
-        # Decode in batches (structure + chemistry)
+        # Decode in batches and accumulate losses
         batch_losses = []
+        
         for start in range(0, train_pos.size(0), batch_size):
-            end = start + batch_size
+            end = min(start + batch_size, train_pos.size(0))
             pos_batch = train_pos[start:end]
             neg_batch = neg_edges[start:end]
             
@@ -100,11 +101,15 @@ def train_hybrid_model(
             neg_loss = F.binary_cross_entropy_with_logits(neg_logits, torch.zeros_like(neg_logits))
             batch_losses.append(pos_loss + neg_loss)
         
+        # Compute total loss and backprop once
         total_loss = torch.stack(batch_losses).mean()
         total_loss.backward()
         optimizer.step()
         
         train_loss = float(total_loss.detach().cpu())
+        
+        # Clear cache after backward
+        torch.cuda.empty_cache()
         
         # Evaluation
         if epoch == 1 or epoch % eval_every == 0:
@@ -164,10 +169,13 @@ def evaluate_hybrid(model, z, chemistry, pos_edges, neg_edges, smiles_mask, batc
     """
     model.eval()
     
+    # Use smaller batch size for evaluation to avoid OOM
+    eval_batch_size = min(batch_size, 5000)
+    
     # Score positive edges
     pos_preds = []
-    for start in range(0, pos_edges.size(0), batch_size):
-        end = min(start + batch_size, pos_edges.size(0))
+    for start in range(0, pos_edges.size(0), eval_batch_size):
+        end = min(start + eval_batch_size, pos_edges.size(0))
         batch = pos_edges[start:end]
         preds = model.decode(z, chemistry, batch, smiles_mask)
         pos_preds.append(preds.cpu())
@@ -175,8 +183,8 @@ def evaluate_hybrid(model, z, chemistry, pos_edges, neg_edges, smiles_mask, batc
     
     # Score negative edges
     neg_preds = []
-    for start in range(0, neg_edges.size(0), batch_size):
-        end = min(start + batch_size, neg_edges.size(0))
+    for start in range(0, neg_edges.size(0), eval_batch_size):
+        end = min(start + eval_batch_size, neg_edges.size(0))
         batch = neg_edges[start:end]
         preds = model.decode(z, chemistry, batch, smiles_mask)
         neg_preds.append(preds.cpu())

@@ -12,6 +12,7 @@ ipykernel = ">=7.1.0,<8"
 pubchempy = ">=1.0.5,<2"
 numpy = ">=1.24,<2"
 pytest = ">=9.0.2,<10"
+pip = "*"
 
 # Linux-specific dependencies (CUDA support)
 [target.linux-64.dependencies]

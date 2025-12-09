@@ -11,7 +11,7 @@ import torch
 from datetime import datetime
 from ogb.linkproppred import Evaluator
 
-from src.data.data_loader import load_dataset
+from src.data.data_loader import load_dataset_chemberta
 from src.models.hybrid import HybridGCN
 from src.training.hybrid_trainer import train_hybrid_model
 
@@ -38,13 +38,13 @@ logger.info(f"Logging results to: {log_file}")
 
 # Load dataset with ChemBERTa features
 logger.info("Loading dataset with ChemBERTa embeddings + SMILES mask...")
-data, split_edge, evaluator = load_dataset(
+data, split_edge, num_nodes, evaluator = load_dataset_chemberta(
     dataset_name="ogbl-ddi",
     device=device,
     smiles_csv_path="data/smiles.csv",
     feature_cache_path="data/chemberta_features_768.pt",
-    use_chemberta=True,
-    return_smiles_mask=True
+    chemberta_model="seyonec/ChemBERTa-zinc-base-v1",
+    batch_size=32,
 )
 
 logger.info(f"Dataset loaded with ChemBERTa features: data.x.shape = {data.x.shape}")
@@ -55,7 +55,7 @@ config = {
     'epochs': 200,
     'lr': 0.01,
     'weight_decay': 1e-4,
-    'batch_size': 50000,
+    'batch_size': 10000,  # Reduced from 50000 to avoid OOM with chemistry features
     'eval_every': 5,
     'patience': 20,
 }
