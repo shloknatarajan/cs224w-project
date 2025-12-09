@@ -83,7 +83,12 @@ def train_minimal_baseline(
         model.train()
         optimizer.zero_grad()
 
-        z = model.encode(train_edge_index)
+        # Check if model needs input features (Morgan models) or uses embeddings
+        if hasattr(data, 'x') and data.x is not None:
+            z = model.encode(train_edge_index, x=data.x)
+        else:
+            z = model.encode(train_edge_index)
+
         neg_edges = negative_sampling(
             edge_index=train_edge_index,
             num_nodes=num_nodes,

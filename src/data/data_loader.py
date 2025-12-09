@@ -1,10 +1,11 @@
 import torch
 import networkx as nx
 import logging
+import os
+import pandas as pd
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 from torch_geometric.utils import degree, to_networkx, add_self_loops
 from torch_geometric.data import Data as PyGData
-from torch_geometric.nn import add_self_loops
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
@@ -40,7 +41,7 @@ def build_smiles_feature_matrix(
       - smiles  (str)
     Nodes without a SMILES entry (or invalid SMILES) get all-zero features.
     """
-    df = pd.read_csv(smiles_csv_path)
+    df = pd.read_csv(smiles_csv_path, keep_default_na=False)
     if "ogb_id" not in df.columns or "smiles" not in df.columns:
         raise ValueError(
             f"Expected columns 'ogb_id' and 'smiles' in {smiles_csv_path}, "
@@ -56,7 +57,8 @@ def build_smiles_feature_matrix(
 
     for node_id in range(num_nodes):
         smi = smiles_by_id.get(node_id, "")
-        if not smi or not isinstance(smi, str):
+        # Skip empty strings, "nan", or invalid SMILES
+        if not smi or smi == "nan" or not isinstance(smi, str) or len(smi) == 0:
             missing += 1
             continue
         feat[node_id] = smiles_to_morgan(smi, n_bits=n_bits, radius=radius)
@@ -152,45 +154,6 @@ def load_dataset(
         logger.info("No smiles_csv_path provided → data.x will not be set.")
 
     evaluator = Evaluator(name=dataset_name)
-    return data, split_edge, num_nodes, evaluator
-
-
-def load_dataset(dataset_name='ogbl-ddi', device='cpu'):
-    """
-    Load OGB link prediction dataset and split edges.
-
-    Returns:
-        tuple: (data, split_edge, num_nodes, evaluator)
-    """
-    logger.info(f"Loading dataset {dataset_name}...")
-    dataset = PygLinkPropPredDataset(dataset_name)
-    data = dataset[0]
-
-    split_edge = dataset.get_edge_split()
-    logger.info(f"Dataset loaded: {data.num_nodes} nodes")
-
-    # Move data to device
-    train_pos = split_edge['train']['edge'].to(device)
-    valid_pos = split_edge['valid']['edge'].to(device)
-    valid_neg = split_edge['valid']['edge_neg'].to(device)
-    test_pos = split_edge['test']['edge'].to(device)
-    test_neg = split_edge['test']['edge_neg'].to(device)
-
-    logger.info(f"Train pos edges: {train_pos.size(0)}, Valid pos: {valid_pos.size(0)}, Test pos: {test_pos.size(0)}")
-    logger.info(f"Valid neg edges: {valid_neg.size(0)}, Test neg: {test_neg.size(0)}")
-
-    num_nodes = data.num_nodes
-
-    # Construct graph using only training edges
-    train_edge_index = train_pos.t().contiguous().to(device)
-
-    # Add self-loops
-    data.edge_index, _ = add_self_loops(train_edge_index, num_nodes=num_nodes)
-    logger.info(f"Added self-loops: Total edges now = {data.edge_index.size(1)}")
-
-    from ogb.linkproppred import Evaluator
-    evaluator = Evaluator(name=dataset_name)
-
     return data, split_edge, num_nodes, evaluator
 
 

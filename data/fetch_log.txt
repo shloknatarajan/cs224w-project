@@ -1,0 +1,11 @@
+2025-12-09 18:42:30,028 - Reading node-to-drug mapping from dataset/ogbl_ddi/mapping/nodeidx2drugid.csv.gz
+2025-12-09 18:42:30,031 - Found 4267 nodes/drugs
+2025-12-09 18:42:30,031 - Starting parallel fetch with 10 workers...
+2025-12-09 18:42:39,775 - Progress: 100/4267 (2.3%) | Success: 0 (0.0%) | Failed: 100
+2025-12-09 18:42:49,403 - Progress: 200/4267 (4.7%) | Success: 0 (0.0%) | Failed: 200
+2025-12-09 18:42:58,689 - Progress: 300/4267 (7.0%) | Success: 0 (0.0%) | Failed: 300
+2025-12-09 18:43:07,958 - Progress: 400/4267 (9.4%) | Success: 0 (0.0%) | Failed: 400
+2025-12-09 18:43:17,976 - Progress: 500/4267 (11.7%) | Success: 0 (0.0%) | Failed: 500
+2025-12-09 18:43:27,003 - Progress: 600/4267 (14.1%) | Success: 0 (0.0%) | Failed: 600
+2025-12-09 18:43:36,744 - Progress: 700/4267 (16.4%) | Success: 0 (0.0%) | Failed: 700
+2025-12-09 18:43:45,856 - Progress: 800/4267 (18.7%) | Success: 0 (0.0%) | Failed: 800

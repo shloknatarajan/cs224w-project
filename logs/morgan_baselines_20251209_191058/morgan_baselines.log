@@ -1,0 +1,221 @@
+2025-12-09 19:10:58,800 - Using device: cuda
+2025-12-09 19:10:58,800 - Logging results to: logs/morgan_baselines_20251209_191058/morgan_baselines.log
+2025-12-09 19:10:58,800 - Loading dataset with Morgan fingerprints...
+2025-12-09 19:10:58,800 - Loading dataset ogbl-ddi...
+2025-12-09 19:10:58,887 - Dataset loaded: 4267 nodes
+2025-12-09 19:10:59,033 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 19:10:59,033 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 19:10:59,053 - Added self-loops: Total edges now = 1072178
+2025-12-09 19:10:59,053 - Loading cached SMILES features from data/morgan_features_2048.pt
+2025-12-09 19:10:59,081 - Attached SMILES features: data.x shape = torch.Size([4267, 2048])
+2025-12-09 19:10:59,085 - Dataset loaded with Morgan features: data.x.shape = torch.Size([4267, 2048])
+2025-12-09 19:10:59,088 - 
+================================================================================
+2025-12-09 19:10:59,089 - Training Morgan-GCN Baseline
+2025-12-09 19:10:59,089 - ================================================================================
+2025-12-09 19:10:59,228 - [Morgan-GCN] Starting minimal baseline training (epochs=200, lr=0.01, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 19:11:01,254 - [Morgan-GCN] Epoch 0001 | loss 1.3882 | val@20 0.0133 | test@20 0.0269 | best 0.0133 (ep 1)
+2025-12-09 19:11:06,802 - [Morgan-GCN] Epoch 0005 | loss 1.3791 | val@20 0.0001 | test@20 0.0001 | best 0.0133 (ep 1)
+2025-12-09 19:11:12,710 - [Morgan-GCN] Epoch 0010 | loss 1.3363 | val@20 0.0113 | test@20 0.0202 | best 0.0133 (ep 1)
+2025-12-09 19:11:18,592 - [Morgan-GCN] Epoch 0015 | loss 1.2615 | val@20 0.0127 | test@20 0.0218 | best 0.0133 (ep 1)
+2025-12-09 19:11:24,504 - [Morgan-GCN] Epoch 0020 | loss 1.1746 | val@20 0.0148 | test@20 0.0254 | best 0.0148 (ep 20)
+2025-12-09 19:11:30,387 - [Morgan-GCN] Epoch 0025 | loss 1.1376 | val@20 0.0156 | test@20 0.0296 | best 0.0156 (ep 25)
+2025-12-09 19:11:36,268 - [Morgan-GCN] Epoch 0030 | loss 1.0789 | val@20 0.0176 | test@20 0.0382 | best 0.0176 (ep 30)
+2025-12-09 19:11:42,167 - [Morgan-GCN] Epoch 0035 | loss 1.0358 | val@20 0.0175 | test@20 0.0451 | best 0.0176 (ep 30)
+2025-12-09 19:11:48,018 - [Morgan-GCN] Epoch 0040 | loss 1.0056 | val@20 0.0189 | test@20 0.0500 | best 0.0189 (ep 40)
+2025-12-09 19:11:53,906 - [Morgan-GCN] Epoch 0045 | loss 0.9927 | val@20 0.0191 | test@20 0.0467 | best 0.0191 (ep 45)
+2025-12-09 19:11:59,803 - [Morgan-GCN] Epoch 0050 | loss 0.9831 | val@20 0.0197 | test@20 0.0466 | best 0.0197 (ep 50)
+2025-12-09 19:12:05,697 - [Morgan-GCN] Epoch 0055 | loss 0.9743 | val@20 0.0193 | test@20 0.0488 | best 0.0197 (ep 50)
+2025-12-09 19:12:11,588 - [Morgan-GCN] Epoch 0060 | loss 0.9638 | val@20 0.0202 | test@20 0.0461 | best 0.0202 (ep 60)
+2025-12-09 19:12:17,495 - [Morgan-GCN] Epoch 0065 | loss 0.9772 | val@20 0.0220 | test@20 0.0512 | best 0.0220 (ep 65)
+2025-12-09 19:12:23,387 - [Morgan-GCN] Epoch 0070 | loss 0.9161 | val@20 0.0258 | test@20 0.0618 | best 0.0258 (ep 70)
+2025-12-09 19:12:29,276 - [Morgan-GCN] Epoch 0075 | loss 0.9105 | val@20 0.0279 | test@20 0.0581 | best 0.0279 (ep 75)
+2025-12-09 19:12:35,146 - [Morgan-GCN] Epoch 0080 | loss 0.9290 | val@20 0.0278 | test@20 0.0640 | best 0.0279 (ep 75)
+2025-12-09 19:12:41,042 - [Morgan-GCN] Epoch 0085 | loss 0.9067 | val@20 0.0187 | test@20 0.0433 | best 0.0279 (ep 75)
+2025-12-09 19:12:46,906 - [Morgan-GCN] Epoch 0090 | loss 0.8709 | val@20 0.0230 | test@20 0.0511 | best 0.0279 (ep 75)
+2025-12-09 19:12:52,794 - [Morgan-GCN] Epoch 0095 | loss 0.8637 | val@20 0.0151 | test@20 0.0231 | best 0.0279 (ep 75)
+2025-12-09 19:12:58,680 - [Morgan-GCN] Epoch 0100 | loss 0.8403 | val@20 0.0059 | test@20 0.0021 | best 0.0279 (ep 75)
+2025-12-09 19:13:04,574 - [Morgan-GCN] Epoch 0105 | loss 0.8340 | val@20 0.0143 | test@20 0.0089 | best 0.0279 (ep 75)
+2025-12-09 19:13:10,502 - [Morgan-GCN] Epoch 0110 | loss 0.8253 | val@20 0.0150 | test@20 0.0130 | best 0.0279 (ep 75)
+2025-12-09 19:13:16,373 - [Morgan-GCN] Epoch 0115 | loss 0.8153 | val@20 0.0187 | test@20 0.0110 | best 0.0279 (ep 75)
+2025-12-09 19:13:22,285 - [Morgan-GCN] Epoch 0120 | loss 0.8097 | val@20 0.0207 | test@20 0.0093 | best 0.0279 (ep 75)
+2025-12-09 19:13:28,161 - [Morgan-GCN] Epoch 0125 | loss 0.8026 | val@20 0.0195 | test@20 0.0119 | best 0.0279 (ep 75)
+2025-12-09 19:13:34,051 - [Morgan-GCN] Epoch 0130 | loss 0.7959 | val@20 0.0313 | test@20 0.0275 | best 0.0313 (ep 130)
+2025-12-09 19:13:39,950 - [Morgan-GCN] Epoch 0135 | loss 0.7878 | val@20 0.0342 | test@20 0.0377 | best 0.0342 (ep 135)
+2025-12-09 19:13:45,868 - [Morgan-GCN] Epoch 0140 | loss 0.7818 | val@20 0.0461 | test@20 0.0638 | best 0.0461 (ep 140)
+2025-12-09 19:13:51,754 - [Morgan-GCN] Epoch 0145 | loss 0.7871 | val@20 0.0531 | test@20 0.0707 | best 0.0531 (ep 145)
+2025-12-09 19:13:57,624 - [Morgan-GCN] Epoch 0150 | loss 0.7701 | val@20 0.0414 | test@20 0.0601 | best 0.0531 (ep 145)
+2025-12-09 19:14:03,492 - [Morgan-GCN] Epoch 0155 | loss 0.7642 | val@20 0.0327 | test@20 0.0399 | best 0.0531 (ep 145)
+2025-12-09 19:14:09,356 - [Morgan-GCN] Epoch 0160 | loss 0.7590 | val@20 0.0349 | test@20 0.0376 | best 0.0531 (ep 145)
+2025-12-09 19:14:15,238 - [Morgan-GCN] Epoch 0165 | loss 0.7549 | val@20 0.0389 | test@20 0.0399 | best 0.0531 (ep 145)
+2025-12-09 19:14:21,127 - [Morgan-GCN] Epoch 0170 | loss 0.7501 | val@20 0.0531 | test@20 0.0475 | best 0.0531 (ep 145)
+2025-12-09 19:14:26,998 - [Morgan-GCN] Epoch 0175 | loss 0.7453 | val@20 0.0513 | test@20 0.0421 | best 0.0531 (ep 145)
+2025-12-09 19:14:32,848 - [Morgan-GCN] Epoch 0180 | loss 0.7496 | val@20 0.0463 | test@20 0.0439 | best 0.0531 (ep 145)
+2025-12-09 19:14:38,719 - [Morgan-GCN] Epoch 0185 | loss 0.7419 | val@20 0.0610 | test@20 0.0536 | best 0.0610 (ep 185)
+2025-12-09 19:14:44,601 - [Morgan-GCN] Epoch 0190 | loss 0.7408 | val@20 0.0524 | test@20 0.0519 | best 0.0610 (ep 185)
+2025-12-09 19:14:50,468 - [Morgan-GCN] Epoch 0195 | loss 0.7405 | val@20 0.0560 | test@20 0.0675 | best 0.0610 (ep 185)
+2025-12-09 19:14:56,344 - [Morgan-GCN] Epoch 0200 | loss 0.7443 | val@20 0.0549 | test@20 0.0711 | best 0.0610 (ep 185)
+2025-12-09 19:14:56,344 - [Morgan-GCN] Done. Best val@20=0.0610 | test@20=0.0536 (epoch 185)
+2025-12-09 19:14:56,344 - 
+================================================================================
+2025-12-09 19:14:56,344 - Training Morgan-GraphSAGE Baseline
+2025-12-09 19:14:56,344 - ================================================================================
+2025-12-09 19:14:56,376 - [Morgan-GraphSAGE] Starting minimal baseline training (epochs=200, lr=0.01, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 19:14:57,660 - [Morgan-GraphSAGE] Epoch 0001 | loss 1.3888 | val@20 0.0001 | test@20 0.0001 | best 0.0001 (ep 1)
+2025-12-09 19:15:02,382 - [Morgan-GraphSAGE] Epoch 0005 | loss 1.2832 | val@20 0.0001 | test@20 0.0001 | best 0.0001 (ep 5)
+2025-12-09 19:15:08,270 - [Morgan-GraphSAGE] Epoch 0010 | loss 1.3742 | val@20 0.0000 | test@20 0.0000 | best 0.0001 (ep 5)
+2025-12-09 19:15:14,129 - [Morgan-GraphSAGE] Epoch 0015 | loss 1.3811 | val@20 0.0000 | test@20 0.0000 | best 0.0001 (ep 5)
+2025-12-09 19:15:20,006 - [Morgan-GraphSAGE] Epoch 0020 | loss 1.3598 | val@20 0.0001 | test@20 0.0000 | best 0.0001 (ep 5)
+2025-12-09 19:15:25,874 - [Morgan-GraphSAGE] Epoch 0025 | loss 1.3146 | val@20 0.0019 | test@20 0.0012 | best 0.0019 (ep 25)
+2025-12-09 19:15:31,737 - [Morgan-GraphSAGE] Epoch 0030 | loss 1.2793 | val@20 0.0035 | test@20 0.0037 | best 0.0035 (ep 30)
+2025-12-09 19:15:37,591 - [Morgan-GraphSAGE] Epoch 0035 | loss 1.2084 | val@20 0.0056 | test@20 0.0049 | best 0.0056 (ep 35)
+2025-12-09 19:15:43,435 - [Morgan-GraphSAGE] Epoch 0040 | loss 1.1977 | val@20 0.0054 | test@20 0.0054 | best 0.0056 (ep 35)
+2025-12-09 19:15:49,302 - [Morgan-GraphSAGE] Epoch 0045 | loss 1.0901 | val@20 0.0056 | test@20 0.0035 | best 0.0056 (ep 35)
+2025-12-09 19:15:55,150 - [Morgan-GraphSAGE] Epoch 0050 | loss 1.0439 | val@20 0.0071 | test@20 0.0064 | best 0.0071 (ep 50)
+2025-12-09 19:16:00,992 - [Morgan-GraphSAGE] Epoch 0055 | loss 1.0090 | val@20 0.0065 | test@20 0.0066 | best 0.0071 (ep 50)
+2025-12-09 19:16:06,851 - [Morgan-GraphSAGE] Epoch 0060 | loss 0.9844 | val@20 0.0070 | test@20 0.0048 | best 0.0071 (ep 50)
+2025-12-09 19:16:12,704 - [Morgan-GraphSAGE] Epoch 0065 | loss 0.9621 | val@20 0.0072 | test@20 0.0054 | best 0.0072 (ep 65)
+2025-12-09 19:16:18,584 - [Morgan-GraphSAGE] Epoch 0070 | loss 0.9427 | val@20 0.0073 | test@20 0.0051 | best 0.0073 (ep 70)
+2025-12-09 19:16:24,479 - [Morgan-GraphSAGE] Epoch 0075 | loss 0.9234 | val@20 0.0092 | test@20 0.0065 | best 0.0092 (ep 75)
+2025-12-09 19:16:30,348 - [Morgan-GraphSAGE] Epoch 0080 | loss 0.9082 | val@20 0.0036 | test@20 0.0029 | best 0.0092 (ep 75)
+2025-12-09 19:16:36,209 - [Morgan-GraphSAGE] Epoch 0085 | loss 0.9124 | val@20 0.0106 | test@20 0.0110 | best 0.0106 (ep 85)
+2025-12-09 19:16:42,093 - [Morgan-GraphSAGE] Epoch 0090 | loss 0.9056 | val@20 0.0169 | test@20 0.0128 | best 0.0169 (ep 90)
+2025-12-09 19:16:47,968 - [Morgan-GraphSAGE] Epoch 0095 | loss 0.8874 | val@20 0.0193 | test@20 0.0150 | best 0.0193 (ep 95)
+2025-12-09 19:16:53,860 - [Morgan-GraphSAGE] Epoch 0100 | loss 0.8736 | val@20 0.0204 | test@20 0.0186 | best 0.0204 (ep 100)
+2025-12-09 19:16:59,709 - [Morgan-GraphSAGE] Epoch 0105 | loss 0.8621 | val@20 0.0190 | test@20 0.0170 | best 0.0204 (ep 100)
+2025-12-09 19:17:05,664 - [Morgan-GraphSAGE] Epoch 0110 | loss 0.8629 | val@20 0.0187 | test@20 0.0195 | best 0.0204 (ep 100)
+2025-12-09 19:17:11,526 - [Morgan-GraphSAGE] Epoch 0115 | loss 0.8362 | val@20 0.0172 | test@20 0.0267 | best 0.0204 (ep 100)
+2025-12-09 19:17:17,391 - [Morgan-GraphSAGE] Epoch 0120 | loss 0.8248 | val@20 0.0185 | test@20 0.0321 | best 0.0204 (ep 100)
+2025-12-09 19:17:23,256 - [Morgan-GraphSAGE] Epoch 0125 | loss 0.8522 | val@20 0.0205 | test@20 0.0355 | best 0.0205 (ep 125)
+2025-12-09 19:17:29,160 - [Morgan-GraphSAGE] Epoch 0130 | loss 0.8143 | val@20 0.0261 | test@20 0.0402 | best 0.0261 (ep 130)
+2025-12-09 19:17:35,040 - [Morgan-GraphSAGE] Epoch 0135 | loss 0.8065 | val@20 0.0212 | test@20 0.0396 | best 0.0261 (ep 130)
+2025-12-09 19:17:40,932 - [Morgan-GraphSAGE] Epoch 0140 | loss 0.7951 | val@20 0.0258 | test@20 0.0442 | best 0.0261 (ep 130)
+2025-12-09 19:17:46,798 - [Morgan-GraphSAGE] Epoch 0145 | loss 0.7919 | val@20 0.0151 | test@20 0.0357 | best 0.0261 (ep 130)
+2025-12-09 19:17:52,691 - [Morgan-GraphSAGE] Epoch 0150 | loss 0.7891 | val@20 0.0143 | test@20 0.0350 | best 0.0261 (ep 130)
+2025-12-09 19:17:58,587 - [Morgan-GraphSAGE] Epoch 0155 | loss 0.7857 | val@20 0.0118 | test@20 0.0331 | best 0.0261 (ep 130)
+2025-12-09 19:18:04,479 - [Morgan-GraphSAGE] Epoch 0160 | loss 0.7822 | val@20 0.0128 | test@20 0.0302 | best 0.0261 (ep 130)
+2025-12-09 19:18:10,379 - [Morgan-GraphSAGE] Epoch 0165 | loss 0.7766 | val@20 0.0138 | test@20 0.0295 | best 0.0261 (ep 130)
+2025-12-09 19:18:16,247 - [Morgan-GraphSAGE] Epoch 0170 | loss 0.7737 | val@20 0.0133 | test@20 0.0350 | best 0.0261 (ep 130)
+2025-12-09 19:18:22,124 - [Morgan-GraphSAGE] Epoch 0175 | loss 0.7671 | val@20 0.0165 | test@20 0.0333 | best 0.0261 (ep 130)
+2025-12-09 19:18:27,983 - [Morgan-GraphSAGE] Epoch 0180 | loss 0.7618 | val@20 0.0173 | test@20 0.0333 | best 0.0261 (ep 130)
+2025-12-09 19:18:33,857 - [Morgan-GraphSAGE] Epoch 0185 | loss 0.7581 | val@20 0.0210 | test@20 0.0355 | best 0.0261 (ep 130)
+2025-12-09 19:18:39,712 - [Morgan-GraphSAGE] Epoch 0190 | loss 0.7663 | val@20 0.0259 | test@20 0.0414 | best 0.0261 (ep 130)
+2025-12-09 19:18:45,628 - [Morgan-GraphSAGE] Epoch 0195 | loss 0.7586 | val@20 0.0304 | test@20 0.0432 | best 0.0304 (ep 195)
+2025-12-09 19:18:51,515 - [Morgan-GraphSAGE] Epoch 0200 | loss 0.7449 | val@20 0.0305 | test@20 0.0471 | best 0.0305 (ep 200)
+2025-12-09 19:18:51,515 - [Morgan-GraphSAGE] Done. Best val@20=0.0305 | test@20=0.0471 (epoch 200)
+2025-12-09 19:18:51,516 - 
+================================================================================
+2025-12-09 19:18:51,516 - Training Morgan-GraphTransformer Baseline
+2025-12-09 19:18:51,516 - ================================================================================
+2025-12-09 19:18:51,551 - [Morgan-GraphTransformer] Starting minimal baseline training (epochs=200, lr=0.005, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 19:18:52,952 - [Morgan-GraphTransformer] Epoch 0001 | loss 1.3875 | val@20 0.0003 | test@20 0.0003 | best 0.0003 (ep 1)
+2025-12-09 19:18:57,972 - [Morgan-GraphTransformer] Epoch 0005 | loss 1.3175 | val@20 0.0003 | test@20 0.0002 | best 0.0003 (ep 5)
+2025-12-09 19:19:04,187 - [Morgan-GraphTransformer] Epoch 0010 | loss 1.3480 | val@20 0.0000 | test@20 0.0000 | best 0.0003 (ep 5)
+2025-12-09 19:19:10,412 - [Morgan-GraphTransformer] Epoch 0015 | loss 1.3824 | val@20 0.0000 | test@20 0.0000 | best 0.0003 (ep 5)
+2025-12-09 19:19:16,649 - [Morgan-GraphTransformer] Epoch 0020 | loss 1.3833 | val@20 0.0000 | test@20 0.0001 | best 0.0003 (ep 5)
+2025-12-09 19:19:22,858 - [Morgan-GraphTransformer] Epoch 0025 | loss 1.3762 | val@20 0.0001 | test@20 0.0003 | best 0.0003 (ep 5)
+2025-12-09 19:19:29,059 - [Morgan-GraphTransformer] Epoch 0030 | loss 1.3433 | val@20 0.0003 | test@20 0.0004 | best 0.0003 (ep 5)
+2025-12-09 19:19:35,259 - [Morgan-GraphTransformer] Epoch 0035 | loss 1.2337 | val@20 0.0001 | test@20 0.0001 | best 0.0003 (ep 5)
+2025-12-09 19:19:41,469 - [Morgan-GraphTransformer] Epoch 0040 | loss 1.1699 | val@20 0.0000 | test@20 0.0000 | best 0.0003 (ep 5)
+2025-12-09 19:19:47,675 - [Morgan-GraphTransformer] Epoch 0045 | loss 1.1404 | val@20 0.0001 | test@20 0.0001 | best 0.0003 (ep 5)
+2025-12-09 19:19:53,876 - [Morgan-GraphTransformer] Epoch 0050 | loss 1.1620 | val@20 0.0002 | test@20 0.0001 | best 0.0003 (ep 5)
+2025-12-09 19:20:00,060 - [Morgan-GraphTransformer] Epoch 0055 | loss 1.0889 | val@20 0.0004 | test@20 0.0004 | best 0.0004 (ep 55)
+2025-12-09 19:20:06,257 - [Morgan-GraphTransformer] Epoch 0060 | loss 1.0355 | val@20 0.0010 | test@20 0.0007 | best 0.0010 (ep 60)
+2025-12-09 19:20:12,454 - [Morgan-GraphTransformer] Epoch 0065 | loss 1.0188 | val@20 0.0018 | test@20 0.0011 | best 0.0018 (ep 65)
+2025-12-09 19:20:18,656 - [Morgan-GraphTransformer] Epoch 0070 | loss 0.9848 | val@20 0.0037 | test@20 0.0027 | best 0.0037 (ep 70)
+2025-12-09 19:20:24,843 - [Morgan-GraphTransformer] Epoch 0075 | loss 0.9660 | val@20 0.0034 | test@20 0.0033 | best 0.0037 (ep 70)
+2025-12-09 19:20:31,049 - [Morgan-GraphTransformer] Epoch 0080 | loss 0.9511 | val@20 0.0057 | test@20 0.0055 | best 0.0057 (ep 80)
+2025-12-09 19:20:37,247 - [Morgan-GraphTransformer] Epoch 0085 | loss 0.9319 | val@20 0.0082 | test@20 0.0072 | best 0.0082 (ep 85)
+2025-12-09 19:20:43,471 - [Morgan-GraphTransformer] Epoch 0090 | loss 0.9165 | val@20 0.0074 | test@20 0.0098 | best 0.0082 (ep 85)
+2025-12-09 19:20:49,670 - [Morgan-GraphTransformer] Epoch 0095 | loss 0.9067 | val@20 0.0089 | test@20 0.0108 | best 0.0089 (ep 95)
+2025-12-09 19:20:55,871 - [Morgan-GraphTransformer] Epoch 0100 | loss 0.8853 | val@20 0.0089 | test@20 0.0138 | best 0.0089 (ep 95)
+2025-12-09 19:21:02,078 - [Morgan-GraphTransformer] Epoch 0105 | loss 0.8727 | val@20 0.0101 | test@20 0.0182 | best 0.0101 (ep 105)
+2025-12-09 19:21:08,303 - [Morgan-GraphTransformer] Epoch 0110 | loss 0.8564 | val@20 0.0117 | test@20 0.0175 | best 0.0117 (ep 110)
+2025-12-09 19:21:14,524 - [Morgan-GraphTransformer] Epoch 0115 | loss 0.8423 | val@20 0.0113 | test@20 0.0116 | best 0.0117 (ep 110)
+2025-12-09 19:21:20,728 - [Morgan-GraphTransformer] Epoch 0120 | loss 0.8704 | val@20 0.0091 | test@20 0.0126 | best 0.0117 (ep 110)
+2025-12-09 19:21:26,966 - [Morgan-GraphTransformer] Epoch 0125 | loss 0.8764 | val@20 0.0076 | test@20 0.0110 | best 0.0117 (ep 110)
+2025-12-09 19:21:33,244 - [Morgan-GraphTransformer] Epoch 0130 | loss 0.8340 | val@20 0.0151 | test@20 0.0222 | best 0.0151 (ep 130)
+2025-12-09 19:21:39,460 - [Morgan-GraphTransformer] Epoch 0135 | loss 0.8362 | val@20 0.0255 | test@20 0.0321 | best 0.0255 (ep 135)
+2025-12-09 19:21:45,646 - [Morgan-GraphTransformer] Epoch 0140 | loss 0.8188 | val@20 0.0201 | test@20 0.0349 | best 0.0255 (ep 135)
+2025-12-09 19:21:51,853 - [Morgan-GraphTransformer] Epoch 0145 | loss 0.8085 | val@20 0.0188 | test@20 0.0299 | best 0.0255 (ep 135)
+2025-12-09 19:21:58,058 - [Morgan-GraphTransformer] Epoch 0150 | loss 0.7979 | val@20 0.0190 | test@20 0.0257 | best 0.0255 (ep 135)
+2025-12-09 19:22:04,265 - [Morgan-GraphTransformer] Epoch 0155 | loss 0.7904 | val@20 0.0167 | test@20 0.0227 | best 0.0255 (ep 135)
+2025-12-09 19:22:10,502 - [Morgan-GraphTransformer] Epoch 0160 | loss 0.7849 | val@20 0.0180 | test@20 0.0251 | best 0.0255 (ep 135)
+2025-12-09 19:22:16,724 - [Morgan-GraphTransformer] Epoch 0165 | loss 0.7889 | val@20 0.0222 | test@20 0.0226 | best 0.0255 (ep 135)
+2025-12-09 19:22:22,910 - [Morgan-GraphTransformer] Epoch 0170 | loss 0.8746 | val@20 0.0016 | test@20 0.0065 | best 0.0255 (ep 135)
+2025-12-09 19:22:29,152 - [Morgan-GraphTransformer] Epoch 0175 | loss 0.7964 | val@20 0.0036 | test@20 0.0069 | best 0.0255 (ep 135)
+2025-12-09 19:22:35,407 - [Morgan-GraphTransformer] Epoch 0180 | loss 0.7853 | val@20 0.0323 | test@20 0.0383 | best 0.0323 (ep 180)
+2025-12-09 19:22:41,636 - [Morgan-GraphTransformer] Epoch 0185 | loss 0.7861 | val@20 0.0414 | test@20 0.0398 | best 0.0414 (ep 185)
+2025-12-09 19:22:47,841 - [Morgan-GraphTransformer] Epoch 0190 | loss 0.7722 | val@20 0.0339 | test@20 0.0460 | best 0.0414 (ep 185)
+2025-12-09 19:22:54,048 - [Morgan-GraphTransformer] Epoch 0195 | loss 0.7658 | val@20 0.0332 | test@20 0.0357 | best 0.0414 (ep 185)
+2025-12-09 19:23:00,266 - [Morgan-GraphTransformer] Epoch 0200 | loss 0.7599 | val@20 0.0156 | test@20 0.0247 | best 0.0414 (ep 185)
+2025-12-09 19:23:00,266 - [Morgan-GraphTransformer] Done. Best val@20=0.0414 | test@20=0.0398 (epoch 185)
+2025-12-09 19:23:00,267 - 
+================================================================================
+2025-12-09 19:23:00,267 - Training Morgan-GAT Baseline
+2025-12-09 19:23:00,267 - ================================================================================
+2025-12-09 19:23:00,321 - [Morgan-GAT] Starting minimal baseline training (epochs=200, lr=0.005, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 19:23:01,683 - [Morgan-GAT] Epoch 0001 | loss 1.3882 | val@20 0.0001 | test@20 0.0000 | best 0.0001 (ep 1)
+2025-12-09 19:23:06,526 - [Morgan-GAT] Epoch 0005 | loss 1.3767 | val@20 0.0000 | test@20 0.0000 | best 0.0001 (ep 1)
+2025-12-09 19:23:12,560 - [Morgan-GAT] Epoch 0010 | loss 1.3875 | val@20 0.0011 | test@20 0.0006 | best 0.0011 (ep 10)
+2025-12-09 19:23:18,580 - [Morgan-GAT] Epoch 0015 | loss 1.3866 | val@20 0.0000 | test@20 0.0000 | best 0.0011 (ep 10)
+2025-12-09 19:23:24,609 - [Morgan-GAT] Epoch 0020 | loss 1.3762 | val@20 0.0001 | test@20 0.0000 | best 0.0011 (ep 10)
+2025-12-09 19:23:30,656 - [Morgan-GAT] Epoch 0025 | loss 1.2954 | val@20 0.0000 | test@20 0.0000 | best 0.0011 (ep 10)
+2025-12-09 19:23:36,658 - [Morgan-GAT] Epoch 0030 | loss 1.2708 | val@20 0.0000 | test@20 0.0000 | best 0.0011 (ep 10)
+2025-12-09 19:23:42,753 - [Morgan-GAT] Epoch 0035 | loss 1.1702 | val@20 0.0006 | test@20 0.0001 | best 0.0011 (ep 10)
+2025-12-09 19:23:48,819 - [Morgan-GAT] Epoch 0040 | loss 1.1398 | val@20 0.0006 | test@20 0.0001 | best 0.0011 (ep 10)
+2025-12-09 19:23:54,855 - [Morgan-GAT] Epoch 0045 | loss 1.1222 | val@20 0.0009 | test@20 0.0007 | best 0.0011 (ep 10)
+2025-12-09 19:24:00,871 - [Morgan-GAT] Epoch 0050 | loss 1.0941 | val@20 0.0012 | test@20 0.0010 | best 0.0012 (ep 50)
+2025-12-09 19:24:06,904 - [Morgan-GAT] Epoch 0055 | loss 1.0810 | val@20 0.0015 | test@20 0.0011 | best 0.0015 (ep 55)
+2025-12-09 19:24:12,943 - [Morgan-GAT] Epoch 0060 | loss 1.0548 | val@20 0.0013 | test@20 0.0009 | best 0.0015 (ep 55)
+2025-12-09 19:24:18,962 - [Morgan-GAT] Epoch 0065 | loss 1.0444 | val@20 0.0016 | test@20 0.0006 | best 0.0016 (ep 65)
+2025-12-09 19:24:24,991 - [Morgan-GAT] Epoch 0070 | loss 1.0311 | val@20 0.0018 | test@20 0.0008 | best 0.0018 (ep 70)
+2025-12-09 19:24:31,030 - [Morgan-GAT] Epoch 0075 | loss 1.0080 | val@20 0.0024 | test@20 0.0012 | best 0.0024 (ep 75)
+2025-12-09 19:24:37,057 - [Morgan-GAT] Epoch 0080 | loss 1.0613 | val@20 0.0290 | test@20 0.0050 | best 0.0290 (ep 80)
+2025-12-09 19:24:43,070 - [Morgan-GAT] Epoch 0085 | loss 1.0486 | val@20 0.0248 | test@20 0.0055 | best 0.0290 (ep 80)
+2025-12-09 19:24:49,097 - [Morgan-GAT] Epoch 0090 | loss 1.0131 | val@20 0.0028 | test@20 0.0013 | best 0.0290 (ep 80)
+2025-12-09 19:24:55,147 - [Morgan-GAT] Epoch 0095 | loss 0.9840 | val@20 0.0217 | test@20 0.0050 | best 0.0290 (ep 80)
+2025-12-09 19:25:01,179 - [Morgan-GAT] Epoch 0100 | loss 0.9641 | val@20 0.0278 | test@20 0.0081 | best 0.0290 (ep 80)
+2025-12-09 19:25:07,199 - [Morgan-GAT] Epoch 0105 | loss 0.9520 | val@20 0.0205 | test@20 0.0040 | best 0.0290 (ep 80)
+2025-12-09 19:25:13,226 - [Morgan-GAT] Epoch 0110 | loss 0.9478 | val@20 0.0269 | test@20 0.0078 | best 0.0290 (ep 80)
+2025-12-09 19:25:19,239 - [Morgan-GAT] Epoch 0115 | loss 0.9317 | val@20 0.0264 | test@20 0.0054 | best 0.0290 (ep 80)
+2025-12-09 19:25:25,265 - [Morgan-GAT] Epoch 0120 | loss 0.9357 | val@20 0.0276 | test@20 0.0060 | best 0.0290 (ep 80)
+2025-12-09 19:25:31,312 - [Morgan-GAT] Epoch 0125 | loss 0.9072 | val@20 0.0306 | test@20 0.0064 | best 0.0306 (ep 125)
+2025-12-09 19:25:37,324 - [Morgan-GAT] Epoch 0130 | loss 0.8975 | val@20 0.0273 | test@20 0.0065 | best 0.0306 (ep 125)
+2025-12-09 19:25:43,375 - [Morgan-GAT] Epoch 0135 | loss 0.8780 | val@20 0.0270 | test@20 0.0075 | best 0.0306 (ep 125)
+2025-12-09 19:25:49,472 - [Morgan-GAT] Epoch 0140 | loss 0.9041 | val@20 0.0130 | test@20 0.0057 | best 0.0306 (ep 125)
+2025-12-09 19:25:55,532 - [Morgan-GAT] Epoch 0145 | loss 0.9136 | val@20 0.0356 | test@20 0.0083 | best 0.0356 (ep 145)
+2025-12-09 19:26:01,554 - [Morgan-GAT] Epoch 0150 | loss 0.9208 | val@20 0.0324 | test@20 0.0081 | best 0.0356 (ep 145)
+2025-12-09 19:26:07,606 - [Morgan-GAT] Epoch 0155 | loss 0.8903 | val@20 0.0331 | test@20 0.0071 | best 0.0356 (ep 145)
+2025-12-09 19:26:13,652 - [Morgan-GAT] Epoch 0160 | loss 0.8749 | val@20 0.0339 | test@20 0.0089 | best 0.0356 (ep 145)
+2025-12-09 19:26:19,671 - [Morgan-GAT] Epoch 0165 | loss 0.8661 | val@20 0.0289 | test@20 0.0080 | best 0.0356 (ep 145)
+2025-12-09 19:26:25,699 - [Morgan-GAT] Epoch 0170 | loss 0.8504 | val@20 0.0340 | test@20 0.0079 | best 0.0356 (ep 145)
+2025-12-09 19:26:31,738 - [Morgan-GAT] Epoch 0175 | loss 0.8639 | val@20 0.0192 | test@20 0.0084 | best 0.0356 (ep 145)
+2025-12-09 19:26:37,759 - [Morgan-GAT] Epoch 0180 | loss 0.8275 | val@20 0.0432 | test@20 0.0112 | best 0.0432 (ep 180)
+2025-12-09 19:26:43,791 - [Morgan-GAT] Epoch 0185 | loss 0.8193 | val@20 0.0272 | test@20 0.0094 | best 0.0432 (ep 180)
+2025-12-09 19:26:49,805 - [Morgan-GAT] Epoch 0190 | loss 0.8058 | val@20 0.0318 | test@20 0.0111 | best 0.0432 (ep 180)
+2025-12-09 19:26:55,823 - [Morgan-GAT] Epoch 0195 | loss 0.8081 | val@20 0.0378 | test@20 0.0124 | best 0.0432 (ep 180)
+2025-12-09 19:27:01,852 - [Morgan-GAT] Epoch 0200 | loss 0.7972 | val@20 0.0369 | test@20 0.0118 | best 0.0432 (ep 180)
+2025-12-09 19:27:01,852 - [Morgan-GAT] Done. Best val@20=0.0432 | test@20=0.0112 (epoch 180)
+2025-12-09 19:27:01,852 - 
+================================================================================
+2025-12-09 19:27:01,852 - FINAL RESULTS - MORGAN BASELINES
+2025-12-09 19:27:01,852 - ================================================================================
+2025-12-09 19:27:01,853 - Morgan-GCN:
+2025-12-09 19:27:01,853 -   Validation Hits@20: 0.0610
+2025-12-09 19:27:01,853 -   Test Hits@20: 0.0536
+2025-12-09 19:27:01,853 -   Val-Test Gap: 0.0073 (12.0% relative)
+2025-12-09 19:27:01,853 - Morgan-GraphSAGE:
+2025-12-09 19:27:01,853 -   Validation Hits@20: 0.0305
+2025-12-09 19:27:01,853 -   Test Hits@20: 0.0471
+2025-12-09 19:27:01,853 -   Val-Test Gap: -0.0165 (-54.2% relative)
+2025-12-09 19:27:01,853 - Morgan-GraphTransformer:
+2025-12-09 19:27:01,853 -   Validation Hits@20: 0.0414
+2025-12-09 19:27:01,853 -   Test Hits@20: 0.0398
+2025-12-09 19:27:01,853 -   Val-Test Gap: 0.0015 (3.7% relative)
+2025-12-09 19:27:01,853 - Morgan-GAT:
+2025-12-09 19:27:01,853 -   Validation Hits@20: 0.0432
+2025-12-09 19:27:01,853 -   Test Hits@20: 0.0112
+2025-12-09 19:27:01,854 -   Val-Test Gap: 0.0320 (74.0% relative)
+2025-12-09 19:27:01,854 - ================================================================================
+2025-12-09 19:27:01,854 - Results logged to: logs/morgan_baselines_20251209_191058/morgan_baselines.log

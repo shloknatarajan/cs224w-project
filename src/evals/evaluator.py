@@ -18,7 +18,11 @@ def evaluate(model, data, evaluator, pos_edges, neg_edges, batch_size=50000):
     """
     model.eval()
     with torch.no_grad():
-        z = model.encode(data.edge_index)
+        # Check if model needs input features (Morgan models) or uses embeddings
+        if hasattr(data, 'x') and data.x is not None:
+            z = model.encode(data.edge_index, x=data.x)
+        else:
+            z = model.encode(data.edge_index)
 
         # Positive scores - batch process to avoid OOM
         pos_scores_list = []
