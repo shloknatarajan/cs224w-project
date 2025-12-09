@@ -27,8 +27,13 @@ torchaudio = ">=2.0,<3"
 [pypi-dependencies]
 torch-geometric = ">=2.7.0, <3"
 rdkit-pypi = ">=2022.9.5, <2023"
+transformers = ">=4.30.0, <5"
+safetensors = ">=0.4.0, <1"
 
 [tasks]
 train-baselines = "python train_baselines.py"
 train-advanced = "python train_advanced.py"
 train-seal = "python train_seal.py"
+train-morgan = "python train_morgan_baselines.py"
+train-chemberta = "python train_chemberta_baselines.py"
+train-chemberta-fallback = "python train_chemberta_fallback.py"
