@@ -63,7 +63,11 @@ def setup_logging(args) -> str:
         features.append("chemberta")
     if args.drug_targets:
         features.append("dti")
+
     feature_suffix = "_" + "_".join(features) if features else "_baseline"
+    
+    if args.all:
+        feature_suffix = "_all"
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_dir = f"logs/ddi_{model_name}{feature_suffix}_{timestamp}"
