@@ -12,6 +12,10 @@
 **Log**: `ddi_gcn_all_20251210_033923/ddi_gcn_all.log`
 **Date**: December 10, 2025
 
+**What this model is**: A 2-layer GCN encoder over the DDI graph paired with an MLP decoder. It ingests concatenated molecular and target context (Morgan, PubChem, ChemBERTa, drug-target) so message passing refines already expressive node descriptors instead of creating representations from scratch.
+
+**Why the results matter**: The strong test lift shows that combining heterogeneous chemistry and biology signals is the primary driver of performance on ogbl-ddi. This run is a reliable reference for future improvements (e.g., better pooling or longer training), and its log captures how long training impacts stability.
+
 | Metric | Validation | Test | Best Epoch |
 |--------|-----------|------|------------|
 | **Hits@10** | - | **35.29%** | 1685 |
@@ -43,6 +47,10 @@
 **Log**: `hybrid_gcn_quick_tuning_20251210_015911/quick_tuning.log`
 **Date**: December 10, 2025
 
+**What this model is**: A GCN encoder that mixes ChemBERTa semantic embeddings with light structural features (degree, clustering, core number, PageRank) and an adaptive interpolation parameter α to balance feature- vs. structure-dominant messages.
+
+**Why the results matter**: Though accuracy lags, these sweeps test whether lightweight structural priors can close the gap without expensive feature pipelines. The adaptive α traces reveal sensitivity to structure vs. features, useful for designing future curriculum or feature-drop experiments.
+
 **Best Configuration** (Experiment 3):
 | Metric | Validation | Test | Best Epoch |
 |--------|-----------|------|------------|
@@ -66,6 +74,10 @@
 **Log**: `gdin_20251209_233115/gdin.log`
 **Date**: December 9, 2025
 
+**What this model is**: GDIN introduces deconfounding layers that aim to mitigate spurious correlations by separating causal signals from noisy graph patterns. It uses an AUC-oriented loss early in training to emphasize ranking over raw likelihood.
+
+**Why the results matter**: Despite modest metrics, GDIN probes whether causal regularization helps DDI when node attributes are scarce. The large val-test gap signals current hyperparameters overfit; still, the run documents how deconfounding behaves on dense pharmacological graphs.
+
 | Metric | Validation | Test | Best Epoch |
 |--------|-----------|------|------------|
 | **Hits@20** | **19.59%** | **10.95%** | 235 |
@@ -86,6 +98,10 @@
 ### 4. Node2Vec + GCN
 **Log**: `node2vec_gcn_20251209_225240/node2vec_gcn.log`
 **Date**: December 9, 2025
+
+**What this model is**: Offline Node2Vec embeddings (random walk-based) pretrain node representations that capture proximity and community structure; a shallow GCN then fine-tunes these embeddings with supervised link signals.
+
+**Why the results matter**: This pipeline is inexpensive and transferable to graphs lacking rich features. The small val-test gap suggests Node2Vec provides stable inductive bias; these logs are a good baseline for cold-start settings or when external features are unavailable.
 
 | Metric | Validation | Test | Best Epoch |
 |--------|-----------|------|------------|
@@ -111,6 +127,10 @@
 **Log**: `baselines_20251209_185813/baselines.log`
 **Date**: December 9, 2025
 
+**What these models are**: Vanilla 2-layer GCN, GAT, GraphSAGE, and GraphTransformer trained solely on adjacency information. Decoders are simple bilinear or MLP heads without feature augmentation.
+
+**Why the results matter**: These runs isolate the value of structure-only learning. The gaps vs. feature-rich models quantify the contribution of molecular descriptors, and the overfitting patterns warn against scaling depth without adding signal.
+
 | Model | Validation Hits@20 | Test Hits@20 | Best Epoch | Val-Test Gap |
 |-------|-------------------|--------------|------------|--------------|
 | **GCN** | 13.59% | 11.02% | 135 | 2.58% (19.0%) |
@@ -135,6 +155,10 @@
 ### 6. Morgan Fingerprint Baselines
 **Log**: `morgan_baselines_20251209_191058/morgan_baselines.log`
 **Date**: December 9, 2025
+
+**What these models are**: The same set of shallow GNNs as above, but operating on 2048-d Morgan fingerprints only, without structural augmentation from the graph. Message passing refines fixed-size fingerprints but cannot create new chemistry context.
+
+**Why the results matter**: Performance drop shows fingerprints alone are insufficient for DDI prediction in this setting. These baselines establish how much lift comes from adding graph context or richer embeddings, guiding feature ablations.
 
 | Model | Validation Hits@20 | Test Hits@20 | Best Epoch | Val-Test Gap |
 |-------|-------------------|--------------|------------|--------------|
