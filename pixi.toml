@@ -52,3 +52,7 @@ train-morgan = "python train_morgan_baselines.py"
 train-chemberta = "python train_chemberta_baselines.py"
 train-chemberta-fallback = "python train_chemberta_fallback.py"
 train-node2vec = "python train_node2vec_baselines.py"
+
+# Reference DDI models with external features
+train-ddi-reference = "python train_ddi_reference.py"
+train-ddi-external = "python train_ddi_reference_external.py"
