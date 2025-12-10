@@ -161,3 +161,32 @@ Running 20 quick experiments...
 2025-12-10 02:59:36,299 - [Quick-7] Epoch 0035 | loss 0.8917 | val@20 0.1689 | test@20 0.1295 | best 0.1689 (ep 35)
 2025-12-10 03:00:34,765 - [Quick-7] Epoch 0040 | loss 0.8437 | val@20 0.0977 | test@20 0.0991 | best 0.1689 (ep 35)
 2025-12-10 03:01:32,973 - [Quick-7] Epoch 0045 | loss 0.8058 | val@20 0.0760 | test@20 0.1019 | best 0.1689 (ep 35)
+2025-12-10 03:02:39,713 - [Quick-7] Epoch 0050 | loss 0.8578 | val@20 0.0992 | test@20 0.0364 | best 0.1689 (ep 35) | α=0.0587
+2025-12-10 03:02:39,713 - [Quick-7] Done. Best val@20=0.1689 | test@20=0.1295 (epoch 35)
+[Quick-7] Final α=0.058704 (started at 0.100000, change: -0.041296 or -41.3%)
+2025-12-10 03:02:39,713 - [Exp 7] Result: val@20=0.1689 (-28.1%)
+2025-12-10 03:02:39,720 - 
+[Exp 8] Testing: hidden_dim=96, decoder_dropout=0.2, lr=0.02, weight_decay=0.0002
+2025-12-10 03:02:39,744 - [Quick-8] Simple decoder detected with α parameter
+2025-12-10 03:02:39,744 - [Quick-8] Initial α value: 0.100000
+2025-12-10 03:02:39,745 - [Quick-8] Starting hybrid model training (epochs=50, lr=0.02, wd=0.0002, batch_size=5000, eval_every=5)
+2025-12-10 03:03:19,892 - [Quick-8] Epoch 0001 | loss 1.3954 | val@20 0.0026 | test@20 0.0032 | best 0.0026 (ep 1) | α=0.0800
+2025-12-10 03:04:04,951 - [Quick-8] Epoch 0005 | loss 1.3678 | val@20 0.0010 | test@20 0.0019 | best 0.0026 (ep 1)
+2025-12-10 03:04:51,682 - [Quick-8] Epoch 0010 | loss 1.3461 | val@20 0.0014 | test@20 0.0018 | best 0.0026 (ep 1)
+2025-12-10 03:05:34,917 - [Quick-8] Epoch 0015 | loss 1.3122 | val@20 0.0000 | test@20 0.0001 | best 0.0026 (ep 1)
+2025-12-10 03:06:32,023 - [Quick-8] Epoch 0020 | loss 1.3055 | val@20 0.0136 | test@20 0.0191 | best 0.0136 (ep 20)
+2025-12-10 03:07:18,846 - [Quick-8] Epoch 0025 | loss 1.1574 | val@20 0.0389 | test@20 0.0138 | best 0.0389 (ep 25)
+2025-12-10 03:08:16,050 - [Quick-8] Epoch 0030 | loss 1.0398 | val@20 0.0494 | test@20 0.0157 | best 0.0494 (ep 30)
+2025-12-10 03:09:02,413 - [Quick-8] Epoch 0035 | loss 0.9704 | val@20 0.0165 | test@20 0.0098 | best 0.0494 (ep 30)
+2025-12-10 03:09:49,117 - [Quick-8] Epoch 0040 | loss 0.9524 | val@20 0.0477 | test@20 0.0164 | best 0.0494 (ep 30)
+2025-12-10 03:10:40,597 - [Quick-8] Epoch 0045 | loss 0.9178 | val@20 0.0414 | test@20 0.0173 | best 0.0494 (ep 30)
+2025-12-10 03:11:28,950 - [Quick-8] Epoch 0050 | loss 0.9059 | val@20 0.0275 | test@20 0.0264 | best 0.0494 (ep 30) | α=-0.0127
+2025-12-10 03:11:28,950 - [Quick-8] Done. Best val@20=0.0494 | test@20=0.0157 (epoch 30)
+[Quick-8] Final α=-0.012708 (started at 0.100000, change: -0.112708 or -112.7%)
+2025-12-10 03:11:28,950 - [Exp 8] Result: val@20=0.0494 (-79.0%)
+2025-12-10 03:11:28,956 - 
+[Exp 9] Testing: hidden_dim=160, decoder_dropout=0.4, lr=0.02, weight_decay=5e-05
+2025-12-10 03:11:28,976 - [Quick-9] Simple decoder detected with α parameter
+2025-12-10 03:11:28,976 - [Quick-9] Initial α value: 0.100000
+2025-12-10 03:11:28,976 - [Quick-9] Starting hybrid model training (epochs=50, lr=0.02, wd=5e-05, batch_size=5000, eval_every=5)
+2025-12-10 03:11:58,662 - [Quick-9] Epoch 0001 | loss 1.3842 | val@20 0.0022 | test@20 0.0030 | best 0.0022 (ep 1) | α=0.1200

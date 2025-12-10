@@ -136,5 +136,51 @@
     "best_epoch": 40,
     "improvement_pct": -70.1466035211043,
     "success": true
+  },
+  {
+    "exp_id": 7,
+    "config": {
+      "hidden_dim": 128,
+      "num_layers": 3,
+      "decoder_dropout": 0.2,
+      "lr": 0.005,
+      "weight_decay": 0.0002,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.16891279431264,
+    "test_hits": 0.12953127223966018,
+    "best_epoch": 35,
+    "improvement_pct": -28.091615873716474,
+    "success": true
+  },
+  {
+    "exp_id": 8,
+    "config": {
+      "hidden_dim": 96,
+      "num_layers": 2,
+      "decoder_dropout": 0.2,
+      "lr": 0.02,
+      "weight_decay": 0.0002,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.04938983736487651,
+    "test_hits": 0.01566421203245211,
+    "best_epoch": 30,
+    "improvement_pct": -78.97410073866475,
+    "success": true
   }
 ]
