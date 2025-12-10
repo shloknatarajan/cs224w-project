@@ -1,0 +1,27 @@
+2025-12-09 21:51:19,192 - Using device: cuda
+2025-12-09 21:51:19,192 - Logging results to: logs/hybrid_20251209_215119/hybrid.log
+2025-12-09 21:51:19,192 - Loading dataset with ChemBERTa embeddings + SMILES mask...
+2025-12-09 21:51:19,192 - Loading dataset ogbl-ddi...
+2025-12-09 21:51:19,279 - Dataset loaded: 4267 nodes
+2025-12-09 21:51:19,440 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 21:51:19,441 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 21:51:19,454 - Computing structural features (this may take a moment)...
+2025-12-09 21:55:18,834 - Computed structural features (6 dims):
+2025-12-09 21:55:18,836 -   - Degree: mean=4.473, std=1.892
+2025-12-09 21:55:18,837 -   - Clustering: mean=0.514, std=0.219
+2025-12-09 21:55:18,837 -   - Core number: mean=5.122, std=1.539
+2025-12-09 21:55:18,837 -   - PageRank: mean=0.105, std=0.075
+2025-12-09 21:55:18,838 - Added self-loops: Total edges now = 1072178
+2025-12-09 21:55:18,839 - Loading cached ChemBERTa features from data/chemberta_features_768.pt
+2025-12-09 21:55:18,848 - Loading cached SMILES mask from data/chemberta_features_768_mask.pt
+2025-12-09 21:55:18,849 - Attached ChemBERTa features: data.x shape = torch.Size([4267, 768])
+2025-12-09 21:55:18,852 - Attached SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-09 21:55:18,852 - Attached structural features: data.struct_features shape = torch.Size([4267, 6])
+2025-12-09 21:55:18,857 - Dataset loaded with ChemBERTa features: data.x.shape = torch.Size([4267, 768])
+2025-12-09 21:55:18,857 - SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-09 21:55:18,857 - 
+================================================================================
+2025-12-09 21:55:18,857 - Training Hybrid-GCN-ChemAware
+2025-12-09 21:55:18,857 - ================================================================================
+2025-12-09 21:55:18,895 - Model: Hybrid-GCN (2 layers, dropout=0.0) | Structure-only encoder + chemistry_aware decoder | hidden=128, chem_dim=768
+2025-12-09 21:55:18,898 - [Hybrid-GCN-ChemAware] Starting hybrid model training (epochs=200, lr=0.01, wd=0.0001, batch_size=50000, eval_every=5)

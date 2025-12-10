@@ -83,7 +83,22 @@ def train_minimal_baseline(
         model.train()
         optimizer.zero_grad()
 
-        z = model.encode(train_edge_index)
+        # Check if model needs input features (Morgan/ChemBERTa models) or uses embeddings
+        if hasattr(data, 'x') and data.x is not None:
+            # Check if model also needs smiles_mask (ChemBERTa fallback models)
+            struct_features = getattr(data, 'struct_features', None)
+            if hasattr(data, 'smiles_mask') and data.smiles_mask is not None:
+                z = model.encode(
+                    train_edge_index,
+                    x=data.x,
+                    smiles_mask=data.smiles_mask,
+                    structural_features=struct_features,
+                )
+            else:
+                z = model.encode(train_edge_index, x=data.x, structural_features=struct_features)
+        else:
+            z = model.encode(train_edge_index)
+
         neg_edges = negative_sampling(
             edge_index=train_edge_index,
             num_nodes=num_nodes,

@@ -1,0 +1,40 @@
+/home/ubuntu/cs224w-project/.pixi/envs/default/lib/python3.11/site-packages/outdated/__init__.py:36: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+2025-12-09 18:58:32,138 - Using device: cuda
+2025-12-09 18:58:32,138 - Logging results to: logs/morgan_baselines_20251209_185832/morgan_baselines.log
+2025-12-09 18:58:32,138 - Loading dataset with Morgan fingerprints...
+2025-12-09 18:58:32,138 - Loading dataset ogbl-ddi...
+/home/ubuntu/cs224w-project/.pixi/envs/default/lib/python3.11/site-packages/ogb/linkproppred/dataset_pyg.py:65: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.data, self.slices = torch.load(self.processed_paths[0])
+/home/ubuntu/cs224w-project/.pixi/envs/default/lib/python3.11/site-packages/ogb/linkproppred/dataset_pyg.py:77: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  train = replace_numpy_with_torchtensor(torch.load(osp.join(path, 'train.pt')))
+/home/ubuntu/cs224w-project/.pixi/envs/default/lib/python3.11/site-packages/ogb/linkproppred/dataset_pyg.py:78: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  valid = replace_numpy_with_torchtensor(torch.load(osp.join(path, 'valid.pt')))
+/home/ubuntu/cs224w-project/.pixi/envs/default/lib/python3.11/site-packages/ogb/linkproppred/dataset_pyg.py:79: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  test = replace_numpy_with_torchtensor(torch.load(osp.join(path, 'test.pt')))
+2025-12-09 18:58:32,227 - Dataset loaded: 4267 nodes
+2025-12-09 18:58:32,367 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 18:58:32,367 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 18:58:32,388 - Added self-loops: Total edges now = 1072178
+2025-12-09 18:58:32,388 - Building SMILES features from data/smiles.csv...
+[18:58:32] Explicit valence for atom # 0 N, 4, is greater than permitted
+[18:58:32] Explicit valence for atom # 0 N, 4, is greater than permitted
+[18:58:32] Explicit valence for atom # 0 N, 4, is greater than permitted
+[18:58:33] Unusual charge on atom 0 number of radical electrons set to zero
+2025-12-09 18:58:33,570 - Built SMILES feature matrix: shape=torch.Size([4267, 2048]), missing/invalid SMILES for 1980/4267 nodes
+2025-12-09 18:58:33,609 - Saved SMILES features to data/morgan_features_2048.pt
+2025-12-09 18:58:33,613 - Attached SMILES features: data.x shape = torch.Size([4267, 2048])
+2025-12-09 18:58:33,622 - Dataset loaded with Morgan features: data.x.shape = torch.Size([4267, 2048])
+2025-12-09 18:58:33,625 - 
+================================================================================
+2025-12-09 18:58:33,625 - Training Morgan-GCN Baseline
+2025-12-09 18:58:33,625 - ================================================================================
+2025-12-09 18:58:33,768 - [Morgan-GCN] Starting minimal baseline training (epochs=200, lr=0.01, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 18:58:35,401 - [Morgan-GCN] Epoch 0001 | loss 1.3861 | val@20 0.0135 | test@20 0.0255 | best 0.0135 (ep 1)
+2025-12-09 18:58:40,371 - [Morgan-GCN] Epoch 0005 | loss 1.3852 | val@20 0.0129 | test@20 0.0251 | best 0.0135 (ep 1)
+2025-12-09 18:58:46,550 - [Morgan-GCN] Epoch 0010 | loss 1.3683 | val@20 0.0110 | test@20 0.0106 | best 0.0135 (ep 1)
+2025-12-09 18:58:52,733 - [Morgan-GCN] Epoch 0015 | loss 1.2752 | val@20 0.0135 | test@20 0.0279 | best 0.0135 (ep 15)
+2025-12-09 18:58:58,918 - [Morgan-GCN] Epoch 0020 | loss 1.2229 | val@20 0.0150 | test@20 0.0318 | best 0.0150 (ep 20)
+2025-12-09 18:59:05,128 - [Morgan-GCN] Epoch 0025 | loss 1.1141 | val@20 0.0157 | test@20 0.0377 | best 0.0157 (ep 25)
+2025-12-09 18:59:11,367 - [Morgan-GCN] Epoch 0030 | loss 1.0355 | val@20 0.0175 | test@20 0.0445 | best 0.0175 (ep 30)
+2025-12-09 18:59:17,479 - [Morgan-GCN] Epoch 0035 | loss 1.0046 | val@20 0.0191 | test@20 0.0508 | best 0.0191 (ep 35)

@@ -1,0 +1,80 @@
+2025-12-09 23:06:02,450 - Using device: cuda
+2025-12-09 23:06:02,451 - Logging results to: logs/node2vec_baselines_20251209_230602/node2vec_baselines.log
+2025-12-09 23:06:02,451 - Loading dataset ogbl-ddi...
+2025-12-09 23:06:02,451 - Loading dataset ogbl-ddi...
+2025-12-09 23:06:02,537 - Dataset loaded: 4267 nodes
+2025-12-09 23:06:02,685 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 23:06:02,685 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 23:06:02,705 - Added self-loops: Total edges now = 1072178
+2025-12-09 23:06:02,705 - No smiles_csv_path provided → data.x will not be set.
+2025-12-09 23:06:02,712 - Dataset loaded: 4267 nodes
+2025-12-09 23:06:02,712 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 23:06:02,712 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 23:06:02,712 - 
+================================================================================
+2025-12-09 23:06:02,713 - PRETRAINING NODE2VEC EMBEDDINGS
+2025-12-09 23:06:02,713 - ================================================================================
+2025-12-09 23:06:02,713 - Pretraining Node2Vec embeddings (dim=64, walk_length=20, context=10, walks_per_node=10, neg=1, epochs=3)
+2025-12-09 23:06:02,726 - Pretraining Node2Vec embeddings (dim=64, walk_length=20, context=10, walks_per_node=10, neg=1, epochs=3)
+2025-12-09 23:06:03,302 - [node2vec] epoch 01/3 | loss 4.6332
+2025-12-09 23:06:03,624 - [node2vec] epoch 02/3 | loss 3.5599
+2025-12-09 23:06:03,946 - [node2vec] epoch 03/3 | loss 2.8631
+2025-12-09 23:06:03,947 - Node2Vec pretraining complete. Embeddings shape: torch.Size([4267, 64])
+2025-12-09 23:06:03,947 - 
+================================================================================
+2025-12-09 23:06:03,947 - Training Node2Vec-GCN
+2025-12-09 23:06:03,947 - ================================================================================
+2025-12-09 23:06:03,997 - [Node2Vec-GCN] Starting minimal baseline training (epochs=5, lr=0.01, wd=0.0001, batch_size=50000, eval_every=2)
+2025-12-09 23:06:05,509 - [Node2Vec-GCN] Epoch 0001 | loss 1.3871 | val@20 0.0026 | test@20 0.0013 | best 0.0026 (ep 1)
+2025-12-09 23:06:06,909 - [Node2Vec-GCN] Epoch 0002 | loss 1.3159 | val@20 0.0159 | test@20 0.0227 | best 0.0159 (ep 2)
+2025-12-09 23:06:09,512 - [Node2Vec-GCN] Epoch 0004 | loss 1.2458 | val@20 0.0028 | test@20 0.0037 | best 0.0159 (ep 2)
+2025-12-09 23:06:10,773 - [Node2Vec-GCN] Done. Best val@20=0.0159 | test@20=0.0227 (epoch 2)
+2025-12-09 23:06:10,774 - 
+================================================================================
+2025-12-09 23:06:10,774 - Training Node2Vec-GraphSAGE
+2025-12-09 23:06:10,774 - ================================================================================
+2025-12-09 23:06:10,821 - [Node2Vec-GraphSAGE] Starting minimal baseline training (epochs=5, lr=0.01, wd=0.0001, batch_size=50000, eval_every=2)
+2025-12-09 23:06:12,156 - [Node2Vec-GraphSAGE] Epoch 0001 | loss 1.3882 | val@20 0.0006 | test@20 0.0007 | best 0.0006 (ep 1)
+2025-12-09 23:06:13,541 - [Node2Vec-GraphSAGE] Epoch 0002 | loss 1.3821 | val@20 0.0007 | test@20 0.0007 | best 0.0007 (ep 2)
+2025-12-09 23:06:16,128 - [Node2Vec-GraphSAGE] Epoch 0004 | loss 1.3535 | val@20 0.0000 | test@20 0.0000 | best 0.0007 (ep 2)
+2025-12-09 23:06:17,373 - [Node2Vec-GraphSAGE] Done. Best val@20=0.0007 | test@20=0.0007 (epoch 2)
+2025-12-09 23:06:17,374 - 
+================================================================================
+2025-12-09 23:06:17,374 - Training Node2Vec-GraphTransformer
+2025-12-09 23:06:17,374 - ================================================================================
+2025-12-09 23:06:17,427 - [Node2Vec-GraphTransformer] Starting minimal baseline training (epochs=5, lr=0.005, wd=0.0001, batch_size=50000, eval_every=2)
+2025-12-09 23:06:18,887 - [Node2Vec-GraphTransformer] Epoch 0001 | loss 1.3863 | val@20 0.0004 | test@20 0.0008 | best 0.0004 (ep 1)
+2025-12-09 23:06:20,385 - [Node2Vec-GraphTransformer] Epoch 0002 | loss 1.3848 | val@20 0.0006 | test@20 0.0008 | best 0.0006 (ep 2)
+2025-12-09 23:06:23,177 - [Node2Vec-GraphTransformer] Epoch 0004 | loss 1.3618 | val@20 0.0006 | test@20 0.0009 | best 0.0006 (ep 4)
+2025-12-09 23:06:24,473 - [Node2Vec-GraphTransformer] Done. Best val@20=0.0006 | test@20=0.0009 (epoch 4)
+2025-12-09 23:06:24,474 - 
+================================================================================
+2025-12-09 23:06:24,475 - Training Node2Vec-GAT
+2025-12-09 23:06:24,475 - ================================================================================
+2025-12-09 23:06:24,544 - [Node2Vec-GAT] Starting minimal baseline training (epochs=5, lr=0.005, wd=0.0001, batch_size=50000, eval_every=2)
+2025-12-09 23:06:25,947 - [Node2Vec-GAT] Epoch 0001 | loss 1.3876 | val@20 0.0017 | test@20 0.0000 | best 0.0017 (ep 1)
+2025-12-09 23:06:27,387 - [Node2Vec-GAT] Epoch 0002 | loss 1.3865 | val@20 0.0020 | test@20 0.0002 | best 0.0020 (ep 2)
+2025-12-09 23:06:30,050 - [Node2Vec-GAT] Epoch 0004 | loss 1.3754 | val@20 0.0023 | test@20 0.0011 | best 0.0023 (ep 4)
+2025-12-09 23:06:31,334 - [Node2Vec-GAT] Done. Best val@20=0.0023 | test@20=0.0011 (epoch 4)
+2025-12-09 23:06:31,335 - 
+================================================================================
+2025-12-09 23:06:31,335 - FINAL RESULTS - NODE2VEC BASELINES
+2025-12-09 23:06:31,336 - ================================================================================
+2025-12-09 23:06:31,336 - Node2Vec-GCN:
+2025-12-09 23:06:31,336 -   Validation Hits@20: 0.0159
+2025-12-09 23:06:31,336 -   Test Hits@20:       0.0227
+2025-12-09 23:06:31,336 -   Val-Test Gap:       -0.0068 (-42.9% relative)
+2025-12-09 23:06:31,336 - Node2Vec-GraphSAGE:
+2025-12-09 23:06:31,336 -   Validation Hits@20: 0.0007
+2025-12-09 23:06:31,336 -   Test Hits@20:       0.0007
+2025-12-09 23:06:31,336 -   Val-Test Gap:       -0.0000 (-2.2% relative)
+2025-12-09 23:06:31,336 - Node2Vec-GraphTransformer:
+2025-12-09 23:06:31,336 -   Validation Hits@20: 0.0006
+2025-12-09 23:06:31,336 -   Test Hits@20:       0.0009
+2025-12-09 23:06:31,336 -   Val-Test Gap:       -0.0003 (-48.1% relative)
+2025-12-09 23:06:31,336 - Node2Vec-GAT:
+2025-12-09 23:06:31,336 -   Validation Hits@20: 0.0023
+2025-12-09 23:06:31,336 -   Test Hits@20:       0.0011
+2025-12-09 23:06:31,336 -   Val-Test Gap:       0.0012 (50.8% relative)
+2025-12-09 23:06:31,336 - ================================================================================
+2025-12-09 23:06:31,336 - Results logged to: logs/node2vec_baselines_20251209_230602/node2vec_baselines.log

@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from torch import nn
 from torch.optim import AdamW
 from torch_geometric.nn import SAGEConv, GCNConv
+from torch_geometric.nn.models import Node2Vec
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 from torch_geometric.utils import negative_sampling
 
@@ -30,6 +31,63 @@ class LinkPredictor(nn.Module):
     def forward(self, z: torch.Tensor, edge: torch.Tensor) -> torch.Tensor:
         src, dst = edge[:, 0], edge[:, 1]
         return (z[src] * z[dst]).sum(dim=1)
+
+
+def train_node2vec_embeddings(
+    edge_index: torch.Tensor,
+    num_nodes: int,
+    embedding_dim: int,
+    device: torch.device,
+    *,
+    walk_length: int = 20,
+    context_size: int = 10,
+    walks_per_node: int = 10,
+    num_negative_samples: int = 1,
+    epochs: int = 30,
+    batch_size: int = 256,
+    lr: float = 0.01,
+) -> torch.Tensor:
+    """
+    Lightweight Node2Vec pretraining to provide structural priors.
+
+    Returns:
+        Tensor of shape [num_nodes, embedding_dim] with pretrained embeddings.
+    """
+    if edge_index.numel() > 0 and int(edge_index.max()) + 1 > num_nodes:
+        raise ValueError(
+            f"Edge index contains node id >= num_nodes ({int(edge_index.max()) + 1} vs {num_nodes})"
+        )
+
+    node2vec = Node2Vec(
+        edge_index,
+        embedding_dim=embedding_dim,
+        walk_length=walk_length,
+        context_size=context_size,
+        walks_per_node=walks_per_node,
+        num_negative_samples=num_negative_samples,
+        sparse=True,
+    ).to(device)
+
+    loader = node2vec.loader(batch_size=batch_size, shuffle=True)
+    optimizer = torch.optim.SparseAdam(list(node2vec.parameters()), lr=lr)
+
+    node2vec.train()
+    for epoch in range(1, epochs + 1):
+        total_loss = 0.0
+        for pos_rw, neg_rw in loader:
+            optimizer.zero_grad()
+            loss = node2vec.loss(pos_rw.to(device), neg_rw.to(device))
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.item())
+
+        if epoch == 1 or epoch % max(1, epochs // 5) == 0:
+            avg_loss = total_loss / max(1, len(loader))
+            print(f"[node2vec] epoch {epoch:02d}/{epochs} | loss {avg_loss:.4f}")
+
+    with torch.no_grad():
+        embeddings = node2vec.embedding.weight.detach().clone().cpu()
+    return embeddings
 
 
 class SAGEModel(nn.Module):
@@ -76,6 +134,61 @@ class SAGEModel(nn.Module):
         return self.predictor(z, edge)
 
 
+class Node2VecGCNModel(nn.Module):
+    """
+    GCN encoder that concatenates fixed Node2Vec embeddings with learnable IDs.
+    """
+    def __init__(
+        self,
+        node2vec_embeddings: torch.Tensor,
+        hidden_dim: int,
+        num_layers: int = 2,
+        dropout: float = 0.0,
+        use_bn: bool = True,
+    ):
+        super().__init__()
+        self.dropout = dropout
+        self.use_bn = use_bn
+        num_nodes, node2vec_dim = node2vec_embeddings.size()
+
+        self.id_emb = nn.Embedding(num_nodes, hidden_dim)
+        nn.init.xavier_uniform_(self.id_emb.weight)
+
+        # Keep Node2Vec embeddings fixed to preserve the structural prior
+        self.node2vec_emb = nn.Embedding.from_pretrained(node2vec_embeddings, freeze=True)
+
+        input_dim = hidden_dim + node2vec_dim
+        self.input_proj = nn.Linear(input_dim, hidden_dim)
+
+        convs = []
+        norms = []
+        for _ in range(num_layers):
+            convs.append(GCNConv(hidden_dim, hidden_dim))
+            norms.append(nn.BatchNorm1d(hidden_dim) if use_bn else nn.Identity())
+        self.convs = nn.ModuleList(convs)
+        self.norms = nn.ModuleList(norms)
+        self.predictor = LinkPredictor()
+
+    def encode(self, edge_index: torch.Tensor) -> torch.Tensor:
+        x = torch.cat([self.id_emb.weight, self.node2vec_emb.weight], dim=1)
+        x = self.input_proj(x)
+
+        for conv, norm in zip(self.convs, self.norms):
+            x_new = conv(x, edge_index)
+            x_new = norm(x_new)
+            x_new = F.relu(x_new)
+            if self.dropout > 0:
+                x_new = F.dropout(x_new, p=self.dropout, training=self.training)
+            if x_new.shape == x.shape:
+                x = x + x_new
+            else:
+                x = x_new
+        return x
+
+    def decode(self, z: torch.Tensor, edge: torch.Tensor) -> torch.Tensor:
+        return self.predictor(z, edge)
+
+
 @torch.no_grad()
 def evaluate_hits20(model: nn.Module, edge_index: torch.Tensor, z: torch.Tensor,
                     pos_edge: torch.Tensor, neg_edge: torch.Tensor, evaluator: Evaluator) -> float:
@@ -107,14 +220,44 @@ def train_one_seed(args: argparse.Namespace) -> Dict[str, float]:
     num_nodes = data.num_nodes
     edge_index = train_pos.t().contiguous().to(device)
 
-    model = SAGEModel(
-        num_nodes=num_nodes,
-        hidden_dim=args.hidden_dim,
-        num_layers=args.num_layers,
-        dropout=args.dropout,
-        use_bn=not args.no_bn,
-        model_type=args.model,
-    ).to(device)
+    node2vec_embeddings = None
+    if args.model == "gcn_node2vec":
+        print("Pretraining Node2Vec embeddings on the training graph...")
+        node2vec_embeddings = train_node2vec_embeddings(
+            edge_index=edge_index,
+            num_nodes=num_nodes,
+            embedding_dim=args.node2vec_dim,
+            device=device,
+            walk_length=args.node2vec_walk_length,
+            context_size=args.node2vec_context_size,
+            walks_per_node=args.node2vec_walks_per_node,
+            num_negative_samples=args.node2vec_negative_samples,
+            epochs=args.node2vec_epochs,
+            batch_size=args.node2vec_batch_size,
+            lr=args.node2vec_lr,
+        )
+
+    if args.model in ["sage", "gcn"]:
+        model = SAGEModel(
+            num_nodes=num_nodes,
+            hidden_dim=args.hidden_dim,
+            num_layers=args.num_layers,
+            dropout=args.dropout,
+            use_bn=not args.no_bn,
+            model_type=args.model,
+        ).to(device)
+    else:
+        if node2vec_embeddings is None:
+            raise ValueError("Node2Vec embeddings were not initialized.")
+        if args.dropout != 0.0:
+            print("Node2Vec GCN enforces dropout=0.0 to match minimal baseline settings.")
+        model = Node2VecGCNModel(
+            node2vec_embeddings=node2vec_embeddings,
+            hidden_dim=args.hidden_dim,
+            num_layers=args.num_layers,
+            dropout=0.0,
+            use_bn=not args.no_bn,
+        ).to(device)
 
     optimizer = AdamW(model.parameters(), lr=args.lr, weight_decay=args.wd)
     evaluator = Evaluator(name='ogbl-ddi')
@@ -189,7 +332,7 @@ def train_one_seed(args: argparse.Namespace) -> Dict[str, float]:
 
 def main():
     parser = argparse.ArgumentParser(description='OGBL-DDI Link Prediction Trainer')
-    parser.add_argument('--model', type=str, default='sage', choices=['sage', 'gcn'])
+    parser.add_argument('--model', type=str, default='sage', choices=['sage', 'gcn', 'gcn_node2vec'])
     parser.add_argument('--hidden_dim', type=int, default=128)
     parser.add_argument('--num_layers', type=int, default=2)
     parser.add_argument('--dropout', type=float, default=0.4)
@@ -201,6 +344,14 @@ def main():
     parser.add_argument('--patience', type=int, default=10)
     parser.add_argument('--seeds', type=int, nargs='+', default=[0, 1, 2])
     parser.add_argument('--ckpt_dir', type=str, default='checkpoints')
+    parser.add_argument('--node2vec-dim', dest='node2vec_dim', type=int, default=64)
+    parser.add_argument('--node2vec-walk-length', dest='node2vec_walk_length', type=int, default=20)
+    parser.add_argument('--node2vec-context-size', dest='node2vec_context_size', type=int, default=10)
+    parser.add_argument('--node2vec-walks-per-node', dest='node2vec_walks_per_node', type=int, default=10)
+    parser.add_argument('--node2vec-negative-samples', dest='node2vec_negative_samples', type=int, default=1)
+    parser.add_argument('--node2vec-epochs', dest='node2vec_epochs', type=int, default=30)
+    parser.add_argument('--node2vec-batch-size', dest='node2vec_batch_size', type=int, default=256)
+    parser.add_argument('--node2vec-lr', dest='node2vec_lr', type=float, default=0.01)
 
     args = parser.parse_args()
 

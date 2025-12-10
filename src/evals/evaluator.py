@@ -18,7 +18,21 @@ def evaluate(model, data, evaluator, pos_edges, neg_edges, batch_size=50000):
     """
     model.eval()
     with torch.no_grad():
-        z = model.encode(data.edge_index)
+        # Check if model needs input features (Morgan/ChemBERTa models) or uses embeddings
+        if hasattr(data, 'x') and data.x is not None:
+            # Check if model also needs smiles_mask (ChemBERTa fallback models)
+            struct_features = getattr(data, 'struct_features', None)
+            if hasattr(data, 'smiles_mask') and data.smiles_mask is not None:
+                z = model.encode(
+                    data.edge_index,
+                    x=data.x,
+                    smiles_mask=data.smiles_mask,
+                    structural_features=struct_features,
+                )
+            else:
+                z = model.encode(data.edge_index, x=data.x, structural_features=struct_features)
+        else:
+            z = model.encode(data.edge_index)
 
         # Positive scores - batch process to avoid OOM
         pos_scores_list = []

@@ -1,0 +1,37 @@
+2025-12-10 01:27:12,907 - Running Heuristic GCN (leaderboard-inspired)
+2025-12-10 01:27:12,907 - Device: cuda
+2025-12-10 01:27:12,907 - Log directory: logs/heuristic_gcn_20251210_012712
+2025-12-10 01:27:12,907 - Loading ogbl-ddi dataset...
+2025-12-10 01:27:12,907 - Loading dataset ogbl-ddi...
+2025-12-10 01:27:12,993 - Dataset loaded: 4267 nodes
+2025-12-10 01:27:13,153 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-10 01:27:13,153 - Valid neg edges: 101882, Test neg: 95599
+2025-12-10 01:27:13,174 - Added self-loops: Total edges now = 1072178
+2025-12-10 01:27:13,174 - No smiles_csv_path provided → data.x will not be set.
+2025-12-10 01:27:13,182 - Graph: 4267 nodes, 1072178 edges
+2025-12-10 01:27:13,182 - Train edges: 1067911
+2025-12-10 01:27:13,182 - Valid edges: 133489 pos, 101882 neg
+2025-12-10 01:27:13,182 - Test edges: 133489 pos, 95599 neg
+2025-12-10 01:27:13,182 - ================================================================================
+2025-12-10 01:27:13,182 - Model Configuration:
+2025-12-10 01:27:13,182 -   num_nodes: 4267
+2025-12-10 01:27:13,182 -   hidden_dim: 128
+2025-12-10 01:27:13,182 -   num_layers: 2
+2025-12-10 01:27:13,182 -   dropout: 0.0
+2025-12-10 01:27:13,182 -   decoder_dropout: 0.3
+2025-12-10 01:27:13,182 -   heuristic_dim: 4
+2025-12-10 01:27:13,182 -   use_degree_emb: True
+2025-12-10 01:27:13,182 -   degree_emb_dim: 16
+2025-12-10 01:27:13,183 - Training Configuration:
+2025-12-10 01:27:13,183 -   epochs: 200
+2025-12-10 01:27:13,183 -   lr: 0.01
+2025-12-10 01:27:13,183 -   weight_decay: 0.0001
+2025-12-10 01:27:13,183 -   batch_size: 50000
+2025-12-10 01:27:13,183 -   eval_batch_size: 10000
+2025-12-10 01:27:13,183 -   eval_every: 5
+2025-12-10 01:27:13,183 -   patience: 20
+2025-12-10 01:27:13,183 -   heuristic_batch_size: 10000
+2025-12-10 01:27:13,183 - ================================================================================
+2025-12-10 01:27:13,223 - Model: Heuristic-GCN (leaderboard-inspired) | 2 layers, hidden=128, degree_emb=True, heuristics=[CN,Jaccard,AA,RA]
+2025-12-10 01:27:13,223 - Parameters: 624,781
+2025-12-10 01:27:13,235 - [HeuristicGCN] Pre-computing heuristics for validation/test sets...

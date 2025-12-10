@@ -1,4 +1,4 @@
-from .data_loader import load_dataset, compute_structural_features
+from .data_loader import load_dataset, load_dataset_chemberta, compute_structural_features
 from .seal_utils import SEALDataset, seal_collate_fn, extract_enclosing_subgraph, drnl_node_labeling
 from .external_features import (
     FeatureConfig,
@@ -10,6 +10,7 @@ from .external_features import (
 
 __all__ = [
     'load_dataset',
+    'load_dataset_chemberta',
     'compute_structural_features',
     'SEALDataset',
     'seal_collate_fn',

@@ -10,7 +10,9 @@ pytorch = ">=2.0,<3"
 ogb = ">=1.3.6,<2"
 ipykernel = ">=7.1.0,<8"
 pubchempy = ">=1.0.5,<2"
-numpy = "<2"  # Pin to NumPy 1.x for rdkit compatibility
+numpy = ">=1.24,<2"
+pytest = ">=9.0.2,<10"
+pip = "*"
 
 # Linux-specific dependencies (CUDA support)
 [target.linux-64.dependencies]
@@ -28,6 +30,7 @@ torch-geometric = ">=2.7.0, <3"
 rdkit-pypi = ">=2022.9.5, <2023"
 transformers = ">=4.35.0, <5"  # For ChemBERTa molecular embeddings
 PyTDC = ">=1.0.0, <2"          # For drug-target interaction data
+safetensors = ">=0.4.0, <1"
 
 [tasks]
 train-baselines = "python train_baselines.py"
@@ -44,3 +47,8 @@ fetch-drug-targets = "python -m src.data.fetch_drug_targets"
 
 # Fetch all external data at once (runs sequentially)
 fetch-data = "python -m src.data.fetch_smiles && python -m src.data.fetch_pubchem_properties && python -m src.data.extract_chemberta_embeddings && python -m src.data.fetch_drug_targets"
+
+train-morgan = "python train_morgan_baselines.py"
+train-chemberta = "python train_chemberta_baselines.py"
+train-chemberta-fallback = "python train_chemberta_fallback.py"
+train-node2vec = "python train_node2vec_baselines.py"

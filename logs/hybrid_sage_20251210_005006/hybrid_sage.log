@@ -1,0 +1,27 @@
+2025-12-10 00:50:06,593 - Using device: cuda
+2025-12-10 00:50:06,593 - Logging results to: logs/hybrid_sage_20251210_005006/hybrid_sage.log
+2025-12-10 00:50:06,593 - Loading dataset with ChemBERTa embeddings + SMILES mask...
+2025-12-10 00:50:06,593 - Loading dataset ogbl-ddi...
+2025-12-10 00:50:06,682 - Dataset loaded: 4267 nodes
+2025-12-10 00:50:06,847 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-10 00:50:06,847 - Valid neg edges: 101882, Test neg: 95599
+2025-12-10 00:50:06,861 - Computing structural features (this may take a moment)...
+2025-12-10 00:54:08,363 - Computed structural features (6 dims):
+2025-12-10 00:54:08,365 -   - Degree: mean=4.473, std=1.892
+2025-12-10 00:54:08,365 -   - Clustering: mean=0.514, std=0.219
+2025-12-10 00:54:08,366 -   - Core number: mean=5.122, std=1.539
+2025-12-10 00:54:08,366 -   - PageRank: mean=0.105, std=0.075
+2025-12-10 00:54:08,367 - Added self-loops: Total edges now = 1072178
+2025-12-10 00:54:08,367 - Loading cached ChemBERTa features from data/chemberta_features_768.pt
+2025-12-10 00:54:08,377 - Loading cached SMILES mask from data/chemberta_features_768_mask.pt
+2025-12-10 00:54:08,378 - Attached ChemBERTa features: data.x shape = torch.Size([4267, 768])
+2025-12-10 00:54:08,381 - Attached SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-10 00:54:08,381 - Attached structural features: data.struct_features shape = torch.Size([4267, 6])
+2025-12-10 00:54:08,386 - Dataset loaded: data.x.shape = torch.Size([4267, 768])
+2025-12-10 00:54:08,386 - SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-10 00:54:08,386 - 
+================================================================================
+2025-12-10 00:54:08,386 - Training Hybrid-GraphSAGE-Simple
+2025-12-10 00:54:08,386 - ================================================================================
+2025-12-10 00:54:08,423 - Model: Hybrid-GraphSAGE (2 layers, dropout=0.0) | Structure-only encoder + simple decoder | hidden=128, chem_dim=768
+2025-12-10 00:54:08,426 - [Hybrid-GraphSAGE-Simple] Starting hybrid model training (epochs=200, lr=0.01, wd=0.0001, batch_size=5000, eval_every=5)

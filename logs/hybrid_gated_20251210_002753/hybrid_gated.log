@@ -1,0 +1,34 @@
+2025-12-10 00:27:53,217 - Using device: cuda
+2025-12-10 00:27:53,217 - Logging results to: logs/hybrid_gated_20251210_002753/hybrid_gated.log
+2025-12-10 00:27:53,217 - Loading dataset with ChemBERTa embeddings + SMILES mask...
+2025-12-10 00:27:53,217 - Loading dataset ogbl-ddi...
+2025-12-10 00:27:53,303 - Dataset loaded: 4267 nodes
+2025-12-10 00:27:53,466 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-10 00:27:53,466 - Valid neg edges: 101882, Test neg: 95599
+2025-12-10 00:27:53,480 - Computing structural features (this may take a moment)...
+2025-12-10 00:31:49,071 - Computed structural features (6 dims):
+2025-12-10 00:31:49,074 -   - Degree: mean=4.473, std=1.892
+2025-12-10 00:31:49,074 -   - Clustering: mean=0.514, std=0.219
+2025-12-10 00:31:49,074 -   - Core number: mean=5.122, std=1.539
+2025-12-10 00:31:49,074 -   - PageRank: mean=0.105, std=0.075
+2025-12-10 00:31:49,076 - Added self-loops: Total edges now = 1072178
+2025-12-10 00:31:49,076 - Loading cached ChemBERTa features from data/chemberta_features_768.pt
+2025-12-10 00:31:49,085 - Loading cached SMILES mask from data/chemberta_features_768_mask.pt
+2025-12-10 00:31:49,086 - Attached ChemBERTa features: data.x shape = torch.Size([4267, 768])
+2025-12-10 00:31:49,089 - Attached SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-10 00:31:49,089 - Attached structural features: data.struct_features shape = torch.Size([4267, 6])
+2025-12-10 00:31:49,094 - Dataset loaded with ChemBERTa features: data.x.shape = torch.Size([4267, 768])
+2025-12-10 00:31:49,094 - SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-10 00:31:49,094 - 
+================================================================================
+2025-12-10 00:31:49,094 - Training Hybrid-GCN-ChemAware-Gated
+2025-12-10 00:31:49,094 - ================================================================================
+2025-12-10 00:31:49,132 - Model: Hybrid-GCN (2 layers, dropout=0.0) | Structure-only encoder + chemistry_aware+gate decoder | hidden=128, chem_dim=768
+2025-12-10 00:31:49,135 - [Hybrid-GCN-ChemAware-Gated] Starting hybrid model training (epochs=200, lr=0.01, wd=0.0001, batch_size=5000, eval_every=5)
+2025-12-10 00:32:14,406 - [Hybrid-GCN-ChemAware-Gated] Epoch 0001 | loss 1.3957 | val@20 0.0006 | test@20 0.0006 | best 0.0006 (ep 1)
+2025-12-10 00:32:53,941 - [Hybrid-GCN-ChemAware-Gated] Epoch 0005 | loss 1.3443 | val@20 0.0416 | test@20 0.0193 | best 0.0416 (ep 5)
+2025-12-10 00:33:38,582 - [Hybrid-GCN-ChemAware-Gated] Epoch 0010 | loss 1.1840 | val@20 0.0089 | test@20 0.0080 | best 0.0416 (ep 5)
+2025-12-10 00:34:22,823 - [Hybrid-GCN-ChemAware-Gated] Epoch 0015 | loss 1.0866 | val@20 0.0343 | test@20 0.0136 | best 0.0416 (ep 5)
+2025-12-10 00:35:07,135 - [Hybrid-GCN-ChemAware-Gated] Epoch 0020 | loss 1.0044 | val@20 0.0409 | test@20 0.0276 | best 0.0416 (ep 5)
+2025-12-10 00:35:51,688 - [Hybrid-GCN-ChemAware-Gated] Epoch 0025 | loss 0.9357 | val@20 0.0380 | test@20 0.0286 | best 0.0416 (ep 5)
+2025-12-10 00:36:35,968 - [Hybrid-GCN-ChemAware-Gated] Epoch 0030 | loss 0.9158 | val@20 0.0443 | test@20 0.0253 | best 0.0443 (ep 30)
