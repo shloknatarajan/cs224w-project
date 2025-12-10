@@ -52,9 +52,9 @@ structural_features = compute_structural_features(train_edge_index, num_nodes, d
 
 # Hyperparameters - V4 with multi-strategy decoder
 HIDDEN_DIM = 256  # Kept at 256 for capacity
-NUM_LAYERS = 3  # 3 layers for good depth
-DROPOUT = 0.2  # Kept low for gradient flow
-DECODER_DROPOUT = 0.3  # Kept at 0.3
+NUM_LAYERS = 2  # 3 layers for good depth
+DROPOUT = 0.0  # Kept low for gradient flow
+DECODER_DROPOUT = 0.0  # Kept at 0.3
 EPOCHS = 400
 PATIENCE = 20  # Kept at 20 for efficiency
 LEARNING_RATE = 0.005  # Kept at 0.005

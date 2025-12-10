@@ -4,7 +4,6 @@ import logging
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 from torch_geometric.utils import degree, to_networkx, add_self_loops
 from torch_geometric.data import Data as PyGData
-from torch_geometric.nn import add_self_loops
 from rdkit import Chem
 from rdkit.Chem import AllChem
 

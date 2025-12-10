@@ -12,6 +12,7 @@ from .sage_variations import (
     SAGEVariant3Depth,
     SAGEVariant4Both
 )
+from .gdin import GDIN
 
 __all__ = [
     'GCNStructural',
@@ -23,5 +24,6 @@ __all__ = [
     'SAGEVariant1Baseline',
     'SAGEVariant2BatchNorm',
     'SAGEVariant3Depth',
-    'SAGEVariant4Both'
+    'SAGEVariant4Both',
+    'GDIN'
 ]
