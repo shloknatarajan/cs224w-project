@@ -2,13 +2,14 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv
-from .base import BaseModel
+from ..base import BaseModel
 
 
 class Node2VecGCN(BaseModel):
     """
-    GCN encoder that concatenates fixed Node2Vec embeddings with learnable IDs.
-
+    GCN encoder that combines Node2Vec embeddings with learnable IDs.
+    
+    Node2Vec embeddings are initialized from pretraining but fine-tuned during training.
     Dropout is kept at 0.0 to comply with baseline settings.
     """
     def __init__(
@@ -31,8 +32,8 @@ class Node2VecGCN(BaseModel):
         self.id_emb = nn.Embedding(num_nodes, hidden_dim)
         nn.init.xavier_uniform_(self.id_emb.weight)
 
-        # Fixed Node2Vec embeddings (structural prior)
-        self.node2vec_emb = nn.Embedding.from_pretrained(node2vec_embeddings, freeze=True)
+        # Node2Vec embeddings (initialized from pretraining, but fine-tunable)
+        self.node2vec_emb = nn.Embedding.from_pretrained(node2vec_embeddings, freeze=False)
 
         input_dim = hidden_dim + node2vec_dim
         self.input_proj = nn.Linear(input_dim, hidden_dim)
@@ -43,7 +44,7 @@ class Node2VecGCN(BaseModel):
 
         decoder_type = "multi-strategy" if use_multi_strategy else "simple"
         self.description = (
-            f"GCN + Node2Vec (frozen) | hidden_dim={hidden_dim}, "
+            f"GCN + Node2Vec (fine-tuned) | hidden_dim={hidden_dim}, "
             f"node2vec_dim={node2vec_dim}, layers={num_layers}, "
             f"decoder={decoder_type}, dropout=0.0"
         )
@@ -61,3 +62,4 @@ class Node2VecGCN(BaseModel):
             else:
                 x = x_new
         return x
+

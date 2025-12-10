@@ -1,0 +1,47 @@
+2025-12-09 22:43:34,908 - Using device: cuda
+2025-12-09 22:43:34,908 - Logging results to: logs/node2vec_gcn_20251209_224334/node2vec_gcn.log
+2025-12-09 22:43:34,908 - Loading dataset ogbl-ddi...
+2025-12-09 22:43:34,995 - Dataset loaded: 4267 nodes
+2025-12-09 22:43:35,158 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 22:43:35,158 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 22:43:35,179 - Added self-loops: Total edges now = 1072178
+2025-12-09 22:43:35,179 - No smiles_csv_path provided → data.x will not be set.
+2025-12-09 22:43:35,199 - Pretraining Node2Vec embeddings (dim=64, walk_length=20, context=10, walks_per_node=10, neg=1, epochs=50)
+2025-12-09 22:43:35,791 - [node2vec] epoch 01/50 | loss 4.4970
+2025-12-09 22:43:38,863 - [node2vec] epoch 10/50 | loss 1.1254
+2025-12-09 22:43:42,273 - [node2vec] epoch 20/50 | loss 0.8426
+2025-12-09 22:43:45,692 - [node2vec] epoch 30/50 | loss 0.8092
+2025-12-09 22:43:49,098 - [node2vec] epoch 40/50 | loss 0.7986
+2025-12-09 22:43:52,494 - [node2vec] epoch 50/50 | loss 0.7932
+2025-12-09 22:43:52,532 - Model: GCN + Node2Vec (fine-tuned) | hidden_dim=128, node2vec_dim=64, layers=2, decoder=simple, dropout=0.0
+2025-12-09 22:43:52,534 - [Node2Vec-GCN] Starting minimal baseline training (epochs=100, lr=0.01, wd=0.0001, batch_size=50000, eval_every=5)
+2025-12-09 22:43:53,937 - [Node2Vec-GCN] Epoch 0001 | loss 1.3844 | val@20 0.0025 | test@20 0.0008 | best 0.0025 (ep 1)
+2025-12-09 22:43:58,694 - [Node2Vec-GCN] Epoch 0005 | loss 1.3210 | val@20 0.0032 | test@20 0.0031 | best 0.0032 (ep 5)
+2025-12-09 22:44:04,584 - [Node2Vec-GCN] Epoch 0010 | loss 1.0939 | val@20 0.0064 | test@20 0.0057 | best 0.0064 (ep 10)
+2025-12-09 22:44:10,479 - [Node2Vec-GCN] Epoch 0015 | loss 0.9615 | val@20 0.0417 | test@20 0.0117 | best 0.0417 (ep 15)
+2025-12-09 22:44:16,372 - [Node2Vec-GCN] Epoch 0020 | loss 0.8997 | val@20 0.0116 | test@20 0.0077 | best 0.0417 (ep 15)
+2025-12-09 22:44:22,263 - [Node2Vec-GCN] Epoch 0025 | loss 0.8376 | val@20 0.0296 | test@20 0.0170 | best 0.0417 (ep 15)
+2025-12-09 22:44:28,159 - [Node2Vec-GCN] Epoch 0030 | loss 0.7883 | val@20 0.0452 | test@20 0.0437 | best 0.0452 (ep 30)
+2025-12-09 22:44:34,042 - [Node2Vec-GCN] Epoch 0035 | loss 0.7432 | val@20 0.0367 | test@20 0.0517 | best 0.0452 (ep 30)
+2025-12-09 22:44:39,926 - [Node2Vec-GCN] Epoch 0040 | loss 0.7055 | val@20 0.0589 | test@20 0.0864 | best 0.0589 (ep 40)
+2025-12-09 22:44:45,795 - [Node2Vec-GCN] Epoch 0045 | loss 0.6988 | val@20 0.0668 | test@20 0.0706 | best 0.0668 (ep 45)
+2025-12-09 22:44:51,651 - [Node2Vec-GCN] Epoch 0050 | loss 0.6680 | val@20 0.0788 | test@20 0.0633 | best 0.0788 (ep 50)
+2025-12-09 22:44:57,495 - [Node2Vec-GCN] Epoch 0055 | loss 0.6380 | val@20 0.0889 | test@20 0.0532 | best 0.0889 (ep 55)
+2025-12-09 22:45:03,347 - [Node2Vec-GCN] Epoch 0060 | loss 0.6092 | val@20 0.0800 | test@20 0.0608 | best 0.0889 (ep 55)
+2025-12-09 22:45:09,195 - [Node2Vec-GCN] Epoch 0065 | loss 0.5846 | val@20 0.0987 | test@20 0.0847 | best 0.0987 (ep 65)
+2025-12-09 22:45:15,035 - [Node2Vec-GCN] Epoch 0070 | loss 0.5630 | val@20 0.0959 | test@20 0.0931 | best 0.0987 (ep 65)
+2025-12-09 22:45:20,881 - [Node2Vec-GCN] Epoch 0075 | loss 0.5446 | val@20 0.1115 | test@20 0.0971 | best 0.1115 (ep 75)
+2025-12-09 22:45:26,722 - [Node2Vec-GCN] Epoch 0080 | loss 0.5287 | val@20 0.1156 | test@20 0.1212 | best 0.1156 (ep 80)
+2025-12-09 22:45:32,554 - [Node2Vec-GCN] Epoch 0085 | loss 0.5167 | val@20 0.1852 | test@20 0.1370 | best 0.1852 (ep 85)
+2025-12-09 22:45:38,390 - [Node2Vec-GCN] Epoch 0090 | loss 0.4988 | val@20 0.1375 | test@20 0.0974 | best 0.1852 (ep 85)
+2025-12-09 22:45:44,238 - [Node2Vec-GCN] Epoch 0095 | loss 0.4980 | val@20 0.1645 | test@20 0.1087 | best 0.1852 (ep 85)
+2025-12-09 22:45:50,081 - [Node2Vec-GCN] Epoch 0100 | loss 0.4887 | val@20 0.1191 | test@20 0.1193 | best 0.1852 (ep 85)
+2025-12-09 22:45:50,081 - [Node2Vec-GCN] Done. Best val@20=0.1852 | test@20=0.1370 (epoch 85)
+2025-12-09 22:45:50,081 - 
+================================================================================
+2025-12-09 22:45:50,082 - FINAL RESULTS - NODE2VEC + ID GCN
+2025-12-09 22:45:50,082 - ================================================================================
+2025-12-09 22:45:50,082 -   Validation Hits@20: 0.1852
+2025-12-09 22:45:50,082 -   Test Hits@20:       0.1370
+2025-12-09 22:45:50,082 -   Val-Test Gap:       0.0482 (26.0% relative)
+2025-12-09 22:45:50,082 - Results logged to: logs/node2vec_gcn_20251209_224334/node2vec_gcn.log

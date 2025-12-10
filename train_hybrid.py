@@ -55,7 +55,7 @@ config = {
     'epochs': 200,
     'lr': 0.01,
     'weight_decay': 1e-4,
-    'batch_size': 10000,  # Reduced from 50000 to avoid OOM with chemistry features
+    'batch_size': 5000,  # Reduced to 5000 to avoid OOM with chemistry features + gradient accumulation
     'eval_every': 5,
     'patience': 20,
 }

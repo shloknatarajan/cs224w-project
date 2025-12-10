@@ -1,0 +1,17 @@
+2025-12-09 23:05:33,553 - Using device: cuda
+2025-12-09 23:05:33,553 - Logging results to: logs/node2vec_baselines_20251209_230533/node2vec_baselines.log
+2025-12-09 23:05:33,553 - Loading dataset ogbl-ddi...
+2025-12-09 23:05:33,553 - Loading dataset ogbl-ddi...
+2025-12-09 23:05:33,638 - Dataset loaded: 4267 nodes
+2025-12-09 23:05:33,794 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 23:05:33,794 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 23:05:33,814 - Added self-loops: Total edges now = 1072178
+2025-12-09 23:05:33,814 - No smiles_csv_path provided → data.x will not be set.
+2025-12-09 23:05:33,821 - Dataset loaded: 4267 nodes
+2025-12-09 23:05:33,821 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-09 23:05:33,821 - Valid neg edges: 101882, Test neg: 95599
+2025-12-09 23:05:33,821 - 
+================================================================================
+2025-12-09 23:05:33,821 - PRETRAINING NODE2VEC EMBEDDINGS
+2025-12-09 23:05:33,821 - ================================================================================
+2025-12-09 23:05:33,822 - Pretraining Node2Vec embeddings (dim=64, walk_length=20, context=10, walks_per_node=10, neg=1, epochs=5)

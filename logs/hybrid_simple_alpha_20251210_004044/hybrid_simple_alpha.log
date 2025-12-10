@@ -1,0 +1,46 @@
+2025-12-10 00:40:44,873 - Using device: cuda
+2025-12-10 00:40:44,873 - Logging results to: logs/hybrid_simple_alpha_20251210_004044/hybrid_simple_alpha.log
+2025-12-10 00:40:44,873 - Loading dataset with ChemBERTa embeddings + SMILES mask...
+2025-12-10 00:40:44,873 - Loading dataset ogbl-ddi...
+2025-12-10 00:40:44,961 - Dataset loaded: 4267 nodes
+2025-12-10 00:40:45,126 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-10 00:40:45,126 - Valid neg edges: 101882, Test neg: 95599
+2025-12-10 00:40:45,140 - Computing structural features (this may take a moment)...
+2025-12-10 00:44:42,738 - Computed structural features (6 dims):
+2025-12-10 00:44:42,740 -   - Degree: mean=4.473, std=1.892
+2025-12-10 00:44:42,741 -   - Clustering: mean=0.514, std=0.219
+2025-12-10 00:44:42,741 -   - Core number: mean=5.122, std=1.539
+2025-12-10 00:44:42,741 -   - PageRank: mean=0.105, std=0.075
+2025-12-10 00:44:42,742 - Added self-loops: Total edges now = 1072178
+2025-12-10 00:44:42,743 - Loading cached ChemBERTa features from data/chemberta_features_768.pt
+2025-12-10 00:44:42,752 - Loading cached SMILES mask from data/chemberta_features_768_mask.pt
+2025-12-10 00:44:42,753 - Attached ChemBERTa features: data.x shape = torch.Size([4267, 768])
+2025-12-10 00:44:42,756 - Attached SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-10 00:44:42,756 - Attached structural features: data.struct_features shape = torch.Size([4267, 6])
+2025-12-10 00:44:42,761 - Dataset loaded: torch.Size([4267, 768]), mask: 2287/4267
+2025-12-10 00:44:42,761 - 
+Training Hybrid-GCN-Simple-with-Alpha-Logging
+2025-12-10 00:44:42,798 - Model: Hybrid-GCN (2 layers, dropout=0.0) | Structure-only encoder + simple decoder | hidden=128, chem_dim=768
+2025-12-10 00:44:42,798 - Initial α value: 0.100000
+2025-12-10 00:44:42,799 - 
+Epoch | Loss   | α value | Change
+2025-12-10 00:44:42,800 - ---------------------------------------------
+2025-12-10 00:44:46,905 -     1 | 1.3900 | 0.090000 | +0.000000
+2025-12-10 00:45:02,677 -     5 | 1.3942 | 0.066791 | -0.004920
+2025-12-10 00:45:22,534 -    10 | 1.1203 | 0.048887 | -0.003066
+2025-12-10 00:45:42,411 -    15 | 1.0862 | 0.035761 | -0.002456
+2025-12-10 00:46:02,291 -    20 | 1.0268 | 0.025501 | -0.001903
+2025-12-10 00:46:22,158 -    25 | 0.9736 | 0.018602 | -0.001191
+2025-12-10 00:46:42,031 -    30 | 0.8587 | 0.014051 | -0.000859
+2025-12-10 00:47:01,907 -    35 | 0.8073 | 0.011055 | -0.000508
+2025-12-10 00:47:21,774 -    40 | 0.7594 | 0.008966 | -0.000398
+2025-12-10 00:47:41,650 -    45 | 0.7198 | 0.007319 | -0.000295
+2025-12-10 00:48:01,524 -    50 | 0.7392 | 0.006055 | -0.000194
+2025-12-10 00:48:01,527 - ---------------------------------------------
+2025-12-10 00:48:01,527 - 
+Final α value: 0.006055
+2025-12-10 00:48:01,527 - Started at: 0.100000
+2025-12-10 00:48:01,527 - Change: -0.093945 (-93.9%)
+2025-12-10 00:48:01,532 - 
+Model saved to: logs/hybrid_simple_alpha_20251210_004044/model_simple.pt
+2025-12-10 00:48:01,532 - Results logged to: logs/hybrid_simple_alpha_20251210_004044/hybrid_simple_alpha.log

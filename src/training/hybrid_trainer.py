@@ -85,10 +85,11 @@ def train_hybrid_model(
             method="sparse",
         ).t().to(device)
         
-        # Decode in batches and accumulate losses
-        batch_losses = []
+        # Gradient accumulation: backward on each batch, accumulate gradients
+        num_batches = (train_pos.size(0) + batch_size - 1) // batch_size
+        batch_losses_for_logging = []
         
-        for start in range(0, train_pos.size(0), batch_size):
+        for batch_idx, start in enumerate(range(0, train_pos.size(0), batch_size)):
             end = min(start + batch_size, train_pos.size(0))
             pos_batch = train_pos[start:end]
             neg_batch = neg_edges[start:end]
@@ -99,16 +100,24 @@ def train_hybrid_model(
             
             pos_loss = F.binary_cross_entropy_with_logits(pos_logits, torch.ones_like(pos_logits))
             neg_loss = F.binary_cross_entropy_with_logits(neg_logits, torch.zeros_like(neg_logits))
-            batch_losses.append(pos_loss + neg_loss)
+            batch_loss = (pos_loss + neg_loss) / num_batches  # Normalize by total batches
+            
+            # Backward to accumulate gradients
+            batch_loss.backward(retain_graph=(batch_idx < num_batches - 1))
+            
+            # Save for logging (detach to free memory)
+            batch_losses_for_logging.append((pos_loss + neg_loss).detach().cpu().item())
+            
+            # Clear intermediate tensors
+            del pos_logits, neg_logits, pos_loss, neg_loss, batch_loss
         
-        # Compute total loss and backprop once
-        total_loss = torch.stack(batch_losses).mean()
-        total_loss.backward()
+        # Update parameters with accumulated gradients
         optimizer.step()
         
-        train_loss = float(total_loss.detach().cpu())
+        train_loss = sum(batch_losses_for_logging) / len(batch_losses_for_logging)
         
-        # Clear cache after backward
+        # Clear cache and graph
+        del z, neg_edges
         torch.cuda.empty_cache()
         
         # Evaluation
