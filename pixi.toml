@@ -10,6 +10,7 @@ pytorch = ">=2.0,<3"
 ogb = ">=1.3.6,<2"
 ipykernel = ">=7.1.0,<8"
 pubchempy = ">=1.0.5,<2"
+numpy = "<2"  # Pin to NumPy 1.x for rdkit compatibility
 
 # Linux-specific dependencies (CUDA support)
 [target.linux-64.dependencies]
@@ -30,3 +31,4 @@ rdkit-pypi = ">=2022.9.5, <2023"
 train-baselines = "python train_baselines.py"
 train-advanced = "python train_advanced.py"
 train-seal = "python train_seal.py"
+train-gdin = "python train_gdin.py"
