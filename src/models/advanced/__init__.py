@@ -13,6 +13,7 @@ from .sage_variations import (
     SAGEVariant4Both
 )
 from .gdin import GDIN
+from .gdin_multimodal import GDINMultiModal, create_gdin_multimodal
 
 __all__ = [
     'GCNStructural',
@@ -25,5 +26,7 @@ __all__ = [
     'SAGEVariant2BatchNorm',
     'SAGEVariant3Depth',
     'SAGEVariant4Both',
-    'GDIN'
+    'GDIN',
+    'GDINMultiModal',
+    'create_gdin_multimodal',
 ]

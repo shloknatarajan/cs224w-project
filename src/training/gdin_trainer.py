@@ -6,6 +6,7 @@ Key differences from minimal_trainer:
 2. Multiple negatives per positive (num_neg=3)
 3. Common neighbor feature computation at decode AND eval time
 4. Phase 2: BCE + CN for better OOD generalization
+5. Support for external features (GDINMultiModal)
 """
 import logging
 from dataclasses import dataclass
@@ -354,3 +355,236 @@ def train_gdin(
         f"(epoch {best_epoch})"
     )
     return GDINRunResult(best_val, best_test, best_epoch)
+
+
+def train_gdin_multimodal(
+    name: str,
+    model: nn.Module,
+    data,
+    train_pos: torch.Tensor,
+    valid_pos: torch.Tensor,
+    valid_neg: torch.Tensor,
+    test_pos: torch.Tensor,
+    test_neg: torch.Tensor,
+    external_features: dict[str, torch.Tensor],
+    evaluator,
+    *,
+    device: torch.device,
+    epochs: int = 400,
+    lr: float = 0.005,
+    weight_decay: float = 1e-4,
+    eval_every: int = 5,
+    patience: int | None = 30,
+    batch_size: int = 50000,
+    eval_batch_size: int | None = None,
+    num_neg: int = 3,
+    use_cn: bool = False,
+    adj_sparse=None,
+) -> GDINRunResult:
+    """
+    Train GDINMultiModal model with external features.
+
+    This is the main training function for models that use external knowledge
+    from Morgan fingerprints, PubChem properties, ChemBERTa embeddings,
+    and/or drug-target interactions.
+
+    Args:
+        name: Model name for logging
+        model: GDINMultiModal model
+        data: Graph data
+        train_pos: Positive training edges
+        valid_pos/neg: Validation edges
+        test_pos/neg: Test edges
+        external_features: Dict mapping feature name to tensor
+            e.g., {'morgan': tensor, 'chemberta': tensor, ...}
+        evaluator: OGB evaluator
+        device: Target device
+        epochs: Max training epochs
+        lr: Learning rate
+        weight_decay: L2 regularization
+        eval_every: Evaluate every N epochs
+        patience: Early stopping patience
+        batch_size: Training batch size
+        eval_batch_size: Evaluation batch size
+        num_neg: Number of negatives per positive
+        use_cn: Enable common neighbor features
+        adj_sparse: Scipy sparse adjacency matrix (required if use_cn=True)
+
+    Returns:
+        GDINRunResult with best validation/test scores
+    """
+    model = model.to(device)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+
+    train_edge_index = data.edge_index.to(device)
+    num_nodes = data.num_nodes
+
+    # Move external features to device
+    ext_features_device = {
+        k: v.to(device) if v is not None else None
+        for k, v in external_features.items()
+    }
+
+    # Precompute CN for training positives (if enabled)
+    train_cn = None
+    if use_cn:
+        if adj_sparse is None:
+            raise ValueError("adj_sparse required when use_cn=True")
+        logger.info(f"[{name}] Precomputing CN counts for {train_pos.size(0)} training edges...")
+        train_cn = compute_cn_counts(train_pos, adj_sparse, device)
+
+    best_val = float("-inf")
+    best_test = float("-inf")
+    best_epoch = 0
+    epochs_no_improve = 0
+
+    logger.info(
+        f"[{name}] Starting GDINMultiModal training "
+        f"(epochs={epochs}, lr={lr}, wd={weight_decay}, num_neg={num_neg}, use_cn={use_cn})"
+    )
+    logger.info(f"[{name}] External features: {list(ext_features_device.keys())}")
+
+    for epoch in range(1, epochs + 1):
+        model.train()
+        optimizer.zero_grad()
+
+        # Encode all nodes WITH external features
+        z = model.encode(train_edge_index, ext_features_device)
+
+        # Generate multiple negatives per positive
+        total_neg = train_pos.size(0) * num_neg
+        neg_edges = negative_sampling(
+            edge_index=train_edge_index,
+            num_nodes=num_nodes,
+            num_neg_samples=total_neg,
+            method="sparse",
+        ).t().to(device)
+
+        # Compute CN for negatives (if enabled)
+        neg_cn = None
+        if use_cn:
+            neg_cn = compute_cn_counts(neg_edges, adj_sparse, device)
+
+        # Batch processing
+        batch_losses = []
+        num_train = train_pos.size(0)
+
+        for start in range(0, num_train, batch_size):
+            end = min(start + batch_size, num_train)
+            pos_batch = train_pos[start:end]
+
+            neg_start = start * num_neg
+            neg_end = end * num_neg
+            neg_batch = neg_edges[neg_start:neg_end]
+
+            pos_cn_batch = train_cn[start:end] if train_cn is not None else None
+            neg_cn_batch = neg_cn[neg_start:neg_end] if neg_cn is not None else None
+
+            pos_scores = model.decode(z, pos_batch, pos_cn_batch)
+            neg_scores = model.decode(z, neg_batch, neg_cn_batch)
+
+            loss = auc_loss(pos_scores, neg_scores, num_neg)
+            batch_losses.append(loss)
+
+        total_loss = torch.stack(batch_losses).mean()
+        total_loss.backward()
+        optimizer.step()
+
+        train_loss = float(total_loss.detach().cpu())
+
+        # Evaluation
+        if epoch == 1 or epoch % eval_every == 0:
+            eval_bs = eval_batch_size or batch_size
+            val_hits = _evaluate_multimodal(
+                model, data, evaluator, valid_pos, valid_neg,
+                ext_features_device, adj_sparse, eval_bs, use_cn
+            )
+            test_hits = _evaluate_multimodal(
+                model, data, evaluator, test_pos, test_neg,
+                ext_features_device, adj_sparse, eval_bs, use_cn
+            )
+
+            improved = val_hits > best_val
+            if improved:
+                best_val = val_hits
+                best_test = test_hits
+                best_epoch = epoch
+                epochs_no_improve = 0
+            else:
+                epochs_no_improve += 1
+
+            logger.info(
+                f"[{name}] Epoch {epoch:04d} | loss {train_loss:.4f} | "
+                f"val@20 {val_hits:.4f} | test@20 {test_hits:.4f} | "
+                f"best {best_val:.4f} (ep {best_epoch})"
+            )
+
+            if patience is not None and epochs_no_improve >= patience:
+                logger.info(
+                    f"[{name}] Early stopping at epoch {epoch} "
+                    f"(no val improvement for {epochs_no_improve} evals)"
+                )
+                break
+
+    logger.info(
+        f"[{name}] Done. Best val@20={best_val:.4f} | test@20={best_test:.4f} "
+        f"(epoch {best_epoch})"
+    )
+    return GDINRunResult(best_val, best_test, best_epoch)
+
+
+def _evaluate_multimodal(
+    model: nn.Module,
+    data,
+    evaluator,
+    pos_edges: torch.Tensor,
+    neg_edges: torch.Tensor,
+    external_features: dict[str, torch.Tensor],
+    adj_sparse,
+    batch_size: int,
+    use_cn: bool,
+) -> float:
+    """Evaluate GDINMultiModal with external features."""
+    model.eval()
+    device = next(model.parameters()).device
+
+    with torch.no_grad():
+        # Encode with external features
+        z = model.encode(data.edge_index, external_features)
+
+        # CN scores if enabled
+        pos_cn = compute_cn_counts(pos_edges, adj_sparse, device) if use_cn else None
+        neg_cn = compute_cn_counts(neg_edges, adj_sparse, device) if use_cn else None
+
+        # Positive scores
+        pos_scores_list = []
+        for i in range(0, pos_edges.size(0), batch_size):
+            end = min(i + batch_size, pos_edges.size(0))
+            chunk = pos_edges[i:end]
+            cn_chunk = pos_cn[i:end] if pos_cn is not None else None
+            scores = model.decode(z, chunk, cn_chunk).view(-1).cpu()
+            pos_scores_list.append(scores)
+        pos_scores = torch.cat(pos_scores_list)
+
+        # Negative scores
+        neg_scores_list = []
+        for i in range(0, neg_edges.size(0), batch_size):
+            end = min(i + batch_size, neg_edges.size(0))
+            chunk = neg_edges[i:end]
+            cn_chunk = neg_cn[i:end] if neg_cn is not None else None
+            scores = model.decode(z, chunk, cn_chunk).view(-1).cpu()
+            neg_scores_list.append(scores)
+        neg_scores = torch.cat(neg_scores_list)
+
+        # Clean up
+        del z
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        # Evaluate
+        result = evaluator.eval({
+            'y_pred_pos': pos_scores,
+            'y_pred_neg': neg_scores,
+        })
+
+        return result['hits@20']

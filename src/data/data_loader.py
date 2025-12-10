@@ -1,6 +1,8 @@
+import os
 import torch
 import networkx as nx
 import logging
+import pandas as pd
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 from torch_geometric.utils import degree, to_networkx, add_self_loops
 from torch_geometric.data import Data as PyGData
@@ -151,45 +153,6 @@ def load_dataset(
         logger.info("No smiles_csv_path provided → data.x will not be set.")
 
     evaluator = Evaluator(name=dataset_name)
-    return data, split_edge, num_nodes, evaluator
-
-
-def load_dataset(dataset_name='ogbl-ddi', device='cpu'):
-    """
-    Load OGB link prediction dataset and split edges.
-
-    Returns:
-        tuple: (data, split_edge, num_nodes, evaluator)
-    """
-    logger.info(f"Loading dataset {dataset_name}...")
-    dataset = PygLinkPropPredDataset(dataset_name)
-    data = dataset[0]
-
-    split_edge = dataset.get_edge_split()
-    logger.info(f"Dataset loaded: {data.num_nodes} nodes")
-
-    # Move data to device
-    train_pos = split_edge['train']['edge'].to(device)
-    valid_pos = split_edge['valid']['edge'].to(device)
-    valid_neg = split_edge['valid']['edge_neg'].to(device)
-    test_pos = split_edge['test']['edge'].to(device)
-    test_neg = split_edge['test']['edge_neg'].to(device)
-
-    logger.info(f"Train pos edges: {train_pos.size(0)}, Valid pos: {valid_pos.size(0)}, Test pos: {test_pos.size(0)}")
-    logger.info(f"Valid neg edges: {valid_neg.size(0)}, Test neg: {test_neg.size(0)}")
-
-    num_nodes = data.num_nodes
-
-    # Construct graph using only training edges
-    train_edge_index = train_pos.t().contiguous().to(device)
-
-    # Add self-loops
-    data.edge_index, _ = add_self_loops(train_edge_index, num_nodes=num_nodes)
-    logger.info(f"Added self-loops: Total edges now = {data.edge_index.size(1)}")
-
-    from ogb.linkproppred import Evaluator
-    evaluator = Evaluator(name=dataset_name)
-
     return data, split_edge, num_nodes, evaluator
 
 
