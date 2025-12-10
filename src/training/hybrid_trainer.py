@@ -65,6 +65,12 @@ def train_hybrid_model(
     best_epoch = 0
     epochs_no_improve = 0
     
+    # Check if model has alpha parameter (Simple decoder)
+    has_alpha = hasattr(model.decoder, 'alpha')
+    if has_alpha:
+        logger.info(f"[{name}] Simple decoder detected with α parameter")
+        logger.info(f"[{name}] Initial α value: {model.decoder.alpha.item():.6f}")
+    
     logger.info(
         f"[{name}] Starting hybrid model training "
         f"(epochs={epochs}, lr={lr}, wd={weight_decay}, batch_size={batch_size}, eval_every={eval_every})"
@@ -143,19 +149,34 @@ def train_hybrid_model(
             else:
                 epochs_no_improve += 1
             
+            # Log alpha only every 50 epochs (or epoch 1)
+            alpha_str = ""
+            if has_alpha and (epoch == 1 or epoch % 50 == 0):
+                alpha_val = model.decoder.alpha.item()
+                alpha_str = f" | α={alpha_val:.4f}"
+            
             logger.info(
                 f"[{name}] Epoch {epoch:04d} | loss {train_loss:.4f} | "
                 f"val@20 {val_hits:.4f} | test@20 {test_hits:.4f} | "
-                f"best {best_val:.4f} (ep {best_epoch})"
+                f"best {best_val:.4f} (ep {best_epoch}){alpha_str}"
             )
             
             if patience is not None and epochs_no_improve >= patience:
                 logger.info(f"[{name}] Early stopping at epoch {epoch} (no val improvement for {epochs_no_improve} evals)")
                 break
     
+    # Log final alpha if available
+    final_alpha_info = ""
+    if has_alpha:
+        final_alpha = model.decoder.alpha.item()
+        initial_alpha = 0.1  # We know this from decoder.py
+        alpha_change = final_alpha - initial_alpha
+        alpha_pct = (alpha_change / initial_alpha) * 100
+        final_alpha_info = f"\n[{name}] Final α={final_alpha:.6f} (started at {initial_alpha:.6f}, change: {alpha_change:+.6f} or {alpha_pct:+.1f}%)"
+    
     logger.info(
         f"[{name}] Done. Best val@20={best_val:.4f} | test@20={best_test:.4f} "
-        f"(epoch {best_epoch})"
+        f"(epoch {best_epoch}){final_alpha_info}"
     )
     return HybridRunResult(best_val, best_test, best_epoch)
 

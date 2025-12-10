@@ -1,0 +1,140 @@
+[
+  {
+    "exp_id": 1,
+    "config": {
+      "hidden_dim": 160,
+      "num_layers": 3,
+      "decoder_dropout": 0.2,
+      "lr": 0.005,
+      "weight_decay": 0.0005,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.08715324858228019,
+    "test_hits": 0.08754279378825222,
+    "best_epoch": 45,
+    "improvement_pct": -62.89772303862061,
+    "success": true
+  },
+  {
+    "exp_id": 2,
+    "config": {
+      "hidden_dim": 160,
+      "num_layers": 3,
+      "decoder_dropout": 0.4,
+      "lr": 0.01,
+      "weight_decay": 0.0001,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.0577201117695091,
+    "test_hits": 0.06518140071466563,
+    "best_epoch": 50,
+    "improvement_pct": -75.42779405299741,
+    "success": true
+  },
+  {
+    "exp_id": 3,
+    "config": {
+      "hidden_dim": 96,
+      "num_layers": 2,
+      "decoder_dropout": 0.4,
+      "lr": 0.01,
+      "weight_decay": 0.0005,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.2282060694139592,
+    "test_hits": 0.15717399935575216,
+    "best_epoch": 40,
+    "improvement_pct": -2.84969373607526,
+    "success": true
+  },
+  {
+    "exp_id": 4,
+    "config": {
+      "hidden_dim": 160,
+      "num_layers": 2,
+      "decoder_dropout": 0.4,
+      "lr": 0.015,
+      "weight_decay": 0.0001,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.09043441781719842,
+    "test_hits": 0.09626261339885683,
+    "best_epoch": 30,
+    "improvement_pct": -61.5008864124315,
+    "success": true
+  },
+  {
+    "exp_id": 5,
+    "config": {
+      "hidden_dim": 160,
+      "num_layers": 3,
+      "decoder_dropout": 0.3,
+      "lr": 0.005,
+      "weight_decay": 5e-05,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.084501344680086,
+    "test_hits": 0.10816621594288668,
+    "best_epoch": 40,
+    "improvement_pct": -64.02667318855428,
+    "success": true
+  },
+  {
+    "exp_id": 6,
+    "config": {
+      "hidden_dim": 160,
+      "num_layers": 2,
+      "decoder_dropout": 0.2,
+      "lr": 0.005,
+      "weight_decay": 0.0005,
+      "epochs": 50,
+      "eval_every": 5,
+      "patience": 10,
+      "dropout": 0.0,
+      "chemical_dim": 768,
+      "decoder_type": "simple",
+      "use_gating": false,
+      "batch_size": 5000
+    },
+    "val_hits": 0.07012562832892598,
+    "test_hits": 0.04840848309598544,
+    "best_epoch": 40,
+    "improvement_pct": -70.1466035211043,
+    "success": true
+  }
+]

@@ -1,0 +1,34 @@
+2025-12-10 01:11:47,041 - Using device: cuda
+2025-12-10 01:11:47,041 - Loading dataset...
+2025-12-10 01:11:47,041 - Loading dataset ogbl-ddi...
+2025-12-10 01:11:47,128 - Dataset loaded: 4267 nodes
+2025-12-10 01:11:47,288 - Train pos edges: 1067911, Valid pos: 133489, Test pos: 133489
+2025-12-10 01:11:47,288 - Valid neg edges: 101882, Test neg: 95599
+2025-12-10 01:11:47,302 - Computing structural features (this may take a moment)...
+2025-12-10 01:15:48,828 - Computed structural features (6 dims):
+2025-12-10 01:15:48,830 -   - Degree: mean=4.473, std=1.892
+2025-12-10 01:15:48,830 -   - Clustering: mean=0.514, std=0.219
+2025-12-10 01:15:48,830 -   - Core number: mean=5.122, std=1.539
+2025-12-10 01:15:48,831 -   - PageRank: mean=0.105, std=0.075
+2025-12-10 01:15:48,832 - Added self-loops: Total edges now = 1072178
+2025-12-10 01:15:48,832 - Loading cached ChemBERTa features from data/chemberta_features_768.pt
+2025-12-10 01:15:48,842 - Loading cached SMILES mask from data/chemberta_features_768_mask.pt
+2025-12-10 01:15:48,843 - Attached ChemBERTa features: data.x shape = torch.Size([4267, 768])
+2025-12-10 01:15:48,846 - Attached SMILES mask: 2287 valid / 4267 total (53.6%)
+2025-12-10 01:15:48,846 - Attached structural features: data.struct_features shape = torch.Size([4267, 6])
+2025-12-10 01:15:48,851 - Dataset loaded: torch.Size([4267, 768])
+2025-12-10 01:15:48,851 - ================================================================================
+2025-12-10 01:15:48,851 - QUICK HYPERPARAMETER EXPLORATION
+2025-12-10 01:15:48,851 - ================================================================================
+2025-12-10 01:15:48,851 - Baseline: val@20=0.2349
+2025-12-10 01:15:48,851 - Config: {
+  "hidden_dim": 128,
+  "num_layers": 2,
+  "decoder_dropout": 0.3,
+  "lr": 0.01,
+  "weight_decay": 0.0001
+}
+2025-12-10 01:15:48,851 - 
+Running 20 quick experiments...
+2025-12-10 01:15:48,851 - Using 50 epochs (vs 200 for full runs)
+2025-12-10 01:15:48,851 - 
