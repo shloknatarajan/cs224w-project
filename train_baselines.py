@@ -93,83 +93,83 @@ gcn_result = train_minimal_baseline(
 )
 results['GCN'] = gcn_result
 
-# Train GraphSAGE
-logger.info("\n" + "=" * 80)
-logger.info("Training GraphSAGE Baseline (minimal trainer)")
-logger.info("=" * 80)
-sage_model = GraphSAGE(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-sage_result = train_minimal_baseline(
-    "GraphSAGE-Baseline",
-    sage_model,
-    data,
-    train_pos,
-    valid_pos,
-    valid_neg,
-    test_pos,
-    test_neg,
-    evaluate_fn,
-    device=device,
-    epochs=EPOCHS,
-    lr=LEARNING_RATE,
-    patience=PATIENCE,
-    batch_size=BATCH_SIZE,
-    weight_decay=WEIGHT_DECAY,
-    eval_every=EVAL_EVERY,
-    eval_batch_size=EVAL_BATCH_SIZE
-)
-results['GraphSAGE'] = sage_result
+# # Train GraphSAGE
+# logger.info("\n" + "=" * 80)
+# logger.info("Training GraphSAGE Baseline (minimal trainer)")
+# logger.info("=" * 80)
+# sage_model = GraphSAGE(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
+# sage_result = train_minimal_baseline(
+#     "GraphSAGE-Baseline",
+#     sage_model,
+#     data,
+#     train_pos,
+#     valid_pos,
+#     valid_neg,
+#     test_pos,
+#     test_neg,
+#     evaluate_fn,
+#     device=device,
+#     epochs=EPOCHS,
+#     lr=LEARNING_RATE,
+#     patience=PATIENCE,
+#     batch_size=BATCH_SIZE,
+#     weight_decay=WEIGHT_DECAY,
+#     eval_every=EVAL_EVERY,
+#     eval_batch_size=EVAL_BATCH_SIZE
+# )
+# results['GraphSAGE'] = sage_result
 
-# Train GraphTransformer
-logger.info("\n" + "=" * 80)
-logger.info("Training GraphTransformer Baseline (minimal trainer)")
-logger.info("=" * 80)
-transformer_model = GraphTransformer(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-transformer_result = train_minimal_baseline(
-    "GraphTransformer-Baseline",
-    transformer_model,
-    data,
-    train_pos,
-    valid_pos,
-    valid_neg,
-    test_pos,
-    test_neg,
-    evaluate_fn,
-    device=device,
-    epochs=EPOCHS,
-    lr=0.005,  # Lower LR for transformer
-    patience=PATIENCE,
-    batch_size=BATCH_SIZE,
-    weight_decay=WEIGHT_DECAY,
-    eval_every=EVAL_EVERY,
-    eval_batch_size=EVAL_BATCH_SIZE
-)
-results['GraphTransformer'] = transformer_result
+# # Train GraphTransformer
+# logger.info("\n" + "=" * 80)
+# logger.info("Training GraphTransformer Baseline (minimal trainer)")
+# logger.info("=" * 80)
+# transformer_model = GraphTransformer(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
+# transformer_result = train_minimal_baseline(
+#     "GraphTransformer-Baseline",
+#     transformer_model,
+#     data,
+#     train_pos,
+#     valid_pos,
+#     valid_neg,
+#     test_pos,
+#     test_neg,
+#     evaluate_fn,
+#     device=device,
+#     epochs=EPOCHS,
+#     lr=0.005,  # Lower LR for transformer
+#     patience=PATIENCE,
+#     batch_size=BATCH_SIZE,
+#     weight_decay=WEIGHT_DECAY,
+#     eval_every=EVAL_EVERY,
+#     eval_batch_size=EVAL_BATCH_SIZE
+# )
+# results['GraphTransformer'] = transformer_result
 
-# Train GAT
-logger.info("\n" + "=" * 80)
-logger.info("Training GAT Baseline (minimal trainer)")
-logger.info("=" * 80)
-gat_model = GAT(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
-gat_result = train_minimal_baseline(
-    "GAT-Baseline",
-    gat_model,
-    data,
-    train_pos,
-    valid_pos,
-    valid_neg,
-    test_pos,
-    test_neg,
-    evaluate_fn,
-    device=device,
-    epochs=EPOCHS,
-    lr=0.005,  # Lower LR for attention
-    patience=PATIENCE,
-    batch_size=BATCH_SIZE,
-    weight_decay=WEIGHT_DECAY,
-    eval_every=EVAL_EVERY,
-    eval_batch_size=EVAL_BATCH_SIZE
-)
-results['GAT'] = gat_result
+# # Train GAT
+# logger.info("\n" + "=" * 80)
+# logger.info("Training GAT Baseline (minimal trainer)")
+# logger.info("=" * 80)
+# gat_model = GAT(num_nodes, HIDDEN_DIM, num_layers=NUM_LAYERS, heads=4, dropout=DROPOUT, decoder_dropout=DECODER_DROPOUT)
+# gat_result = train_minimal_baseline(
+#     "GAT-Baseline",
+#     gat_model,
+#     data,
+#     train_pos,
+#     valid_pos,
+#     valid_neg,
+#     test_pos,
+#     test_neg,
+#     evaluate_fn,
+#     device=device,
+#     epochs=EPOCHS,
+#     lr=0.005,  # Lower LR for attention
+#     patience=PATIENCE,
+#     batch_size=BATCH_SIZE,
+#     weight_decay=WEIGHT_DECAY,
+#     eval_every=EVAL_EVERY,
+#     eval_batch_size=EVAL_BATCH_SIZE
+# )
+# results['GAT'] = gat_result
 
 # Final results summary
 logger.info("\n" + "=" * 80)

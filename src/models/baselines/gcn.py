@@ -16,7 +16,7 @@ class GCN(BaseModel):
     Key differences from original broken version:
     - dropout=0 (was 0.5 - TOO HIGH for dense graphs)
     - decoder_dropout=0 (was 0.3)
-    - Simple dot product decoder only
+    - Hadamard + small MLP decoder only (no multi-strategy head)
     - No complex features
 
     Proven performance: 13-24% Hits@20 (vs 0.18% with old config)
