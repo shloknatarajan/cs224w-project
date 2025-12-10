@@ -1,7 +1,7 @@
+import os
 import torch
 import networkx as nx
 import logging
-import os
 import pandas as pd
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 from torch_geometric.utils import degree, to_networkx, add_self_loops
