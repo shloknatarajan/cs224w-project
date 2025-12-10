@@ -28,14 +28,31 @@ torchaudio = ">=2.0,<3"
 [pypi-dependencies]
 torch-geometric = ">=2.7.0, <3"
 rdkit-pypi = ">=2022.9.5, <2023"
-transformers = ">=4.30.0, <5"
+transformers = ">=4.35.0, <5"  # For ChemBERTa molecular embeddings
+PyTDC = ">=1.0.0, <2"          # For drug-target interaction data
 safetensors = ">=0.4.0, <1"
 
 [tasks]
 train-baselines = "python train_baselines.py"
 train-advanced = "python train_advanced.py"
 train-seal = "python train_seal.py"
+train-gdin = "python train_gdin.py"
+train-gdin-external = "python train_gdin_external.py"
+
+# Data fetching tasks for external knowledge
+fetch-smiles = "python -m src.data.fetch_smiles"
+fetch-pubchem = "python -m src.data.fetch_pubchem_properties"
+extract-chemberta = "python -m src.data.extract_chemberta_embeddings"
+fetch-drug-targets = "python -m src.data.fetch_drug_targets"
+
+# Fetch all external data at once (runs sequentially)
+fetch-data = "python -m src.data.fetch_smiles && python -m src.data.fetch_pubchem_properties && python -m src.data.extract_chemberta_embeddings && python -m src.data.fetch_drug_targets"
+
 train-morgan = "python train_morgan_baselines.py"
 train-chemberta = "python train_chemberta_baselines.py"
 train-chemberta-fallback = "python train_chemberta_fallback.py"
 train-node2vec = "python train_node2vec_baselines.py"
+
+# Reference DDI models with external features
+train-ddi-reference = "python train_ddi_reference.py"
+train-ddi-external = "python train_ddi_reference_external.py"
