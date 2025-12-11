@@ -1,0 +1,37 @@
+2025-12-10 06:29:19 - OGBL-DDI Link Prediction - GCN with External Features
+2025-12-10 06:29:19 - Device: cuda:0
+2025-12-10 06:29:19 - Log directory: logs/ddi_gcn_morgan_20251210_062919
+2025-12-10 06:29:19 - ================================================================================
+2025-12-10 06:29:20 - Dataset: 4267 nodes, 2135822 edges
+2025-12-10 06:29:20 - Train edges: 1067911
+2025-12-10 06:29:20 - Valid edges: 133489 pos, 101882 neg
+2025-12-10 06:29:20 - Test edges: 133489 pos, 95599 neg
+2025-12-10 06:29:20 - Loading external features...
+2025-12-10 06:29:20 - Loading cached Morgan features from data/morgan_features.pt
+2025-12-10 06:29:20 -   Morgan fingerprints: 2048 dims
+2025-12-10 06:29:20 - Combined features: 2048 dims total
+2025-12-10 06:29:20 - Loaded features: {'morgan': 2048}
+2025-12-10 06:29:20 - Total feature dimension: 2048
+2025-12-10 06:29:20 - ================================================================================
+2025-12-10 06:29:20 - Model Configuration:
+2025-12-10 06:29:20 -   architecture: GCN + MLP
+2025-12-10 06:29:20 -   num_layers: 2
+2025-12-10 06:29:20 -   hidden_channels: 256
+2025-12-10 06:29:20 -   dropout: 0.5
+2025-12-10 06:29:20 -   fusion: concat
+2025-12-10 06:29:20 -   external_features: ['morgan']
+2025-12-10 06:29:20 - Training Configuration:
+2025-12-10 06:29:20 -   epochs: 2000
+2025-12-10 06:29:20 -   lr: 0.005
+2025-12-10 06:29:20 -   batch_size: 65536
+2025-12-10 06:29:20 -   eval_steps: 5
+2025-12-10 06:29:20 -   runs: 1
+2025-12-10 06:29:20 - ================================================================================
+2025-12-10 06:29:31 - [GCN] Epoch 0005 | loss 0.6754 | val@20 0.2108 | test@20 0.1610 | best 0.2108 (ep 5)
+2025-12-10 06:29:41 - [GCN] Epoch 0010 | loss 0.5302 | val@20 0.1149 | test@20 0.1002 | best 0.2108 (ep 5)
+2025-12-10 06:29:52 - [GCN] Epoch 0015 | loss 0.4530 | val@20 0.1600 | test@20 0.1347 | best 0.2108 (ep 5)
+2025-12-10 06:30:02 - [GCN] Epoch 0020 | loss 0.3783 | val@20 0.2956 | test@20 0.2280 | best 0.2956 (ep 20)
+2025-12-10 06:30:13 - [GCN] Epoch 0025 | loss 0.3441 | val@20 0.1671 | test@20 0.1454 | best 0.2956 (ep 20)
+2025-12-10 06:30:24 - [GCN] Epoch 0030 | loss 0.3284 | val@20 0.3145 | test@20 0.1873 | best 0.3145 (ep 30)
+2025-12-10 06:30:35 - [GCN] Epoch 0035 | loss 0.3181 | val@20 0.2048 | test@20 0.2408 | best 0.3145 (ep 30)
+2025-12-10 06:30:45 - [GCN] Epoch 0040 | loss 0.2873 | val@20 0.2586 | test@20 0.1482 | best 0.3145 (ep 30)

@@ -56,3 +56,7 @@ train-node2vec = "python train_node2vec_baselines.py"
 # Reference DDI models with external features
 train-ddi-reference = "python train_ddi_reference.py"
 train-ddi-external = "python train_ddi_reference_external.py"
+
+# Hyperparameter sweeps
+sweep-external-quick = "python sweep_external_hyperparams.py --mode quick --epochs 300"
+sweep-external-full = "python sweep_external_hyperparams.py --mode full --epochs 500"
