@@ -1,0 +1,39 @@
+2025-12-10 13:50:05 - OGBL-DDI Link Prediction - GCN with External Features
+2025-12-10 13:50:05 - Device: cuda:0
+2025-12-10 13:50:05 - Log directory: logs/ddi_gcn_all_20251210_135005
+2025-12-10 13:50:05 - ================================================================================
+2025-12-10 13:50:06 - Dataset: 4267 nodes, 2135822 edges
+2025-12-10 13:50:06 - Train edges: 1067911
+2025-12-10 13:50:06 - Valid edges: 133489 pos, 101882 neg
+2025-12-10 13:50:06 - Test edges: 133489 pos, 95599 neg
+2025-12-10 13:50:06 - Loading external features...
+2025-12-10 13:50:06 - Loading cached Morgan features from data/morgan_features.pt
+2025-12-10 13:50:06 -   Morgan fingerprints: 2048 dims
+2025-12-10 13:50:06 - Loaded PubChem features: shape=(4267, 9)
+2025-12-10 13:50:06 -   PubChem properties: 9 dims
+2025-12-10 13:50:06 - Loaded ChemBERTa features: shape=torch.Size([4267, 768])
+2025-12-10 13:50:06 -   ChemBERTa embeddings: 768 dims
+2025-12-10 13:50:06 - Loaded drug-target features: shape=torch.Size([4267, 229])
+2025-12-10 13:50:06 -   Drug-target features: 229 dims
+2025-12-10 13:50:06 - Combined features: 3054 dims total
+2025-12-10 13:50:06 - Loaded features: {'morgan': 2048, 'pubchem': 9, 'chemberta': 768, 'drug_targets': 229}
+2025-12-10 13:50:06 - Total feature dimension: 3054
+2025-12-10 13:50:06 - ================================================================================
+2025-12-10 13:50:06 - Model Configuration:
+2025-12-10 13:50:06 -   architecture: GCN + MLP
+2025-12-10 13:50:06 -   num_layers: 2
+2025-12-10 13:50:06 -   hidden_channels: 512
+2025-12-10 13:50:06 -   dropout: 0.5
+2025-12-10 13:50:06 -   fusion: concat
+2025-12-10 13:50:06 -   external_features: ['morgan', 'pubchem', 'chemberta', 'drug_targets']
+2025-12-10 13:50:06 - Training Configuration:
+2025-12-10 13:50:06 -   epochs: 200
+2025-12-10 13:50:06 -   lr: 0.001
+2025-12-10 13:50:06 -   batch_size: 65536
+2025-12-10 13:50:06 -   eval_steps: 5
+2025-12-10 13:50:06 -   runs: 1
+2025-12-10 13:50:06 - ================================================================================
+2025-12-10 13:50:21 - [GCN] Epoch 0005 | loss 0.8292 | val@20 0.0408 | test@20 0.0119 | best 0.0408 (ep 5)
+2025-12-10 13:50:35 - [GCN] Epoch 0010 | loss 0.6249 | val@20 0.1175 | test@20 0.0166 | best 0.1175 (ep 10)
+2025-12-10 13:50:49 - [GCN] Epoch 0015 | loss 0.5251 | val@20 0.0780 | test@20 0.0051 | best 0.1175 (ep 10)
+2025-12-10 13:51:03 - [GCN] Epoch 0020 | loss 0.4825 | val@20 0.2076 | test@20 0.1529 | best 0.2076 (ep 20)
