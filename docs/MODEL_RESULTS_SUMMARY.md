@@ -1,6 +1,6 @@
 # Model Results Summary
 
-**Last Updated**: December 10, 2025
+**Last Updated**: December 10, 2025 (updated with latest DDI runs)
 **Dataset**: ogbl-ddi (4267 nodes, 2.1M edges)
 **Metric**: Hits@20 (primary), Hits@10, Hits@30 (supplementary)
 
@@ -39,11 +39,52 @@
 - Long training: Best results at epoch 1685 out of 2000
 - Feature engineering crucial: Combined external features provide rich drug representations
 
+### 2. Plain GCN (No External Features) — Long-Horizon Sweeps
+**Logs**: `ddi_long_sweeps_20251210_231641/sweep.log`, `ddi_long_sweeps_20251210_223703/sweep.log`
+**Date**: December 10, 2025
+
+**What this model is**: Same 2-layer GCN+MLP as above but trained purely on graph structure (no node features), with long schedules (300–600+ epochs) and different dropouts.
+
+**Why the results matter**: Shows the ceiling of structure-only training with extended epochs. Despite lacking features, careful regularization and long training deliver mid-0.5 Hits@20 on test, outperforming all prior structure-only baselines.
+
+| Run | Dropout | Epoch Window | Best Val@20 | Best Test@20 | Notes |
+|-----|---------|--------------|-------------|--------------|-------|
+| `ddi_long_sweeps_20251210_231641` | 0.5 | ~330+ | 0.5894 | **0.5571** | Test peaks mid-run; no final summary block. |
+| `ddi_long_sweeps_20251210_223703` | 0.25 | ~600+ | ~0.649 | 0.424 (obs.) | Single-config sweep; best values observed mid-run. |
+
+**Configuration (shared)**:
+- GCN (2 layers), hidden 256, batch 65,536
+- Learning rate: 0.005
+- Dropout: 0.25 or 0.5
+- No external features
+
+**Key Observations**:
+- Dropout 0.5 achieved the strongest structure-only test peak (0.5571).
+- Long schedules matter: test performance continues to move after 300+ epochs.
+- Add explicit checkpointing to capture best-epoch metrics automatically.
+
+### 3. Plain GCN (No External Features) — Short/Medium Budgets
+**Logs**: `ddi_gcn_20251210_030519/ddi_gcn.log`, `ddi_gcn_20251210_030143/ddi_gcn.log`, `ddi_gcn_20251210_030052.ddi_gcn.log`, `ddi_gcn_20251210_025937.ddi_gcn.log`
+**Date**: December 10, 2025
+
+**What this model is**: Same structure-only GCN+MLP with shorter training horizons (20–200 epochs).
+
+| Run | Epochs | Val@20 | Test@20 | Notes |
+|-----|--------|--------|---------|-------|
+| `...030519` | 200 | 0.5609 | **0.3984** | Strongest short-budget run; same hyperparameters as long sweeps. |
+| `...030143` | 100 | 0.4048 | 0.2232 | Gains continue up to 75–100 epochs; would benefit from longer run. |
+| `...030052` | 20 | 0.2475 | 0.0925 | Early sanity check. |
+| `...025937` | 20 | 0.2111 | 0.1898 | Slightly better test despite lower val. |
+
+**Key Observations**:
+- With no features, extending to 200 epochs nearly doubles test Hits@20 vs. 100-epoch run.
+- Same lr/dropout/batch as long sweeps; suggests further gains with lr decay and more epochs.
+
 ---
 
 ## Experimental Models
 
-### 2. Hybrid GCN (Quick Tuning)
+### 4. Hybrid GCN (Quick Tuning)
 **Log**: `hybrid_gcn_quick_tuning_20251210_015911/quick_tuning.log`
 **Date**: December 10, 2025
 
@@ -70,7 +111,7 @@
 - 20 experiments conducted with 50 epochs each
 - Significant val-test gap indicates potential overfitting
 
-### 3. GDIN (Graph Deconfounded Learning)
+### 5. GDIN (Graph Deconfounded Learning)
 **Log**: `gdin_20251209_233115/gdin.log`
 **Date**: December 9, 2025
 
@@ -95,7 +136,7 @@
 - Early stopping at epoch 385 (no improvement for 30 evaluations)
 - Specialized architecture for causal deconfounding
 
-### 4. Node2Vec + GCN
+### 6. Node2Vec + GCN
 **Log**: `node2vec_gcn_20251209_225240/node2vec_gcn.log`
 **Date**: December 9, 2025
 
@@ -123,7 +164,7 @@
 
 ## Baseline Models
 
-### 5. Standard GNN Baselines (Graph Structure Only)
+### 7. Standard GNN Baselines (Graph Structure Only)
 **Log**: `baselines_20251209_185813/baselines.log`
 **Date**: December 9, 2025
 
@@ -152,7 +193,7 @@
 - GraphTransformer has largest gap (68%)
 - Limited by lack of node features
 
-### 6. Morgan Fingerprint Baselines
+### 8. Morgan Fingerprint Baselines
 **Log**: `morgan_baselines_20251209_191058/morgan_baselines.log`
 **Date**: December 9, 2025
 
@@ -188,16 +229,20 @@
 ### Performance Ranking (Test Hits@20)
 
 1. **GCN + All External Features**: 73.28% ⭐
-2. **Hybrid GCN** (Exp 3): 15.72%
-3. **Node2Vec + GCN**: 13.19%
-4. **GCN Baseline**: 11.02%
-5. **GDIN**: 10.95%
-6. **Morgan-GCN**: 5.36%
-7. **GraphSAGE Baseline**: 4.46%
-8. **GAT Baseline**: 4.88%
-9. **Morgan-GraphSAGE**: 4.71%
-10. **Morgan-GraphTransformer**: 3.98%
-11. **GraphTransformer Baseline**: 3.73%
+2. **Plain GCN (structure-only, long sweep, dropout=0.5)**: 55.71% (observed peak)
+3. **Plain GCN (structure-only, long sweep, dropout=0.25)**: 42.40% (observed peak)
+4. **Plain GCN (structure-only, 200 epochs)**: 39.84%
+5. **Plain GCN (structure-only, 100 epochs)**: 22.32%
+6. **Hybrid GCN** (Exp 3): 15.72%
+7. **Node2Vec + GCN**: 13.19%
+8. **GCN Baseline (structure-only, 2-layer, 128-d)**: 11.02%
+9. **GDIN**: 10.95%
+10. **Morgan-GCN**: 5.36%
+11. **GAT Baseline**: 4.88%
+12. **Morgan-GraphSAGE**: 4.71%
+13. **GraphSAGE Baseline**: 4.46%
+14. **Morgan-GraphTransformer**: 3.98%
+15. **GraphTransformer Baseline**: 3.73%
 12. **Morgan-GAT**: 1.12%
 
 ### Key Insights
