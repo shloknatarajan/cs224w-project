@@ -3,7 +3,7 @@ Long-horizon sweep launcher for top OGBL-DDI configs with LR scheduling.
 
 Key differences vs. run_ddi_sweeps.py:
 - Focused on the best-performing short-run configs.
-- Longer default training (800 epochs) and two seeds.
+- Longer default training (800 epochs) and one seed.
 - Adds a MultiStepLR decay (gamma=0.5 at 40% and 70% of training).
 
 Configs:
@@ -65,10 +65,10 @@ def setup_root_logger(log_dir: str) -> logging.Logger:
 def build_search_space() -> List[SweepConfig]:
     """Return the focused list of configs to rerun with longer epochs."""
     return [
-        SweepConfig("A_l2_h256_do0.25_lr0.005_bs64k", 2, 256, 0.25, 0.005, 64 * 1024),
-        SweepConfig("A_l2_h192_do0.25_lr0.005_bs64k", 2, 192, 0.25, 0.005, 64 * 1024),
-        SweepConfig("B_l3_h192_do0.0_lr0.001_bs32k", 3, 192, 0.0, 0.001, 32 * 1024),
-        SweepConfig("A_l2_h256_do0.0_lr0.005_bs64k", 2, 256, 0.0, 0.005, 64 * 1024),
+        # SweepConfig("A_l2_h256_do0.25_lr0.005_bs64k", 2, 256, 0.25, 0.005, 64 * 1024),
+        SweepConfig("A_l2_h256_do0.5_lr0.005_bs64k", 2, 256, 0.5, 0.005, 64 * 1024),
+        # SweepConfig("A_l2_h192_do0.25_lr0.005_bs64k", 2, 192, 0.25, 0.005, 64 * 1024),
+        # SweepConfig("B_l3_h256_do0.5_lr0.001_bs64k", 3, 256, 0.5, 0.001, 64 * 1024),
     ]
 
 
@@ -99,6 +99,8 @@ def run_config(
     adj_t,
     split_edge: Dict[str, Dict[str, torch.Tensor]],
     evaluator,
+    patience: int = 100,
+    min_performance: float = 0.0,
 ) -> None:
     """Run a single hyperparameter configuration for `runs` seeds."""
     config_dir = os.path.join(sweep_log_dir, config.name)
@@ -153,6 +155,11 @@ def run_config(
         best_valid = {k: 0.0 for k in results}
         best_test = {k: 0.0 for k in results}
         best_epoch = {k: 0 for k in results}
+        
+        # Early stopping tracking
+        epochs_since_improvement = 0
+        best_val_hits20 = 0.0
+        early_stopped = False
 
         for epoch in range(1, epochs + 1):
             loss = train_epoch(
@@ -192,9 +199,43 @@ def run_config(
                     f"best {best_valid['Hits@20']:.4f} (ep {best_epoch['Hits@20']}) | "
                     f"lr {current_lr:.6f}"
                 )
+                
+                # Early stopping check
+                if valid_h20 > best_val_hits20:
+                    best_val_hits20 = valid_h20
+                    epochs_since_improvement = 0
+                else:
+                    epochs_since_improvement += eval_steps
+                
+                # Stop if no improvement for patience epochs
+                if epochs_since_improvement >= patience:
+                    logger.info(
+                        f"[{config.name}][run {run_idx + 1}/{runs}] "
+                        f"Early stopping at epoch {epoch}: no improvement for {patience} epochs. "
+                        f"Best val@20: {best_val_hits20:.4f}"
+                    )
+                    early_stopped = True
+                    break
+                
+                # Stop if not meeting minimum performance threshold
+                if min_performance > 0.0 and epoch >= 100 and best_val_hits20 < min_performance:
+                    logger.info(
+                        f"[{config.name}][run {run_idx + 1}/{runs}] "
+                        f"Early stopping at epoch {epoch}: best val@20 {best_val_hits20:.4f} "
+                        f"below threshold {min_performance:.4f}"
+                    )
+                    early_stopped = True
+                    break
 
         for key in results:
             results[key].append((best_valid[key], best_test[key]))
+        
+        if early_stopped:
+            logger.info(
+                f"[{config.name}][run {run_idx + 1}/{runs}] "
+                f"Stopped early. Final best: val@20={best_valid['Hits@20']:.4f}, "
+                f"test@20={best_test['Hits@20']:.4f} at epoch {best_epoch['Hits@20']}"
+            )
 
     for key in ["Hits@10", "Hits@20", "Hits@30"]:
         vals = results[key]
@@ -210,10 +251,22 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Longer-run sweeps for top OGBL-DDI configs.")
     parser.add_argument("--device", type=int, default=0, help="CUDA device id (ignored if no CUDA).")
     parser.add_argument("--use_sage", action="store_true", help="Use GraphSAGE encoder instead of GCN.")
-    parser.add_argument("--epochs", type=int, default=800, help="Epochs per run (long horizon).")
+    parser.add_argument("--epochs", type=int, default=2000, help="Epochs per run (long horizon).")
     parser.add_argument("--eval_steps", type=int, default=5, help="Evaluation frequency.")
-    parser.add_argument("--runs", type=int, default=2, help="Seeds per config.")
+    parser.add_argument("--runs", type=int, default=1, help="Seeds per config.")
     parser.add_argument("--seed", type=int, default=42, help="Base seed for reproducibility.")
+    parser.add_argument(
+        "--patience",
+        type=int,
+        default=100,
+        help="Early stopping patience: stop if no val improvement for N epochs (default: 100)",
+    )
+    parser.add_argument(
+        "--min_performance",
+        type=float,
+        default=0.0,
+        help="Minimum val Hits@20 threshold. Stop early if below this after 100 epochs (0.0 = disabled)",
+    )
     args = parser.parse_args()
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -238,6 +291,9 @@ def main() -> None:
     evaluator = Evaluator(name="ogbl-ddi")
     logger.info(f"Dataset: {data.num_nodes} nodes, {data.num_edges} edges")
     logger.info(f"Configs: {len(build_search_space())} total")
+    logger.info(f"Early stopping: patience={args.patience} epochs")
+    if args.min_performance > 0.0:
+        logger.info(f"Performance threshold: min val@20={args.min_performance:.4f} (checked after epoch 100)")
 
     for config in build_search_space():
         run_config(
@@ -254,6 +310,8 @@ def main() -> None:
             adj_t=adj_t,
             split_edge=split_edge,
             evaluator=evaluator,
+            patience=args.patience,
+            min_performance=args.min_performance,
         )
 
     logger.info("Long-horizon sweep complete.")

@@ -1,0 +1,2 @@
+2025-12-10 22:32:23,575 - [A_l2_h256_do0.25_lr0.005_bs64k] Starting (GCN) | layers=2, hidden=256, dropout=0.25, lr=0.005, batch=65536, epochs=800, runs=2
+2025-12-10 22:32:31,677 - [A_l2_h256_do0.25_lr0.005_bs64k][run 1/2] Epoch 0005 | loss 0.6599 | val@20 0.1281 | test@20 0.1074 | best 0.1281 (ep 5) | lr 0.005000

@@ -1,0 +1,9 @@
+%Y-%m-%d %H:%M:%S - Device: cuda:0
+%Y-%m-%d %H:%M:%S - Logging to: logs/ddi_long_sweeps_20251210_225528
+%Y-%m-%d %H:%M:%S - Dataset: 4267 nodes, 2135822 edges
+%Y-%m-%d %H:%M:%S - Configs: 3 total
+%Y-%m-%d %H:%M:%S - Early stopping: patience=100 epochs
+%Y-%m-%d %H:%M:%S - [A_l2_h256_do0.0_lr0.005_bs64k] Starting (GCN) | layers=2, hidden=256, dropout=0.5, lr=0.005, batch=65536, epochs=800, runs=1
+%Y-%m-%d %H:%M:%S - [A_l2_h256_do0.0_lr0.005_bs64k][run 1/1] Epoch 0005 | loss 0.6671 | val@20 0.1600 | test@20 0.0741 | best 0.1600 (ep 5) | lr 0.005000
+%Y-%m-%d %H:%M:%S - [A_l2_h256_do0.0_lr0.005_bs64k][run 1/1] Epoch 0010 | loss 0.5044 | val@20 0.2065 | test@20 0.1312 | best 0.2065 (ep 10) | lr 0.005000
+%Y-%m-%d %H:%M:%S - [A_l2_h256_do0.0_lr0.005_bs64k][run 1/1] Epoch 0015 | loss 0.4230 | val@20 0.2591 | test@20 0.2376 | best 0.2591 (ep 15) | lr 0.005000
