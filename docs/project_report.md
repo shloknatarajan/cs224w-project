@@ -135,7 +135,7 @@ Key log(s) and reference:
 
 
 
-# Ablations (Minimal Baseline GCN)
+# Ablations (Structure-Only GCN)
 
 We ran fast ablations on the minimal baseline (structure-only GCN+MLP) to assess the impact of depth, dropout, and learning rate while keeping runs short and comparable (200 epochs, eval every 10).
 
