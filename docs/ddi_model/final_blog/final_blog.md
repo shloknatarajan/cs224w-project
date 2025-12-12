@@ -205,8 +205,34 @@ class GraphTransformer(BaseModel):
 
 # Complex Models
 
-## Structure-only GNN architecture
-Given that our baseline GCN model performed the best, we decided to use GCN as our foundation to iterate upon. Our final structure-only architecture consisted of a 2-layer GCN encoder with 256 hidden channels and an MLP decoder trained only on graph structure. This served as the best-performing structure-only model after tuning.
+## Structure-only GNN Architecture
+
+Given that GCN outperformed attention-based models in our baselines, we chose it as our foundation for further development. The key insight from our baseline experiments was that ogbl-ddi's dense connectivity (14.67% edge density, ~500 neighbors per node) favors simple aggregation over selective attention.
+
+### Architecture Overview
+
+Our tuned structure-only model consists of two components:
+
+1. **GCN Encoder**: A 2-layer Graph Convolutional Network that learns node embeddings from the graph structure. Each drug starts as a learnable 256-dimensional embedding that gets refined through neighborhood aggregation.
+
+2. **MLP Decoder (LinkPredictor)**: Instead of a simple dot product between node embeddings, we use a multi-layer perceptron. For an edge (i, j), the decoder computes the element-wise product of embeddings h_i and h_j, then passes this through linear layers with ReLU activations to produce an interaction probability.
+
+The MLP decoder was a critical improvement over dot-product scoring. With 65K+ learnable parameters, it can capture non-linear relationships between drug pairs that a simple dot product misses.
+
+### Key Hyperparameters from Sweeps
+
+Through extensive hyperparameter sweeps, we identified the optimal configuration:
+
+| Parameter | Value | Finding |
+|---|---|---|
+| Hidden channels | 256 | Larger than 128 consistently improved performance |
+| GNN layers | 2 | Deeper models (3+ layers) suffered from oversmoothing |
+| Dropout | 0.5 | Essential for generalization on dense graphs |
+| Learning rate | 0.005 | Stable training with large batch sizes |
+| Batch size | 65,536 | Large batches improved gradient stability |
+| Epochs | 2000 | Long training needed; best model found at epoch 430 |
+
+The finding that **dropout 0.5 works well** for the tuned model (vs. 0.0 for naive baselines) reflects an important distinction: the naive baselines used dropout incorrectly during message passing, while our tuned model applies dropout appropriately after the GCN layers and within the MLP decoder.
 
 ```
 class GCN(torch.nn.Module):
