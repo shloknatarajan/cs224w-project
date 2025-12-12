@@ -68,7 +68,7 @@ These results highlight a few key findings:
 4. Structure alone isn’t enough to solve drug–drug interaction prediction: All models show significant generalization gaps, reinforcing the need for structural features, more expressive decoders, and deeper normalization strategies.
 These lessons directly informed the development of our more advanced models, showing that even baseline performance can drive important architectural decisions. Based on these learnings, we also chose to dive deeper into GCNs and avoid attention in future models.
 
-## Best Baseline Model: GraphSAGE
+## Best Baseline Model: GCN
 GCN achieves the strongest performance among all structure-only baselines, delivering the highest validation and test Hits@20 with the smallest generalization gap. Its normalized neighborhood aggregation appears especially well-suited to ogbl-ddi’s dense interaction patterns, allowing it to extract stable structural signals without overfitting. This makes GCN the most reliable foundation for understanding the dataset’s behavior and a natural reference point for evaluating more advanced models.
 
 ```
