@@ -1,7 +1,7 @@
 """
 GCNAdvanced: Advanced GCN model for drug-drug interaction prediction.
 
-This is the "Advanced GCN" architecture referenced in the blog, featuring:
+This is the "Advanced GCN" architecture, featuring:
 - 2-layer GCN encoder with cached convolutions
 - MLP-based LinkPredictor decoder
 - Proper dropout placement (after GCN layers, not during message passing)

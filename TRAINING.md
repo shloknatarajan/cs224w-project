@@ -2,11 +2,11 @@
 
 This document describes how to train models using the unified `train.py` script.
 
-**Available Models**: 15 total
+**Available Models**: 14 total
 - 4 baseline models (GCN, SAGE, Transformer, GAT)
 - 5 chemistry models (ChemBERTa/Morgan-based) - GNN with drug features
 - 4 hybrid models (structure + chemistry decoder)
-- 2 advanced models (GDIN, Node2Vec-GCN)
+- 2 advanced models (GDINN, GCNAdvanced)
 
 ## Quick Start
 
@@ -20,8 +20,8 @@ python train.py --model chemberta-gcn --external-features chemberta
 # Train hybrid model (better GCN with chemistry-aware decoder)
 python train.py --model hybrid-gcn --external-features morgan,chemberta
 
-# Train GDIN with all features
-python train.py --model gdin --external-features all
+# Train GDINN with all features (best model)
+python train.py --model gdinn --external-features all
 ```
 
 ## Available Models
@@ -53,8 +53,8 @@ Best of both worlds - structure-only encoding with chemistry-aware decoding:
 **Note**: Work best with external features but can run without them.
 
 ### Advanced Models
-- `gdin` - Graph Deep Interaction Network (requires external features)
-- `node2vec-gcn` - Node2Vec embeddings + GCN
+- `gdinn` - Graph Drug Interaction Neural Network (requires external features, best performance)
+- `gcn-advanced` - OGB reference GCN implementation (structure-only)
 
 ## External Features
 
@@ -87,8 +87,7 @@ Available features:
 --dropout 0.1             # Dropout rate (default: 0.0)
 --decoder-dropout 0.1     # Decoder dropout (default: 0.0)
 --attention-heads 8       # Attention heads for GAT/Transformer (default: 4)
---fusion attention        # Feature fusion: attention, gated, concat, add (default: attention)
---use-cn                  # Enable common neighbor features (GDIN only)
+--fusion concat           # Feature fusion: concat, add (default: concat) - GDINN only
 ```
 
 ### Training Configuration
@@ -145,11 +144,14 @@ python train.py --model chemberta-gat \
 ### Train with External Features
 
 ```bash
-# GDIN with all features
-python train.py --model gdin --external-features all --use-cn
+# GDINN with all features (best model)
+python train.py --model gdinn --external-features all
 
-# GDIN with Morgan fingerprints only
-python train.py --model gdin --external-features morgan
+# GDINN with Morgan fingerprints only
+python train.py --model gdinn --external-features morgan
+
+# GCNAdvanced (structure-only, OGB reference implementation)
+python train.py --model gcn-advanced --hidden-dim 256 --dropout 0.5
 
 # Hybrid model with ChemBERTa
 python train.py --model hybrid-gcn --external-features chemberta
@@ -174,16 +176,17 @@ python train.py --model sage \
   --lr 0.005
 ```
 
-### Node2Vec + GNN
+### Best Performing Configuration (GDINN)
 
 ```bash
-# Train Node2Vec+GCN with custom embeddings
-python train.py --model node2vec-gcn \
-  --node2vec-dim 128 \
-  --node2vec-epochs 50 \
-  --node2vec-walk-length 30 \
+# Train GDINN with recommended settings (achieved 73.28% test Hits@20)
+python train.py --model gdinn \
+  --external-features all \
   --hidden-dim 256 \
-  --epochs 300
+  --dropout 0.5 \
+  --lr 0.005 \
+  --batch-size 65536 \
+  --epochs 2000
 ```
 
 ## Output and Logging
@@ -194,20 +197,24 @@ Training progress is logged to both console and file:
 
 Example log directory names:
 - `logs/gcn_20231211_140530/`
-- `logs/gdin_all_features_20231211_140530/`
+- `logs/gdinn_all_features_20231211_140530/`
 - `logs/hybrid-sage_morgan_chemberta_20231211_140530/`
 
 ## Advanced Usage
 
-### GDIN-Specific Options
+### GDINN-Specific Options
 
 ```bash
-# GDIN with common neighbors and custom negative sampling
-python train.py --model gdin \
+# GDINN with custom fusion strategy
+python train.py --model gdinn \
   --external-features all \
-  --use-cn \
   --num-neg 5 \
-  --fusion gated
+  --fusion concat
+
+# GDINN with add fusion (alternative to concat)
+python train.py --model gdinn \
+  --external-features morgan,chemberta \
+  --fusion add
 ```
 
 ### Device Selection
@@ -255,16 +262,16 @@ python train.py --model gat
 python train_gdin_external.py --all
 
 # New
-python train.py --model gdin --external-features all
+python train.py --model gdinn --external-features all
 ```
 
 ### `train_ddi_reference_external.py` → `train.py`
 ```bash
 # Old
-python train_ddi_reference_external.py --use_sage --morgan --chemberta
+python src/training/scripts/train_ddi_reference_external.py --morgan --chemberta
 
 # New
-python train.py --model sage --external-features morgan,chemberta
+python train.py --model gdinn --external-features morgan,chemberta
 ```
 
 ## Troubleshooting

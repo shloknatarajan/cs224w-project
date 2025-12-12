@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 """
-Reference-style trainer for OGBL-DDI with external feature support.
-
 Extends train_ddi_reference.py to incorporate external knowledge:
 - Morgan fingerprints (--morgan)
 - PubChem properties (--pubchem)

@@ -6,7 +6,6 @@ Supports:
 - Baseline GNNs: GCN, GraphSAGE, GraphTransformer, GAT
 - Advanced models: GDINN, GCNAdvanced, Hybrid models
 - External features: Morgan, PubChem, ChemBERTa, Drug-Targets
-- Reference OGB implementations
 
 Usage:
     # Train baseline GCN
@@ -464,7 +463,7 @@ def train_gdinn_model(args, model, data, splits, external_features, device, logg
     split_edge = dataset.get_edge_split()
     num_nodes = sparse_data.num_nodes
 
-    # Create eval_train subset (matching OGB reference)
+    # Create eval_train subset
     torch.manual_seed(12345)
     idx = torch.randperm(split_edge["train"]["edge"].size(0))
     idx = idx[: split_edge["valid"]["edge"].size(0)]

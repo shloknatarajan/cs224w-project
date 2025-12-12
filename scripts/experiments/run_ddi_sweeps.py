@@ -1,5 +1,5 @@
 """
-Sweep launcher for OGBL-DDI reference models (GCN/SAGE + LinkPredictor MLP).
+Sweep launcher for models
 
 Implements the hyperparameter grids described in the sweep proposal:
 - Config A (baseline-ish): layers=2; hidden {128,192,256}; dropout {0.0,0.1,0.25};

@@ -365,19 +365,31 @@ pixi install
 ### Training Models
 
 ```bash
-# Train best model (GCN + all features)
-python train.py --model gcn --external-features all \
+# Train best model (GDINN with all external features)
+python train.py --model gdinn --external-features all \
   --hidden-dim 256 --dropout 0.5 --lr 0.005 \
   --batch-size 65536 --epochs 2000
 
-# Train structure-only baseline
-python train.py --model gcn --external-features none
+# Train structure-only baseline (simple GCN)
+python train.py --model gcn
+
+# Train structure-only GCNAdvanced
+python train.py --model gcn-advanced --hidden-dim 256 --dropout 0.5 --lr 0.005
+
+# Train ChemBERTa-enhanced models
+python train.py --model chemberta-gcn --external-features chemberta
 
 # Train hybrid model
 python train.py --model hybrid-gcn --external-features chemberta,morgan
 ```
 
-See `TRAINING.md` for detailed training instructions and all available options.
+**Available Models:**
+- **Baselines**: `gcn`, `sage`, `transformer`, `gat`
+- **Chemistry Models**: `chemberta-gcn`, `chemberta-sage`, `chemberta-gat`, `chemberta-transformer`, `morgan-gcn`
+- **Hybrid Models**: `hybrid-gcn`, `hybrid-sage`, `hybrid-transformer`, `hybrid-gat`
+- **Advanced Models**: `gdinn` (with external features), `gcn-advanced` (structure-only)
+
+Run `python train.py --help` for all available options. See [TRAINING.md](TRAINING.md) for detailed training guide.
 
 ### Using the Consolidated Baseline Script
 
@@ -399,17 +411,17 @@ This script includes all model definitions, training logic, and evaluation code 
 ├── src/
 │   ├── data/               # Data loading and feature extraction
 │   ├── models/             # Model architectures
-│   │   ├── baselines/      # Structure-only GNNs
+│   │   ├── baselines/      # Structure-only GNNs (GCN, GraphSAGE, GAT, Transformer)
+│   │   ├── advanced/       # GDINN and GCNAdvanced (best-performing models)
 │   │   ├── chemberta_*/    # ChemBERTa-based models
 │   │   ├── hybrid/         # Hybrid encoder-decoder models
-│   │   ├── advanced/       # GDIN and other advanced architectures
 │   │   └── morgan_*/       # Morgan fingerprint models
 │   ├── training/           # Training loops and utilities
 │   └── evals/              # Evaluation functions
+├── scripts/experiments/    # Hyperparameter sweep scripts
 ├── logs/                   # Training logs and results
 ├── train.py                # Unified training script
 ├── train_baselines_consolidated.py  # Self-contained baseline script
-├── TRAINING.md             # Training guide
 └── README.md               # This file
 ```
 

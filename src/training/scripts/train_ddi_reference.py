@@ -1,11 +1,3 @@
-"""
-Reference-style trainer for OGBL-DDI using the official GCN/SAGE + MLP edge
-predictor architecture (ported in `src/models/ogb_ddi_gnn/gnn.py`).
-
-Defaults match the original OGB example (dropout=0.5, hidden=256, 2 layers) so
-you can compare directly. Set `--dropout 0.0` if you want to align with this
-repo's zero-dropout preference for DDI.
-"""
 from __future__ import annotations
 
 import argparse
@@ -88,7 +80,7 @@ def main() -> None:
     logger.info(f"Valid edges: {split_edge['valid']['edge'].size(0)} pos, {split_edge['valid']['edge_neg'].size(0)} neg")
     logger.info(f"Test edges: {split_edge['test']['edge'].size(0)} pos, {split_edge['test']['edge_neg'].size(0)} neg")
 
-    # Randomly pick eval_train subset (matching the reference script).
+    # Randomly pick eval_train subset
     torch.manual_seed(12345)
     idx = torch.randperm(split_edge["train"]["edge"].size(0))
     idx = idx[: split_edge["valid"]["edge"].size(0)]
