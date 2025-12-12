@@ -18,9 +18,8 @@ import torch
 import torch_geometric.transforms as T
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 
-from src.models.ogb_ddi_gnn.gnn import (
-    GCN,
-    SAGE,
+from src.models.advanced.gcn_advanced import (
+    GCNAdvanced,
     LinkPredictor,
     train as train_epoch,
     test as eval_epoch,
@@ -34,11 +33,10 @@ def set_seed(seed: int) -> None:
 
 def setup_logging(args) -> str:
     """Set up logging to file and console."""
-    model_name = "sage" if args.use_sage else "gcn"
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_dir = f"logs/ddi_{model_name}_{timestamp}"
+    log_dir = f"logs/ddi_gcn_advanced_{timestamp}"
     os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"ddi_{model_name}.log")
+    log_file = os.path.join(log_dir, "ddi_gcn_advanced.log")
     
     logging.basicConfig(
         level=logging.INFO,
@@ -53,10 +51,9 @@ def setup_logging(args) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="OGBL-DDI (reference GCN/SAGE)")
+    parser = argparse.ArgumentParser(description="OGBL-DDI (GCNAdvanced)")
     parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--log_steps", type=int, default=1)
-    parser.add_argument("--use_sage", action="store_true")
     parser.add_argument("--num_layers", type=int, default=2)
     parser.add_argument("--hidden_channels", type=int, default=256)
     parser.add_argument("--dropout", type=float, default=0.5)
@@ -67,18 +64,16 @@ def main() -> None:
     parser.add_argument("--runs", type=int, default=10)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
-    
+
     log_dir = setup_logging(args)
     logger = logging.getLogger()
-    
-    model_name = "GraphSAGE" if args.use_sage else "GCN"
     
     set_seed(args.seed)
 
     device = f"cuda:{args.device}" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
-    logger.info(f"OGBL-DDI Link Prediction - {model_name}")
+    logger.info("OGBL-DDI Link Prediction - GCNAdvanced")
     logger.info(f"Device: {device}")
     logger.info(f"Log directory: {log_dir}")
     logger.info("="*80)
@@ -99,22 +94,13 @@ def main() -> None:
     idx = idx[: split_edge["valid"]["edge"].size(0)]
     split_edge["eval_train"] = {"edge": split_edge["train"]["edge"][idx]}
 
-    if args.use_sage:
-        model = SAGE(
-            args.hidden_channels,
-            args.hidden_channels,
-            args.hidden_channels,
-            args.num_layers,
-            args.dropout,
-        ).to(device)
-    else:
-        model = GCN(
-            args.hidden_channels,
-            args.hidden_channels,
-            args.hidden_channels,
-            args.num_layers,
-            args.dropout,
-        ).to(device)
+    model = GCNAdvanced(
+        args.hidden_channels,
+        args.hidden_channels,
+        args.hidden_channels,
+        args.num_layers,
+        args.dropout,
+    ).to(device)
 
     emb = torch.nn.Embedding(adj_t.size(0), args.hidden_channels).to(device)
     predictor = LinkPredictor(
@@ -123,7 +109,7 @@ def main() -> None:
     
     logger.info("="*80)
     logger.info("Model Configuration:")
-    logger.info(f"  architecture: {model_name} + MLP")
+    logger.info(f"  architecture: GCNAdvanced + MLP")
     logger.info(f"  num_layers: {args.num_layers}")
     logger.info(f"  hidden_channels: {args.hidden_channels}")
     logger.info(f"  dropout: {args.dropout}")
@@ -186,7 +172,7 @@ def main() -> None:
                     # Get Hits@20 for compact logging (matches user's style)
                     train_h20, valid_h20, test_h20 = scores["Hits@20"]
                     logger.info(
-                        f"{run_prefix}[{model_name}] Epoch {epoch:04d} | "
+                        f"{run_prefix}[GCNAdvanced] Epoch {epoch:04d} | "
                         f"loss {loss:.4f} | "
                         f"val@20 {valid_h20:.4f} | "
                         f"test@20 {test_h20:.4f} | "

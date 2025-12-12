@@ -4,7 +4,7 @@ Unified training script for all models in the 224w-project.
 
 Supports:
 - Baseline GNNs: GCN, GraphSAGE, GraphTransformer, GAT
-- Advanced models: GDIN, Hybrid models, Node2Vec+GNN
+- Advanced models: GDIN, Hybrid models 
 - External features: Morgan, PubChem, ChemBERTa, Drug-Targets
 - Reference OGB implementations
 
@@ -44,8 +44,6 @@ from src.models.hybrid import HybridGCN, HybridGraphSAGE, HybridGraphTransformer
 from src.training import (
     train_minimal_baseline,
     train_gdin_multimodal,
-    train_node2vec_gcn,
-    Node2VecConfig,
 )
 from src.evals import evaluate
 
@@ -54,7 +52,7 @@ from src.evals import evaluate
 BASELINE_MODELS = ['gcn', 'sage', 'transformer', 'gat']
 CHEMISTRY_MODELS = ['chemberta-gcn', 'chemberta-sage', 'chemberta-gat', 'chemberta-transformer', 'morgan-gcn']
 HYBRID_MODELS = ['hybrid-gcn', 'hybrid-sage', 'hybrid-transformer', 'hybrid-gat']
-ADVANCED_MODELS = ['gdin', 'node2vec-gcn']
+ADVANCED_MODELS = ['gdinn', 'gcn-advanced']
 ALL_MODELS = BASELINE_MODELS + CHEMISTRY_MODELS + HYBRID_MODELS + ADVANCED_MODELS
 
 
@@ -460,47 +458,6 @@ def train_gdin_model(args, model, data, splits, external_features, device, logge
         eval_every=args.eval_every,
         use_cn=args.use_cn,
         adj_sparse=adj_sparse,
-    )
-
-    return result
-
-
-def train_node2vec_model(args, data, splits, device, logger):
-    """Train Node2Vec+GCN model."""
-    train_pos, valid_pos, valid_neg, test_pos, test_neg = splits
-
-    from ogb.linkproppred import Evaluator
-    evaluator = Evaluator(name='ogbl-ddi')
-
-    node2vec_config = Node2VecConfig(
-        embedding_dim=args.node2vec_dim,
-        walk_length=args.node2vec_walk_length,
-        context_size=args.node2vec_context_size,
-        walks_per_node=args.node2vec_walks_per_node,
-        num_negative_samples=args.node2vec_negative_samples,
-        epochs=args.node2vec_epochs,
-        batch_size=args.node2vec_batch_size,
-        lr=args.node2vec_lr,
-    )
-
-    result = train_node2vec_gcn(
-        data=data,
-        train_pos=train_pos,
-        valid_pos=valid_pos,
-        valid_neg=valid_neg,
-        test_pos=test_pos,
-        test_neg=test_neg,
-        evaluator=evaluator,
-        device=device,
-        node2vec_config=node2vec_config,
-        hidden_dim=args.hidden_dim,
-        num_layers=args.num_layers,
-        dropout=args.dropout,
-        epochs=args.epochs,
-        lr=args.lr,
-        weight_decay=args.weight_decay,
-        patience=args.patience,
-        eval_every=args.eval_every,
     )
 
     return result

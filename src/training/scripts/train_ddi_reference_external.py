@@ -31,9 +31,8 @@ import torch
 import torch_geometric.transforms as T
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 
-from src.models.ogb_ddi_gnn.gnn_external import (
-    GCNExternal,
-    SAGEExternal,
+from src.models.advanced.gdinn import (
+    GDINN,
     LinkPredictor,
     train_with_external,
     test_with_external,
@@ -51,8 +50,6 @@ def set_seed(seed: int) -> None:
 
 def setup_logging(args) -> str:
     """Set up logging to file and console."""
-    model_name = "sage" if args.use_sage else "gcn"
-
     # Build feature suffix
     features = []
     if args.morgan:
@@ -65,14 +62,14 @@ def setup_logging(args) -> str:
         features.append("dti")
 
     feature_suffix = "_" + "_".join(features) if features else "_baseline"
-    
+
     if args.all:
         feature_suffix = "_all"
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_dir = f"logs/ddi_{model_name}{feature_suffix}_{timestamp}"
+    log_dir = f"logs/ddi_gdinn{feature_suffix}_{timestamp}"
     os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"ddi_{model_name}{feature_suffix}.log")
+    log_file = os.path.join(log_dir, f"ddi_gdinn{feature_suffix}.log")
 
     # Get the root logger and configure it directly (basicConfig may be ignored)
     logger = logging.getLogger()
@@ -102,14 +99,13 @@ def setup_logging(args) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="OGBL-DDI with external features (reference GCN/SAGE)",
+        description="OGBL-DDI with external features (GDINN)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
     # Model configuration
     parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--log_steps", type=int, default=1)
-    parser.add_argument("--use_sage", action="store_true")
     parser.add_argument("--num_layers", type=int, default=2)
     parser.add_argument("--hidden_channels", type=int, default=256)
     parser.add_argument("--dropout", type=float, default=0.5)
@@ -147,14 +143,12 @@ def main() -> None:
     log_dir = setup_logging(args)
     logger = logging.getLogger()
 
-    model_name = "GraphSAGE" if args.use_sage else "GCN"
-
     set_seed(args.seed)
 
     device = f"cuda:{args.device}" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
 
-    logger.info(f"OGBL-DDI Link Prediction - {model_name} with External Features")
+    logger.info("OGBL-DDI Link Prediction - GDINN with External Features")
     logger.info(f"Device: {device}")
     logger.info(f"Log directory: {log_dir}")
     logger.info("=" * 80)
@@ -232,26 +226,15 @@ def main() -> None:
         logger.info("Training without external features (baseline)")
 
     # Create model
-    if args.use_sage:
-        model = SAGEExternal(
-            num_nodes=num_nodes,
-            hidden_channels=args.hidden_channels,
-            out_channels=args.hidden_channels,
-            num_layers=args.num_layers,
-            dropout=args.dropout,
-            external_dims=external_dims if external_dims else None,
-            fusion=args.fusion,
-        ).to(device)
-    else:
-        model = GCNExternal(
-            num_nodes=num_nodes,
-            hidden_channels=args.hidden_channels,
-            out_channels=args.hidden_channels,
-            num_layers=args.num_layers,
-            dropout=args.dropout,
-            external_dims=external_dims if external_dims else None,
-            fusion=args.fusion,
-        ).to(device)
+    model = GDINN(
+        num_nodes=num_nodes,
+        hidden_channels=args.hidden_channels,
+        out_channels=args.hidden_channels,
+        num_layers=args.num_layers,
+        dropout=args.dropout,
+        external_dims=external_dims if external_dims else None,
+        fusion=args.fusion,
+    ).to(device)
 
     predictor = LinkPredictor(
         args.hidden_channels, args.hidden_channels, 1, args.num_layers, args.dropout
@@ -259,7 +242,7 @@ def main() -> None:
 
     logger.info("=" * 80)
     logger.info("Model Configuration:")
-    logger.info(f"  architecture: {model_name} + MLP")
+    logger.info(f"  architecture: GDINN + MLP")
     logger.info(f"  num_layers: {args.num_layers}")
     logger.info(f"  hidden_channels: {args.hidden_channels}")
     logger.info(f"  dropout: {args.dropout}")
@@ -324,7 +307,7 @@ def main() -> None:
                     run_prefix = f"[Run {run + 1:02d}] " if args.runs > 1 else ""
                     train_h20, valid_h20, test_h20 = scores["Hits@20"]
                     logger.info(
-                        f"{run_prefix}[{model_name}] Epoch {epoch:04d} | "
+                        f"{run_prefix}[GDINN] Epoch {epoch:04d} | "
                         f"loss {loss:.4f} | "
                         f"val@20 {valid_h20:.4f} | "
                         f"test@20 {test_h20:.4f} | "

@@ -24,9 +24,8 @@ import torch
 import torch_geometric.transforms as T
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 
-from src.models.ogb_ddi_gnn.gnn_external import (
-    GCNExternal,
-    SAGEExternal,
+from src.models.advanced.gdinn import (
+    GDINN,
     LinkPredictor,
     train_with_external,
     test_with_external,
@@ -97,7 +96,6 @@ def generate_configs(param_grid: Dict) -> List[Dict]:
 
 def run_single_config(
     config: Dict,
-    model_type: str,
     device: torch.device,
     adj_t,
     split_edge: Dict,
@@ -114,8 +112,7 @@ def run_single_config(
     set_seed(seed)
 
     # Create model
-    ModelClass = SAGEExternal if model_type == "sage" else GCNExternal
-    model = ModelClass(
+    model = GDINN(
         num_nodes=num_nodes,
         hidden_channels=config["hidden_channels"],
         out_channels=config["hidden_channels"],
@@ -174,9 +171,6 @@ def main():
     parser.add_argument("--mode", type=str, default="quick",
                         choices=["quick", "recommended", "full", "custom"],
                         help="Sweep mode: quick (fast), recommended, full (comprehensive)")
-    parser.add_argument("--model", type=str, default="gcn",
-                        choices=["gcn", "sage"],
-                        help="Model architecture")
     parser.add_argument("--epochs", type=int, default=500,
                         help="Epochs per config (use less for quick sweeps)")
     parser.add_argument("--eval_steps", type=int, default=10,
@@ -196,7 +190,7 @@ def main():
 
     # Setup logging
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_dir = f"logs/sweep_external_{args.model}_{timestamp}"
+    log_dir = f"logs/sweep_gdinn_{timestamp}"
     os.makedirs(log_dir, exist_ok=True)
 
     logging.basicConfig(
@@ -288,7 +282,6 @@ def main():
         try:
             valid_hits, test_hits, best_epoch = run_single_config(
                 config=config,
-                model_type=args.model,
                 device=device,
                 adj_t=adj_t,
                 split_edge=split_edge,

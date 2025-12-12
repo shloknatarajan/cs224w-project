@@ -1,3 +1,11 @@
+"""
+GCNAdvanced: Advanced GCN model for drug-drug interaction prediction.
+
+This is the "Advanced GCN" architecture referenced in the blog, featuring:
+- 2-layer GCN encoder with cached convolutions
+- MLP-based LinkPredictor decoder
+- Proper dropout placement (after GCN layers, not during message passing)
+"""
 from __future__ import annotations
 
 from typing import Dict, Iterable, Tuple
@@ -6,12 +14,21 @@ import torch
 import torch.nn.functional as F
 from torch import Tensor
 from torch.utils.data import DataLoader
-from torch_geometric.nn import GCNConv, SAGEConv
+from torch_geometric.nn import GCNConv
 from torch_geometric.utils import negative_sampling
 from torch_geometric.typing import SparseTensor
 
 
-class GCN(torch.nn.Module):
+class GCNAdvanced(torch.nn.Module):
+    """
+    Advanced GCN encoder for link prediction.
+
+    Key design choices:
+    - Cached GCN convolutions for efficiency on static graphs
+    - Dropout applied after activation (not during message passing)
+    - Flexible layer depth configuration
+    """
+
     def __init__(
         self,
         in_channels: int,
@@ -46,43 +63,13 @@ class GCN(torch.nn.Module):
         return x
 
 
-class SAGE(torch.nn.Module):
-    """GraphSAGE encoder mirroring the OGBL-DDI reference architecture."""
-
-    def __init__(
-        self,
-        in_channels: int,
-        hidden_channels: int,
-        out_channels: int,
-        num_layers: int,
-        dropout: float = 0.5,
-    ) -> None:
-        super().__init__()
-
-        self.convs = torch.nn.ModuleList()
-        self.convs.append(SAGEConv(in_channels, hidden_channels))
-        for _ in range(num_layers - 2):
-            self.convs.append(SAGEConv(hidden_channels, hidden_channels))
-        self.convs.append(SAGEConv(hidden_channels, out_channels))
-
-        self.dropout = dropout
-
-    def reset_parameters(self) -> None:
-        for conv in self.convs:
-            conv.reset_parameters()
-
-    def forward(self, x: Tensor, adj_t: SparseTensor) -> Tensor:
-        for conv in self.convs[:-1]:
-            x = conv(x, adj_t)
-            x = F.relu(x)
-            if self.dropout > 0:
-                x = F.dropout(x, p=self.dropout, training=self.training)
-        x = self.convs[-1](x, adj_t)
-        return x
-
-
 class LinkPredictor(torch.nn.Module):
-    """Edge MLP decoder identical to the reference implementation."""
+    """
+    MLP-based edge decoder for link prediction.
+
+    Takes node embeddings for a pair of nodes, computes their element-wise
+    product, and passes through MLP layers to predict interaction probability.
+    """
 
     def __init__(
         self,
@@ -127,11 +114,11 @@ def train(
     batch_size: int,
 ) -> float:
     """
-    Single training epoch mirroring the original script.
+    Single training epoch for GCNAdvanced.
 
     Args:
-        model: Encoder (GCN or SAGE).
-        predictor: Edge decoder.
+        model: GCNAdvanced encoder.
+        predictor: LinkPredictor decoder.
         x: Node embeddings (Tensor).
         adj_t: Sparse adjacency (transposed).
         split_edge: Edge splits from OGB dataset.
@@ -170,7 +157,7 @@ def train(
         loss = pos_loss + neg_loss
         loss.backward()
 
-        # Clip gradients to mirror reference behavior.
+        # Clip gradients for stability
         torch.nn.utils.clip_grad_norm_(x, 1.0)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         torch.nn.utils.clip_grad_norm_(predictor.parameters(), 1.0)
@@ -194,7 +181,7 @@ def test(
     evaluator,
     batch_size: int,
 ) -> Dict[str, Tuple[float, float, float]]:
-    """Evaluation loop matching the reference implementation."""
+    """Evaluation loop for GCNAdvanced."""
     model.eval()
     predictor.eval()
 

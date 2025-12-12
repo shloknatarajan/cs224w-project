@@ -25,9 +25,8 @@ import torch
 import torch_geometric.transforms as T
 from ogb.linkproppred import PygLinkPropPredDataset, Evaluator
 
-from src.models.ogb_ddi_gnn.gnn import (
-    GCN,
-    SAGE,
+from src.models.advanced.gcn_advanced import (
+    GCNAdvanced,
     LinkPredictor,
     train as train_epoch,
     test as eval_epoch,
@@ -127,7 +126,6 @@ def run_config(
     config: SweepConfig,
     *,
     sweep_log_dir: str,
-    use_sage: bool,
     device: torch.device,
     epochs: int,
     eval_steps: int,
@@ -144,9 +142,8 @@ def run_config(
     config_log = os.path.join(config_dir, "config.log")
     config_handler = attach_config_handler(logger, config_log)
 
-    model_name = "GraphSAGE" if use_sage else "GCN"
     logger.info(
-        f"[{config.name}] Starting ({model_name}) | layers={config.num_layers}, "
+        f"[{config.name}] Starting (GCNAdvanced) | layers={config.num_layers}, "
         f"hidden={config.hidden_channels}, dropout={config.dropout}, "
         f"lr={config.lr}, batch={config.batch_size}, epochs={epochs}, runs={runs}"
     )
@@ -156,22 +153,13 @@ def run_config(
     for run_idx in range(runs):
         set_seed(base_seed + run_idx)
 
-        if use_sage:
-            model = SAGE(
-                config.hidden_channels,
-                config.hidden_channels,
-                config.hidden_channels,
-                config.num_layers,
-                config.dropout,
-            ).to(device)
-        else:
-            model = GCN(
-                config.hidden_channels,
-                config.hidden_channels,
-                config.hidden_channels,
-                config.num_layers,
-                config.dropout,
-            ).to(device)
+        model = GCNAdvanced(
+            config.hidden_channels,
+            config.hidden_channels,
+            config.hidden_channels,
+            config.num_layers,
+            config.dropout,
+        ).to(device)
 
         emb = torch.nn.Embedding(adj_t.size(0), config.hidden_channels).to(device)
         predictor = LinkPredictor(
@@ -241,9 +229,8 @@ def run_config(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run hyperparameter sweeps for OGBL-DDI reference models.")
+    parser = argparse.ArgumentParser(description="Run hyperparameter sweeps for OGBL-DDI GCNAdvanced models.")
     parser.add_argument("--device", type=int, default=0, help="CUDA device id (ignored if no CUDA).")
-    parser.add_argument("--use_sage", action="store_true", help="Use GraphSAGE encoder instead of GCN.")
     parser.add_argument("--epochs", type=int, default=100, help="Epochs per run (use shorter for screening).")
     parser.add_argument("--eval_steps", type=int, default=5, help="Evaluation frequency.")
     parser.add_argument("--runs", type=int, default=1, help="Seeds per config.")
@@ -279,7 +266,6 @@ def main() -> None:
             logger,
             config,
             sweep_log_dir=log_dir,
-            use_sage=args.use_sage,
             device=device,
             epochs=args.epochs,
             eval_steps=args.eval_steps,
