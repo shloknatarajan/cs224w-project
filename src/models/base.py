@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from torch import nn
 
 
-class ImprovedEdgeDecoder(nn.Module):
+class EdgeDecoder(nn.Module):
     """Multi-strategy edge decoder for better link prediction"""
     def __init__(self, hidden_dim, dropout=0.5, use_multi_strategy=True):
         super().__init__()
@@ -74,7 +74,7 @@ class BaseModel(nn.Module):
     """Base class for all GNN models"""
     def __init__(self, hidden_dim, decoder_dropout=0.3, use_multi_strategy=True):
         super().__init__()
-        self.decoder = ImprovedEdgeDecoder(hidden_dim, dropout=decoder_dropout, use_multi_strategy=use_multi_strategy)
+        self.decoder = EdgeDecoder(hidden_dim, dropout=decoder_dropout, use_multi_strategy=use_multi_strategy)
 
     def encode(self, edge_index):
         """Encode nodes to embeddings. Should be implemented by subclasses."""

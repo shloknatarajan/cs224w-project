@@ -1,4 +1,4 @@
-from .base import BaseModel, ImprovedEdgeDecoder
+from .base import BaseModel, EdgeDecoder
 from .chemberta_baselines import (
     ChemBERTaGCN,
     ChemBERTaGraphSAGE,
@@ -20,7 +20,7 @@ from .node2vec import (
 
 __all__ = [
     'BaseModel',
-    'ImprovedEdgeDecoder',
+    'EdgeDecoder',
     'ChemBERTaGCN',
     'ChemBERTaGraphSAGE',
     'ChemBERTaGAT',

@@ -167,7 +167,7 @@ class ExponentialMovingAverage:
                 param.data = self.backup[name]
         self.backup = {}
 
-class ImprovedEdgeDecoder(nn.Module):
+class EdgeDecoder(nn.Module):
     """Multi-strategy edge decoder for better link prediction"""
     def __init__(self, hidden_dim, dropout=0.5, use_multi_strategy=True):
         super().__init__()
@@ -236,7 +236,7 @@ class ImprovedEdgeDecoder(nn.Module):
 class BaseModel(nn.Module):
     def __init__(self, hidden_dim, decoder_dropout=0.3, use_multi_strategy=True):
         super().__init__()
-        self.decoder = ImprovedEdgeDecoder(hidden_dim, dropout=decoder_dropout, use_multi_strategy=use_multi_strategy)
+        self.decoder = EdgeDecoder(hidden_dim, dropout=decoder_dropout, use_multi_strategy=use_multi_strategy)
 
     def decode(self, z, edge):
         return self.decoder(z, edge)
