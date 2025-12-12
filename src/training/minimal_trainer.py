@@ -47,6 +47,7 @@ def train_minimal_baseline(
     *,
     device: torch.device,
     epochs: int = 200,
+    skip_dropout_check: bool = False,
     lr: float = 0.01,
     weight_decay: float = 1e-4,
     eval_every: int = 5,
@@ -60,9 +61,10 @@ def train_minimal_baseline(
     - Random negative sampling only
     - Single AdamW optimizer
     - Batch decoding to keep memory predictable
-    - Strictly enforces dropout=0 to match baseline assumptions
+    - Strictly enforces dropout=0 to match baseline assumptions (unless skip_dropout_check=True)
     """
-    _ensure_zero_dropout(model)
+    if not skip_dropout_check:
+        _ensure_zero_dropout(model)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 

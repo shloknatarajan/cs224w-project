@@ -424,6 +424,9 @@ def train_baseline_model(args, model, data, splits, chemberta_features, morgan_f
     from ogb.linkproppred import Evaluator
     evaluator = Evaluator(name='ogbl-ddi')
 
+    # Hybrid models have internal dropout in decoders, so skip the check for them
+    skip_dropout = args.model in HYBRID_MODELS
+
     result = train_minimal_baseline(
         name=args.model.upper(),
         model=model,
@@ -441,7 +444,8 @@ def train_baseline_model(args, model, data, splits, chemberta_features, morgan_f
         batch_size=args.batch_size,
         weight_decay=args.weight_decay,
         eval_every=args.eval_every,
-        eval_batch_size=args.eval_batch_size
+        eval_batch_size=args.eval_batch_size,
+        skip_dropout_check=skip_dropout,
     )
 
     return result
