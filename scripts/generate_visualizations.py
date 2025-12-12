@@ -498,16 +498,16 @@ def plot_labeled_network(data, save=True):
 
     print(f"  Graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
-    fig, ax = plt.subplots(figsize=(10, 10))
-    pos = nx.spring_layout(G, k=2, iterations=100, seed=42)
+    fig, ax = plt.subplots(figsize=(15, 11))
+    pos = nx.spring_layout(G, k=1, iterations=100, seed=42)
 
     nx.draw_networkx_edges(G, pos, alpha=0.6, width=4, edge_color='#555555', ax=ax)
 
-    nx.draw_networkx_nodes(G, pos, node_size=6000, node_color='#5dade2',
+    nx.draw_networkx_nodes(G, pos, node_size=15000, node_color='#5dade2',
                            edgecolors='#2471a3', linewidths=3, ax=ax)
 
     labels = {n: G.nodes[n]['label'] for n in G.nodes()}
-    nx.draw_networkx_labels(G, pos, labels, font_size=16, font_weight='bold', ax=ax)
+    nx.draw_networkx_labels(G, pos, labels, font_size=23, font_weight='bold', ax=ax)
 
     ax.axis('off')
 

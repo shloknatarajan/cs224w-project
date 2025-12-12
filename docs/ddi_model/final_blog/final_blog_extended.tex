@@ -1,0 +1,502 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+% Page geometry
+\geometry{margin=1in}
+
+% Code listing style
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    tabsize=4
+}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\title{GDINN: Graph Drug Interaction Neural Network for\\Drug-Drug Interaction Prediction}
+\author{CS224W Project}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In this blog post, we explore numerous approaches for training GNNs for predictive modeling of drug-drug interactions. We experiment with popular GCNs, GraphSAGEs, and GATs, but ultimately we culminate our learnings to develop our own novel Graph Drug Interaction Neural Network (GDINN).
+\end{abstract}
+
+\section{Introduction}
+
+Every year, millions of people are prescribed combinations of medications. While each drug is tested for safety on its own, far less is known about how drugs interact when taken together. These drug-drug interactions (DDIs) can reduce treatment effectiveness, cause unexpected side effects, or in severe cases lead to life-threatening outcomes. Clinicians, pharmacists, and drug developers all face the same underlying challenge:
+
+\textit{The space of possible drug combinations is enormous, and it is impossible to experimentally test them all.}
+
+This is where computational prediction becomes essential. If we can accurately identify which drug pairs are likely to interact before those interactions show up in clinical settings, we could:
+
+\begin{itemize}
+    \item prevent harmful medication combinations
+    \item improve prescribing safety
+    \item accelerate drug development
+    \item uncover biological relationships between drugs that are not yet understood
+\end{itemize}
+
+To address the challenge of identifying harmful medication combinations, we model the space of drug-drug interactions using graph-based representations. By treating drugs as nodes and their known interactions as edges, we construct a framework in which relational structure becomes the core signal for understanding how drugs behave together. We then apply Graph Neural Network (GNN) architectures to learn expressive embeddings that capture patterns of interaction, allowing the model to generalize beyond what is currently documented in medical literature.
+
+Using these learned embeddings, we perform link prediction to identify drug pairs that are likely to interact but have not yet been clinically observed. This approach enables us to evaluate the predictive power of different GNN architectures and analyze how effectively they uncover latent interaction patterns. Through these experiments, our goal is to generate insights into which modeling strategies best support the early detection of risky drug combinations, ultimately contributing to safer prescribing practices and more robust drug safety research.
+
+\section{Dataset and Preprocessing}
+
+For our project, we use the Open Graph Benchmark Drug-Drug Interaction dataset (ogbl-ddi) introduced by \cite{ogb}. This dataset provides a large, homogeneous, unweighted, and undirected graph in which each node represents an FDA-approved or experimental drug, and each edge denotes a known drug–drug interaction. These interactions capture cases where the combined pharmacological effect of two drugs differs meaningfully from what would be expected if the drugs acted independently — precisely the type of clinically significant behavior that motivates our work. The dataset includes 4,267 drugs and over 1 million positive interaction edges, offering a dense and biologically meaningful structural environment for modeling real-world interaction patterns.
+
+The associated prediction task is link prediction: identifying new drug pairs that are likely to interact but are not yet documented. The dataset uses a protein-target split, producing 1,067,911 training edges, 133,489 positive validation edges, 101,882 validation negatives, and an identically sized test set with 133,489 positive and 95,599 negative samples. This split ensures that drugs in the test set primarily target different proteins than those in training, providing a realistic and challenging generalization setting. Evaluation follows the standard OGB protocol, where each true interaction is ranked among a large set of randomly sampled negatives, and performance is measured using Hits@K (with K = 20 shown to be most stable). Hits@20 reflects the model's ability to surface clinically meaningful interactions within a large search space, aligning directly with the practical needs of early-stage drug safety screening.
+
+A defining feature of ogbl-ddi, and one of the reasons it is exceptionally well suited for our problem, is its protein-target split. Instead of randomly dividing edges into train, validation, and test sets, the dataset groups drugs according to the proteins they bind to and then separates the splits by these biological targets. As a result, drugs in the test set primarily act on different proteins — and therefore follow different mechanisms of action — than drugs seen during training. This produces a far more realistic and demanding scenario. In real clinical practice, new medications frequently target previously underexplored proteins, and harmful interactions often emerge precisely when such drugs are introduced. A model that performs well under this split is not merely interpolating among familiar patterns; it is demonstrating the capacity to generalize to entirely new biological regimes.
+
+This generalization requirement makes ogbl-ddi uniquely aligned with the overarching goals of our project. Our aim is not simply to reproduce known interactions but to anticipate interactions involving drugs with distinct biochemical properties — exactly the setting where traditional similarity-based or co-occurrence-based methods tend to fail. By evaluating models on a biologically meaningful, mechanism-based split, the dataset enables us to test whether graph neural networks can learn deeper relational structure that transfers beyond surface-level similarity. In this way, ogbl-ddi serves as a rigorous benchmark for determining how well graph-based models can contribute to safer prescribing practices, early-stage drug development, and broader pharmacological risk assessment.
+
+\section{Simple Models}
+
+To begin our study, we implemented a set of simple baseline models using widely used GNN architectures: GraphSAGE, GCN, GAT, and Graph Transformer. These models allow us to establish a performance baseline for ogbl-ddi and evaluate how standard GNN message-passing behaves on dense biochemical interaction graphs. Each model uses learnable node embeddings and two GNN layers, giving us a controlled setting to compare architectures without relying on additional features or specialized decoders.
+
+\subsection{Naïve Baselines: A Critical Failure That Taught Us a Lot}
+
+Our first naïve runs performed extremely poorly, with every model scoring under 1\% Hits@20. The cause turned out to be simple but important: all models used dropout = 0.5, which is common for sparse social graphs but disastrous for ogbl-ddi, where each node has $\sim$500 neighbors. Dropping half of the aggregated information prevents the model from learning anything meaningful.
+
+\begin{table}[h]
+\centering
+\caption{Naïve Baseline Performance}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Model & Naïve Impl. Hits@20 \\
+\midrule
+GraphSAGE & 0.33\% \\
+GCN & 0.18\% \\
+GAT & 0.31\% \\
+GraphTransformer & 0.05\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These results taught us our first major lesson:
+
+\textit{In dense biochemical networks, dropout destroys signal rather than improving generalization.}
+
+\subsection{Corrected Baselines: Real Results After Fixing Dropout}
+
+After removing dropout, stabilizing hyperparameters, and retraining all models, performance improved dramatically. We re-ran all baselines under consistent conditions:
+
+\begin{itemize}
+    \item Hidden dimension: 128
+    \item GNN layers: 2
+    \item Dropout: 0.0
+    \item Optimizer LR: 0.01 (0.005 for GAT/Transformer)
+    \item Batch size: 50,000
+    \item Input: graph structure only
+\end{itemize}
+
+This produced meaningful validation and test results:
+
+\begin{table}[h]
+\centering
+\caption{Standard GNN Baselines}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Model & Naïve Impl. & Val Hits@20 & Test Hits@20 & Best Epoch \\
+\midrule
+GraphSAGE & 0.33\% & 9.61\% & 4.46\% & 80 \\
+GCN & 0.18\% & 13.59\% & 11.02\% & 135 \\
+GAT & 0.31\% & 9.53\% & 4.88\% & 170 \\
+GraphTransformer & 0.05\% & 11.66\% & 3.73\% & 150 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These results highlight a few key findings:
+
+\begin{enumerate}
+    \item \textbf{GCN is the strongest structure-only baseline}: It achieves the best validation and test performance, and the smallest val-test gap, meaning it generalizes better than the others.
+    \item \textbf{Attention-based models heavily overfit}: GAT and Graph Transformer do well on validation but collapse on the test set — a sign that structure alone isn't enough for them.
+    \item \textbf{GraphSAGE underperforms in full training}: Even though it looked promising in the naïve setup, its inductive aggregation strategy doesn't match the dense connectivity of ogbl-ddi.
+    \item \textbf{Structure alone isn't enough}: All models show significant generalization gaps, reinforcing the need for structural features, more expressive decoders, and deeper normalization strategies.
+\end{enumerate}
+
+These lessons directly informed the development of our more advanced models, showing that even baseline performance can drive important architectural decisions. Based on these learnings, we also chose to dive deeper into GCNs and avoid attention in future models.
+
+\subsection{Best Baseline Model: GCN}
+
+GCN achieves the strongest performance among all structure-only baselines, delivering the highest validation and test Hits@20 with the smallest generalization gap. Its normalized neighborhood aggregation appears especially well-suited to ogbl-ddi's dense interaction patterns, allowing it to extract stable structural signals without overfitting. This makes GCN the most reliable foundation for understanding the dataset's behavior and a natural reference point for evaluating more advanced models.
+
+\section{Complex Models}
+
+\subsection{Advanced GCN Architecture}
+
+Given that GCN outperformed attention-based models in our baselines, we chose it as our foundation for further development. The key insight from our baseline experiments was that ogbl-ddi's dense connectivity (14.67\% edge density, $\sim$500 neighbors per node) favors simple aggregation over selective attention.
+
+\subsubsection{Architecture Overview}
+
+Our Advanced GCN consists of two components:
+
+\begin{enumerate}
+    \item \textbf{GCN Encoder}: A 2-layer Graph Convolutional Network that learns node embeddings from the graph structure. Each drug starts as a learnable 256-dimensional embedding that gets refined through neighborhood aggregation.
+
+    \item \textbf{MLP Decoder (LinkPredictor)}: Instead of a simple dot product between node embeddings, we use a multi-layer perceptron. For an edge $(i, j)$, the decoder computes the element-wise product of embeddings $h_i \odot h_j$, then passes this through linear layers with ReLU activations to produce an interaction probability.
+\end{enumerate}
+
+The MLP decoder was a critical improvement over dot-product scoring. With 65K+ learnable parameters, it can capture non-linear relationships between drug pairs that a simple dot product misses.
+
+\subsubsection{Key Hyperparameters from Sweeps}
+
+Through extensive hyperparameter sweeps, we identified the optimal configuration:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}llp{6cm}@{}}
+\toprule
+Parameter & Value & Finding \\
+\midrule
+Hidden channels & 256 & Larger than 128 consistently improved performance \\
+GNN layers & 2 & Deeper models (3+ layers) suffered from oversmoothing \\
+Dropout & 0.5 & Essential for generalization on dense graphs \\
+Learning rate & 0.005 & Stable training with large batch sizes \\
+Batch size & 65,536 & Large batches improved gradient stability \\
+Epochs & 2000 & Long training needed; best model found at epoch 430 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The finding that \textbf{dropout 0.5 works well} for the tuned model (vs. 0.0 for naive baselines) reflects an important distinction: the naive baselines used dropout incorrectly during message passing, while our tuned model applies dropout appropriately after the GCN layers and within the MLP decoder.
+
+\begin{figure}[h]
+\centering
+\includestandalone{architecture_diagram}
+\caption{Advanced GCN Architecture: GCN Encoder with MLP LinkPredictor}
+\label{fig:architecture}
+\end{figure}
+
+\subsection{Ablations}
+
+We ran ablations on the Advanced GCN to understand the impact of depth, dropout, and learning rate. All runs used 200 epochs with evaluation every 10 epochs.
+
+\begin{table}[h]
+\centering
+\caption{Ablation Study Results}
+\begin{tabular}{@{}lccccrr@{}}
+\toprule
+Configuration & Layers & Hidden & Dropout & LR & Val Hits@20 & Test Hits@20 \\
+\midrule
+E1 (baseline) & 2 & 256 & 0.0 & 0.005 & 36.45\% & 17.36\% \\
+E2 (+ dropout) & 2 & 256 & 0.25 & 0.005 & \textbf{50.69\%} & \textbf{34.34\%} \\
+E3 (3-layer) & 3 & 192 & 0.0 & 0.001 & 31.82\% & 18.13\% \\
+E4 (3-layer + dropout) & 3 & 192 & 0.1 & 0.001 & 38.24\% & 18.10\% \\
+E5 (3-layer, higher LR) & 3 & 192 & 0.0 & 0.0015 & 34.55\% & 12.30\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key findings:}
+
+\begin{enumerate}
+    \item \textbf{Dropout is critical for generalization}: Adding dropout of 0.25 (E2) improved test Hits@20 from 17.36\% to 34.34\% — nearly doubling performance. This confirms that regularization is essential for the dense ogbl-ddi graph.
+
+    \item \textbf{Deeper is not better}: The 3-layer models (E3-E5) consistently underperformed the 2-layer models. This suggests that for ogbl-ddi, additional depth leads to oversmoothing or optimization difficulties without corresponding benefits.
+
+    \item \textbf{Hyperparameter sensitivity}: The model is sensitive to learning rate and dropout combinations. The best results came from the higher learning rate (0.005) paired with moderate dropout (0.25).
+\end{enumerate}
+
+\subsection{Results (Structure-Only)}
+
+The best performing model from the long-horizon sweep achieved:
+\begin{itemize}
+    \item \textbf{Validation Hits@20}: 64.78\%
+    \item \textbf{Test Hits@20}: 61.69\%
+\end{itemize}
+
+This was achieved with the following configuration:
+\begin{itemize}
+    \item \textbf{Architecture}: GCN with 2 layers and 256 hidden channels
+    \item \textbf{Dropout}: 0.5
+    \item \textbf{Training}: 2000 epochs with a learning rate of 0.005 and a batch size of 65536. The model with the best validation score was found at epoch 430.
+\end{itemize}
+
+This represents the ceiling for structure-only approaches. While a significant improvement over the naive baselines, we hypothesized that incorporating external drug information could push performance further. Before arriving at our final architecture, we conducted several experiments to understand how best to integrate chemical and biological features.
+
+\subsection{Exploring External Features}
+
+With the Advanced GCN architecture optimized, we systematically explored how to incorporate external drug features. These experiments revealed important insights about the relationship between model architecture and feature integration.
+
+\subsubsection{Early Attempts: Features on Simple Baselines}
+
+Our first approach was straightforward: add external drug features to the simple baseline models. We tested Morgan fingerprints (2048-dimensional molecular substructure vectors) and ChemBERTa embeddings (768-dimensional learned chemical representations) as input features to standard GNN architectures.
+
+\begin{table}[h]
+\centering
+\caption{Features on Simple Baselines}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Model & Val Hits@20 & Test Hits@20 \\
+\midrule
+Morgan-GCN & 6.10\% & 5.36\% \\
+Morgan-GraphSAGE & 3.05\% & 4.71\% \\
+ChemBERTa-GCN & 11.37\% & 6.94\% \\
+ChemBERTa-GraphSAGE & 11.29\% & 9.07\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The results were surprising: adding features to the simple baselines actually \textit{underperformed} the structure-only baseline GCN (13.59\% validation). While the models showed some learning (well above random), the chemical features seemed to interfere with the structural signal rather than enhance it.
+
+\textbf{Key insight}: External features on a weak architecture don't help --- and may actually hurt.
+
+\subsubsection{The Hybrid Decoder Approach}
+
+Given that features in the encoder hurt performance, we tried a different strategy: keep the encoder structure-only (preserving its ability to learn from graph topology) and inject chemistry only at the decoder level. This ``hybrid'' approach used a chemistry-aware decoder that could optionally incorporate chemical similarity when scoring edge predictions.
+
+We tested three decoder variants:
+\begin{itemize}
+    \item \textbf{Simple}: Additive combination with learnable weight $\alpha$: $\text{score} = \text{structural} + \alpha \cdot \text{chemical}$
+    \item \textbf{ChemistryAware}: Three-path decoder with learnable weights for structural, chemical, and combined scores
+    \item \textbf{Gated}: Dynamic gate that determines chemistry importance per-edge
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Hybrid Decoder Results}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Model & Val Hits@20 & Test Hits@20 \\
+\midrule
+Hybrid-GCN-Simple & 23.49\% & 19.33\% \\
+Hybrid-GCN-ChemAware & 18.82\% & 15.57\% \\
+Hybrid-GCN-Gated & 18.59\% & 21.60\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The hybrid approach recovered and exceeded the baseline performance, but still fell far short of the Advanced GCN's 64.78\%. Most tellingly, \textbf{the learned $\alpha$ parameter consistently approached zero} --- the model was learning to ignore the chemistry signal and rely primarily on structure.
+
+\subsubsection{Lessons Learned}
+
+These experiments taught us three critical lessons:
+
+\begin{enumerate}
+    \item \textbf{Strong architecture is a prerequisite}: Features cannot compensate for weak model architecture. The Advanced GCN's improvements (MLP decoder, proper dropout, tuned hyperparameters) were necessary before features could provide benefit.
+
+    \item \textbf{Naive feature injection hurts}: Simply concatenating features to input or adding them at the decoder doesn't work. The model either ignores them or they interfere with structural learning.
+
+    \item \textbf{Features need proper fusion}: To benefit from external information, we needed an architecture designed from the ground up to integrate multiple feature types while preserving the structural signal.
+\end{enumerate}
+
+These insights directly informed the design of GDINN: rather than adding features to an existing architecture, we designed a feature fusion module that encodes each feature type separately before combining them with learned embeddings.
+
+\section{Incorporating Drug Features: Building GDINN}
+
+Armed with the lessons from our feature exploration experiments, we knew that successful feature integration required: (1) starting with a strong architecture (Advanced GCN), and (2) designing a proper fusion mechanism rather than naive concatenation.
+
+The Advanced GCN learns entirely from the interaction graph --- each drug starts as a randomly initialized embedding that gets refined through message passing. But drugs are not abstract entities; they are molecules with specific chemical structures, physical properties, and biological targets. The ogb-ddi dataset's protein-target split makes this especially important: test drugs bind to different proteins than training drugs, creating a generalization challenge that structure alone cannot fully address.
+
+Our earlier experiments showed that simply adding features to weak architectures or injecting them at the decoder level wasn't enough. We needed to fundamentally rethink how features are integrated. This led us to design GDINN (Graph Drug Interaction Neural Network), which extends the Advanced GCN with a carefully designed feature fusion module.
+
+\subsection{Drug Features Sources}
+
+We incorporated 4 different types of external features, each capturing a different aspect of drug biology.
+
+\subsubsection{Morgan Fingerprints (2048 dimensions)}
+
+Morgan fingerprints are binary vectors that encode the presence of molecular substructures. Each bit corresponds to a specific chemical motif (e.g., a benzene ring, a hydroxyl group, a particular bond pattern). Two drugs with similar fingerprints share similar chemical building blocks. We computed radius-2 fingerprints using RDKit, capturing local chemical environments up to two bonds away from each atom.
+
+Drugs with similar substructures often interact with similar targets and metabolic pathways. If Drug A interacts with Drug C, and Drug B shares many substructures with Drug A, then Drug B might also interact with Drug C.
+
+\subsubsection{PubChem Physicochemical Properties (9 dimensions)}
+
+From PubChem, we extracted nine key physicochemical descriptors:
+
+\begin{itemize}
+    \item Molecular weight
+    \item XLogP (lipophilicity)
+    \item Topological polar surface area (TPSA)
+    \item Hydrogen bond donors/acceptors
+    \item Rotatable bond count
+    \item Heavy atom count
+    \item Complexity score
+    \item Formal charge
+\end{itemize}
+
+These properties determine how drugs behave in the body — how they are absorbed, distributed, metabolized, and excreted (ADME). Two drugs with similar ADME profiles may compete for the same metabolic enzymes, leading to interactions.
+
+\subsubsection{ChemBERTa Embeddings (768 dimensions)}
+
+ChemBERTa is a transformer model pre-trained on 77 million SMILES strings from the ZINC database \cite{chemberta}. It learns chemical semantics from the ``language'' of molecular structures. We used the \texttt{seyonec/ChemBERTa-zinc-base-v1} checkpoint and extracted mean-pooled embeddings for each drug.
+
+\subsubsection{Drug-Target Interaction Vectors (229 dimensions)}
+
+From the Therapeutics Data Commons (TDC) \cite{tdc}, we extracted drug-target binding data from the KIBA dataset. Each drug gets a binary vector indicating which of 229 protein targets it binds to.
+
+This feature is particularly powerful for ogbl-ddi because the dataset uses a protein-target split. Test drugs bind to different proteins than training drugs, but the drug-target vectors explicitly encode this biological information. The model can learn that drugs targeting similar protein families tend to have similar interaction profiles.
+
+\subsection{GDINN Architecture}
+
+Simply concatenating 3054 dimensions of features to each node would overwhelm the model. Instead, we designed a careful fusion architecture for GDINN:
+
+\subsubsection{Feature Encoders}
+
+Each feature type passes through its own encoder network:
+
+\begin{lstlisting}
+FeatureEncoder:
+  Linear(input_dim -> 256)
+  LayerNorm(256)
+  ReLU()
+  Dropout(0.1)
+\end{lstlisting}
+
+The encoder projects each feature type to a common 256-dimensional space. LayerNorm ensures stable activations regardless of the input scale (fingerprints are binary; TPSA can be in the hundreds). Light dropout (0.1) prevents overfitting to any single feature type.
+
+\subsubsection{Concatenation Fusion}
+
+After encoding, we concatenate all feature representations with the learnable embeddings:
+
+\begin{lstlisting}
+fused = Concat([embeddings, morgan_enc, pubchem_enc,
+                chemberta_enc, drugtarget_enc])
+      = 256 + 256 + 256 + 256 + 256 = 1280 dimensions
+
+projected = Linear(1280 -> 256)
+\end{lstlisting}
+
+The linear projection compresses the concatenated representation back to 256 dimensions, forcing the model to learn which feature combinations are most informative.
+
+\begin{figure}[h]
+\centering
+\includestandalone{architecture_diagram_external}
+\caption{GDINN Architecture: Feature Encoders, GCN Encoder, and MLP LinkPredictor}
+\label{fig:architecture-extended}
+\end{figure}
+
+\subsection{Results}
+
+Adding external drug features dramatically improved performance over the structure-only model:
+
+\begin{table}[h]
+\centering
+\caption{Model Performance Comparison}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Model & Val Hits@20 & Test Hits@20 & Best Epoch \\
+\midrule
+GCN baseline & 13.59\% & 11.02\% & 135 \\
+Advanced GCN & 64.78\% & 61.69\% & 430 \\
+\textbf{GDINN} & \textbf{70.31\%} & \textbf{73.28\%} & \textbf{1685} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We call our complete architecture \textbf{GDINN (Graph Drug Interaction Neural Network)}, which combines the Advanced GCN encoder with our feature fusion module. GDINN achieved \textbf{73.28\% Test Hits@20} — an 11.6 percentage point improvement over the Advanced GCN baseline. Notably, the test performance exceeds validation performance, suggesting that the external features provide meaningful generalization signal for the protein-target split.
+
+\subsubsection{Individual Feature Contributions}
+
+We evaluated each external feature type combined with structure to understand their individual contributions:
+
+\begin{table}[h]
+\centering
+\caption{Individual Feature Contributions}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Model Configuration & Val Hits@20 & Test Hits@20 & Best Epoch \\
+\midrule
+Advanced GCN (baseline) & 64.78\% & 61.69\% & 430 \\
+Advanced GCN + Morgan & 70.45\% & 55.05\% & 1910 \\
+Advanced GCN + PubChem & 69.92\% & 56.72\% & 1975 \\
+Advanced GCN + ChemBERTa & 70.85\% & 59.01\% & 1925 \\
+Advanced GCN + Drug-Target & 70.49\% & 54.18\% & 1850 \\
+\textbf{GDINN (All Features)} & \textbf{70.31\%} & \textbf{73.28\%} & \textbf{1685} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Adding any single feature type improves validation performance (all reach $\sim$70\%) but hurts test generalization compared to the Advanced GCN. This suggests individual features can overfit to the validation distribution. However, when all features are combined in GDINN, the model achieves both strong validation (70.31\%) and the best test performance (73.28\%) — an 11.6 point improvement over Advanced GCN.
+
+This indicates that the features provide complementary rather than redundant signal: Morgan fingerprints capture molecular substructures, ChemBERTa captures chemical semantics, drug-target vectors encode protein binding, and PubChem properties describe ADME characteristics. Together, they enable robust generalization to drugs with different protein targets than those seen during training.
+
+\subsubsection{Why External Features Help}
+
+The protein-target split in ogbl-ddi means test drugs bind to different proteins than training drugs. Structure-only models struggle because they cannot ``see'' the biological similarity between drugs that target related protein families. External features bridge this gap:
+
+\begin{itemize}
+    \item \textbf{Morgan fingerprints} encode shared molecular substructures
+    \item \textbf{ChemBERTa embeddings} capture learned chemical semantics
+    \item \textbf{Drug-target vectors} explicitly encode protein binding profiles
+    \item \textbf{PubChem properties} describe ADME characteristics
+\end{itemize}
+
+Together, these features allow the model to recognize that two drugs with similar chemistry or target profiles are likely to have similar interaction patterns — even if they were never connected in the training graph.
+
+\section{Discussion \& Takeaways}
+
+\subsection{Key Insights}
+
+\textbf{1. Simpler architectures win on dense biochemical graphs.}
+GCN consistently outperformed more complex architectures like GAT and Graph Transformer. Attention mechanisms, which excel at selecting important neighbors in sparse graphs, provide less benefit when every neighbor matters. For dense interaction networks, normalized mean aggregation (GCN) appears to be the right inductive bias.
+
+\textbf{2. Structure alone hits a ceiling; external features break through.}
+Even with optimal hyperparameters and long training, Advanced GCN plateaued around 62\% test Hits@20. GDINN's external drug features pushed performance to 73\% — a substantial gain that structure-only training cannot achieve. This suggests that for link prediction tasks with out-of-distribution test sets, incorporating domain-specific node features is essential.
+
+\textbf{3. Feature fusion architecture matters.}
+Simply concatenating raw features would overwhelm the model with 3054 dimensions. Our approach — encoding each feature type separately, then concatenating and projecting — allows the model to learn which feature combinations are most informative while keeping the representation manageable.
+
+\textbf{4. Test $>$ Validation indicates positive transfer.}
+GDINN achieves higher test than validation Hits@20 (73.28\% vs 70.31\%). This unusual result suggests that the external features enable genuine generalization to new protein targets, rather than just memorizing training patterns. The drug-target vectors are particularly valuable here, as they explicitly encode the biological information that the protein-target split is designed to test.
+
+\subsection{Limitations and Future Work}
+
+\textbf{Feature engineering}: We used off-the-shelf features (Morgan fingerprints, ChemBERTa). Domain-specific feature engineering (e.g., 3D molecular conformations, pharmacophore models) might capture additional signal.
+
+\textbf{Interaction types}: ogbl-ddi treats all interactions as binary. Real DDIs have different mechanisms (metabolic, pharmacodynamic, etc.) that could be modeled with edge features or multi-relational GNNs.
+
+\textbf{Scalability}: Our model trains on a fixed graph. Inductive approaches that can predict interactions for entirely new drugs (not seen during training) would be more practical for drug development pipelines.
+
+\section{Conclusion}
+
+We demonstrated that GNN-based link prediction can effectively identify drug-drug interactions. Our model, GDINN (Graph Drug Interaction Neural Network), achieves 73.28\% Hits@20 on the challenging ogbl-ddi benchmark. The key to success was combining the Advanced GCN's graph structure learning with external drug features through a carefully designed fusion architecture. Our results show that for biochemical interaction prediction, the graph provides essential relational context, but domain-specific features are necessary to generalize beyond the training distribution. This work contributes to the broader goal of computational drug safety screening, where accurate DDI prediction can help prevent harmful medication combinations before they reach patients.
+
+\begin{thebibliography}{9}
+
+\bibitem{ogb}
+Hu, W., et al. ``Open Graph Benchmark: Datasets for Machine Learning on Graphs.'' NeurIPS 2020.
+
+\bibitem{drugbank}
+Wishart, D.S., et al. ``DrugBank 5.0: a major update to the DrugBank database for 2018.'' Nucleic Acids Research, 2018.
+
+\bibitem{chemberta}
+Chithrananda, S., Grand, G., \& Ramsundar, B. ``ChemBERTa: Large-Scale Self-Supervised Pretraining for Molecular Property Prediction.'' arXiv:2010.09885, 2020.
+
+\bibitem{tdc}
+Huang, K., et al. ``Therapeutics Data Commons: Machine Learning Datasets and Tasks for Drug Discovery and Development.'' NeurIPS 2021.
+
+\end{thebibliography}
+
+\end{document}
