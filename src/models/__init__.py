@@ -11,12 +11,7 @@ from .chemberta_fallback import (
     ChemBERTaGATFallback,
     ChemBERTaGraphTransformerFallback
 )
-from .node2vec import (
-    Node2VecGCN,
-    Node2VecGraphSAGE,
-    Node2VecTransformer,
-    Node2VecGAT
-)
+from .advanced import GDINN, GCNAdvanced
 
 __all__ = [
     'BaseModel',
@@ -29,8 +24,6 @@ __all__ = [
     'ChemBERTaGraphSAGEFallback',
     'ChemBERTaGATFallback',
     'ChemBERTaGraphTransformerFallback',
-    'Node2VecGCN',
-    'Node2VecGraphSAGE',
-    'Node2VecTransformer',
-    'Node2VecGAT',
+    'GDINN',
+    'GCNAdvanced',
 ]

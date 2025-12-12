@@ -4,7 +4,7 @@ Unified training script for all models in the 224w-project.
 
 Supports:
 - Baseline GNNs: GCN, GraphSAGE, GraphTransformer, GAT
-- Advanced models: GDIN, Hybrid models 
+- Advanced models: GDINN, GCNAdvanced, Hybrid models
 - External features: Morgan, PubChem, ChemBERTa, Drug-Targets
 - Reference OGB implementations
 
@@ -12,8 +12,11 @@ Usage:
     # Train baseline GCN
     python train.py --model gcn
 
-    # Train GDIN with all external features
-    python train.py --model gdin --external-features all
+    # Train GDINN with all external features
+    python train.py --model gdinn --external-features all
+
+    # Train GCNAdvanced (structure-only)
+    python train.py --model gcn-advanced
 
     # Train GraphSAGE with specific features
     python train.py --model sage --external-features morgan,chemberta
@@ -29,7 +32,6 @@ from datetime import datetime
 from pathlib import Path
 
 import torch
-import scipy.sparse as sp
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -37,14 +39,12 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.data import load_dataset
 from src.data.external_features import FeatureConfig, load_external_features
 from src.models.baselines import GCN, GraphSAGE, GraphTransformer, GAT
-from src.models.advanced import create_gdin_multimodal
+from src.models.advanced import GDINN, GCNAdvanced
+from src.models.advanced.gdinn import LinkPredictor, train_with_external, test_with_external
 from src.models.chemberta_baselines import ChemBERTaGCN, ChemBERTaGraphSAGE, ChemBERTaGAT, ChemBERTaGraphTransformer
 from src.models.morgan_baselines import MorganGCN
 from src.models.hybrid import HybridGCN, HybridGraphSAGE, HybridGraphTransformer, HybridGAT
-from src.training import (
-    train_minimal_baseline,
-    train_gdin_multimodal,
-)
+from src.training import train_minimal_baseline
 from src.evals import evaluate
 
 
@@ -303,23 +303,45 @@ def create_model(args, num_nodes, external_dims, chemberta_features, morgan_feat
 
         return model
 
-    elif model_name == 'gdin':
-        # GDIN with external features
+    elif model_name == 'gdinn':
+        # GDINN with external features
         if not external_dims:
-            logger.error("GDIN requires external features. Use --external-features")
+            logger.error("GDINN requires external features. Use --external-features")
             sys.exit(1)
 
-        model = create_gdin_multimodal(
+        model = GDINN(
             num_nodes=num_nodes,
-            feature_dims=external_dims,
-            hidden_dim=args.hidden_dim,
+            hidden_channels=args.hidden_dim,
+            out_channels=args.hidden_dim,
             num_layers=args.num_layers,
             dropout=args.dropout,
+            external_dims=external_dims,
             fusion=args.fusion,
-            use_cn=args.use_cn,
         )
 
-        logger.info(f"Created GDIN model: {model.description}")
+        logger.info(f"Created GDINN model:")
+        logger.info(f"  hidden_channels: {args.hidden_dim}")
+        logger.info(f"  num_layers: {args.num_layers}")
+        logger.info(f"  fusion: {args.fusion}")
+        logger.info(f"  external_dims: {external_dims}")
+        logger.info(f"  Parameters: {sum(p.numel() for p in model.parameters()):,}")
+
+        return model
+
+    elif model_name == 'gcn-advanced':
+        # GCNAdvanced (structure-only model)
+        model = GCNAdvanced(
+            args.hidden_dim,
+            args.hidden_dim,
+            args.hidden_dim,
+            args.num_layers,
+            args.dropout,
+        )
+
+        logger.info(f"Created GCNAdvanced model:")
+        logger.info(f"  hidden_channels: {args.hidden_dim}")
+        logger.info(f"  num_layers: {args.num_layers}")
+        logger.info(f"  dropout: {args.dropout}")
         logger.info(f"  Parameters: {sum(p.numel() for p in model.parameters()):,}")
 
         return model
@@ -421,46 +443,119 @@ def train_baseline_model(args, model, data, splits, chemberta_features, morgan_f
     return result
 
 
-def train_gdin_model(args, model, data, splits, external_features, device, logger):
-    """Train GDIN model."""
-    train_pos, valid_pos, valid_neg, test_pos, test_neg = splits
+def train_gdinn_model(args, model, data, splits, external_features, device, logger):
+    """Train GDINN model using native training functions."""
+    import torch_geometric.transforms as T
+    from torch_geometric.data import Data
+    from ogb.linkproppred import Evaluator, PygLinkPropPredDataset
+    from dataclasses import dataclass
 
-    # Build sparse adjacency for CN computation if needed
-    adj_sparse = None
-    if args.use_cn:
-        logger.info("Building sparse adjacency matrix for CN computation...")
-        row = data.edge_index[0].cpu().numpy()
-        col = data.edge_index[1].cpu().numpy()
-        data_vals = [1] * len(row)
-        adj_sparse = sp.csr_matrix((data_vals, (row, col)), shape=(data.num_nodes, data.num_nodes))
+    @dataclass
+    class GDINNResult:
+        best_val_hits: float
+        best_test_hits: float
+        best_epoch: int
 
-    from ogb.linkproppred import Evaluator
+    # Load dataset with SparseTensor transform (required by GDINN)
+    logger.info("Loading dataset with SparseTensor format for GDINN...")
+    dataset = PygLinkPropPredDataset(name='ogbl-ddi', transform=T.ToSparseTensor())
+    sparse_data = dataset[0]
+    adj_t = sparse_data.adj_t.to(device)
+    split_edge = dataset.get_edge_split()
+    num_nodes = sparse_data.num_nodes
+
+    # Create eval_train subset (matching OGB reference)
+    torch.manual_seed(12345)
+    idx = torch.randperm(split_edge["train"]["edge"].size(0))
+    idx = idx[: split_edge["valid"]["edge"].size(0)]
+    split_edge["eval_train"] = {"edge": split_edge["train"]["edge"][idx]}
+
+    # Move external features to device
+    ext_features_device = None
+    if external_features:
+        ext_features_device = {
+            k: v.to(device) if v is not None else None
+            for k, v in external_features.items()
+        }
+
+    # Move model to device and create predictor
+    model = model.to(device)
+    predictor = LinkPredictor(
+        args.hidden_dim, args.hidden_dim, 1, args.num_layers, args.dropout
+    ).to(device)
+
     evaluator = Evaluator(name='ogbl-ddi')
 
-    result = train_gdin_multimodal(
-        name="GDIN",
-        model=model,
-        data=data,
-        train_pos=train_pos,
-        valid_pos=valid_pos,
-        valid_neg=valid_neg,
-        test_pos=test_pos,
-        test_neg=test_neg,
-        external_features=external_features,
-        evaluator=evaluator,
-        device=device,
-        epochs=args.epochs,
+    # Optimizer for both model and predictor
+    optimizer = torch.optim.Adam(
+        list(model.parameters()) + list(predictor.parameters()),
         lr=args.lr,
-        weight_decay=args.weight_decay,
-        batch_size=args.batch_size,
-        num_neg=args.num_neg,
-        patience=args.patience,
-        eval_every=args.eval_every,
-        use_cn=args.use_cn,
-        adj_sparse=adj_sparse,
     )
 
-    return result
+    logger.info("=" * 80)
+    logger.info("Starting GDINN Training")
+    logger.info(f"  epochs: {args.epochs}")
+    logger.info(f"  lr: {args.lr}")
+    logger.info(f"  batch_size: {args.batch_size}")
+    logger.info(f"  eval_every: {args.eval_every}")
+    logger.info(f"  patience: {args.patience}")
+    logger.info("=" * 80)
+
+    best_valid = 0.0
+    best_test = 0.0
+    best_epoch = 0
+    epochs_no_improve = 0
+
+    for epoch in range(1, args.epochs + 1):
+        loss = train_with_external(
+            model,
+            predictor,
+            adj_t,
+            split_edge,
+            optimizer,
+            args.batch_size,
+            ext_features_device,
+        )
+
+        if epoch % args.eval_every == 0:
+            scores = test_with_external(
+                model, predictor, adj_t, split_edge, evaluator,
+                args.batch_size, ext_features_device
+            )
+
+            # Extract Hits@20 (main metric)
+            _, valid_hits, test_hits = scores["Hits@20"]
+
+            if valid_hits > best_valid:
+                best_valid = valid_hits
+                best_test = test_hits
+                best_epoch = epoch
+                epochs_no_improve = 0
+            else:
+                epochs_no_improve += 1
+
+            logger.info(
+                f"[GDINN] Epoch {epoch:04d} | "
+                f"loss {loss:.4f} | "
+                f"val@20 {valid_hits:.4f} | "
+                f"test@20 {test_hits:.4f} | "
+                f"best {best_valid:.4f} (ep {best_epoch})"
+            )
+
+            # Early stopping
+            if args.patience and epochs_no_improve >= args.patience:
+                logger.info(
+                    f"[GDINN] Early stopping at epoch {epoch} "
+                    f"(no val improvement for {epochs_no_improve} evals)"
+                )
+                break
+
+    logger.info(
+        f"[GDINN] Done. Best val@20={best_valid:.4f} | test@20={best_test:.4f} "
+        f"(epoch {best_epoch})"
+    )
+
+    return GDINNResult(best_valid, best_test, best_epoch)
 
 
 def main():
@@ -492,11 +587,9 @@ def main():
                              help='Decoder dropout rate (default: 0.0)')
     model_group.add_argument('--attention-heads', type=int, default=4,
                              help='Number of attention heads for GAT/Transformer (default: 4)')
-    model_group.add_argument('--fusion', type=str, default='attention',
-                             choices=['attention', 'gated', 'concat', 'add'],
-                             help='Feature fusion strategy (default: attention)')
-    model_group.add_argument('--use-cn', action='store_true',
-                             help='Use common neighbor features (GDIN only)')
+    model_group.add_argument('--fusion', type=str, default='concat',
+                             choices=['concat', 'add'],
+                             help='Feature fusion strategy (default: concat)')
 
     # Training configuration
     train_group = parser.add_argument_group('Training Configuration')
@@ -516,25 +609,6 @@ def main():
                              help='Early stopping patience (default: 20)')
     train_group.add_argument('--eval-every', type=int, default=5,
                              help='Evaluate every N epochs (default: 5)')
-
-    # Node2Vec configuration
-    n2v_group = parser.add_argument_group('Node2Vec Configuration')
-    n2v_group.add_argument('--node2vec-dim', type=int, default=64,
-                          help='Node2Vec embedding dimension (default: 64)')
-    n2v_group.add_argument('--node2vec-walk-length', type=int, default=20,
-                          help='Node2Vec walk length (default: 20)')
-    n2v_group.add_argument('--node2vec-context-size', type=int, default=10,
-                          help='Node2Vec context size (default: 10)')
-    n2v_group.add_argument('--node2vec-walks-per-node', type=int, default=10,
-                          help='Node2Vec walks per node (default: 10)')
-    n2v_group.add_argument('--node2vec-negative-samples', type=int, default=1,
-                          help='Node2Vec negative samples (default: 1)')
-    n2v_group.add_argument('--node2vec-epochs', type=int, default=30,
-                          help='Node2Vec training epochs (default: 30)')
-    n2v_group.add_argument('--node2vec-batch-size', type=int, default=256,
-                          help='Node2Vec batch size (default: 256)')
-    n2v_group.add_argument('--node2vec-lr', type=float, default=0.01,
-                          help='Node2Vec learning rate (default: 0.01)')
 
     # System configuration
     sys_group = parser.add_argument_group('System Configuration')
@@ -601,13 +675,10 @@ def main():
     # Create and train model
     splits = (train_pos, valid_pos, valid_neg, test_pos, test_neg)
 
-    if args.model == 'node2vec-gcn':
-        # Node2Vec has its own workflow
-        result = train_node2vec_model(args, data, splits, device, logger)
-    elif args.model == 'gdin':
-        # GDIN requires external features
+    if args.model == 'gdinn':
+        # GDINN requires external features
         model = create_model(args, num_nodes, external_dims, chemberta_features, morgan_features, device, logger)
-        result = train_gdin_model(args, model, data, splits, external_features, device, logger)
+        result = train_gdinn_model(args, model, data, splits, external_features, device, logger)
     else:
         # Baseline, chemistry, and hybrid models use the minimal trainer
         model = create_model(args, num_nodes, external_dims, chemberta_features, morgan_features, device, logger)

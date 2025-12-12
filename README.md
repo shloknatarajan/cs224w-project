@@ -407,10 +407,6 @@ This script includes all model definitions, training logic, and evaluation code 
 │   ├── training/           # Training loops and utilities
 │   └── evals/              # Evaluation functions
 ├── logs/                   # Training logs and results
-├── docs/                   # Documentation and reports
-│   ├── MODEL_RESULTS_SUMMARY.md
-│   ├── project_report.md
-│   └── ...
 ├── train.py                # Unified training script
 ├── train_baselines_consolidated.py  # Self-contained baseline script
 ├── TRAINING.md             # Training guide
