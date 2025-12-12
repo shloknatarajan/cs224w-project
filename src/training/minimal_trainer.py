@@ -87,15 +87,31 @@ def train_minimal_baseline(
         if hasattr(data, 'x') and data.x is not None:
             # Check if model also needs smiles_mask (ChemBERTa fallback models)
             struct_features = getattr(data, 'struct_features', None)
+
+            # Check if model accepts structural_features parameter
+            import inspect
+            encode_sig = inspect.signature(model.encode)
+            accepts_struct = 'structural_features' in encode_sig.parameters
+
             if hasattr(data, 'smiles_mask') and data.smiles_mask is not None:
-                z = model.encode(
-                    train_edge_index,
-                    x=data.x,
-                    smiles_mask=data.smiles_mask,
-                    structural_features=struct_features,
-                )
+                if accepts_struct:
+                    z = model.encode(
+                        train_edge_index,
+                        x=data.x,
+                        smiles_mask=data.smiles_mask,
+                        structural_features=struct_features,
+                    )
+                else:
+                    z = model.encode(
+                        train_edge_index,
+                        x=data.x,
+                        smiles_mask=data.smiles_mask,
+                    )
             else:
-                z = model.encode(train_edge_index, x=data.x, structural_features=struct_features)
+                if accepts_struct:
+                    z = model.encode(train_edge_index, x=data.x, structural_features=struct_features)
+                else:
+                    z = model.encode(train_edge_index, x=data.x)
         else:
             z = model.encode(train_edge_index)
 

@@ -125,8 +125,18 @@ def train(
         optimizer: Optimizer over encoder + decoder + embeddings.
         batch_size: Mini-batch size for edge sampling.
     """
-    row, col, _ = adj_t.coo()
-    edge_index = torch.stack([col, row], dim=0)
+    # Build edge_index from adjacency for negative sampling
+    if hasattr(adj_t, 'coo'):
+        row, col, _ = adj_t.coo()
+        edge_index = torch.stack([col, row], dim=0)
+    else:
+        # Fallback: build from training edges (undirected)
+        device = x.device
+        train_edge = split_edge["train"]["edge"].to(device)
+        edge_index = torch.cat([
+            train_edge.t(),
+            train_edge.t().flip(0)  # Add reverse edges for undirected
+        ], dim=1)
 
     model.train()
     predictor.train()

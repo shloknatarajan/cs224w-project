@@ -40,6 +40,11 @@ from src.data.external_features import FeatureConfig, load_external_features
 from src.models.baselines import GCN, GraphSAGE, GraphTransformer, GAT
 from src.models.advanced import GDINN, GCNAdvanced
 from src.models.advanced.gdinn import LinkPredictor, train_with_external, test_with_external
+from src.models.advanced.gcn_advanced import (
+    LinkPredictor as GCNAdvancedPredictor,
+    train as train_gcn_advanced_epoch,
+    test as test_gcn_advanced_epoch,
+)
 from src.models.chemberta_baselines import ChemBERTaGCN, ChemBERTaGraphSAGE, ChemBERTaGAT, ChemBERTaGraphTransformer
 from src.models.morgan_baselines import MorganGCN
 from src.models.hybrid import HybridGCN, HybridGraphSAGE, HybridGraphTransformer, HybridGAT
@@ -357,7 +362,7 @@ def create_model(args, num_nodes, external_dims, chemberta_features, morgan_feat
                 args.hidden_dim,
                 num_layers=args.num_layers,
                 dropout=args.dropout,
-                chemistry_dim=sum(external_dims.values()) if external_dims else 0
+                chemical_dim=sum(external_dims.values()) if external_dims else 0
             )
         elif model_name == 'hybrid-sage':
             model = HybridGraphSAGE(
@@ -365,7 +370,7 @@ def create_model(args, num_nodes, external_dims, chemberta_features, morgan_feat
                 args.hidden_dim,
                 num_layers=args.num_layers,
                 dropout=args.dropout,
-                chemistry_dim=sum(external_dims.values()) if external_dims else 0
+                chemical_dim=sum(external_dims.values()) if external_dims else 0
             )
         elif model_name == 'hybrid-transformer':
             model = HybridGraphTransformer(
@@ -373,8 +378,8 @@ def create_model(args, num_nodes, external_dims, chemberta_features, morgan_feat
                 args.hidden_dim,
                 num_layers=args.num_layers,
                 dropout=args.dropout,
-                heads=args.attention_heads,
-                chemistry_dim=sum(external_dims.values()) if external_dims else 0
+                num_heads=args.attention_heads,
+                chemical_dim=sum(external_dims.values()) if external_dims else 0
             )
         elif model_name == 'hybrid-gat':
             model = HybridGAT(
@@ -382,14 +387,14 @@ def create_model(args, num_nodes, external_dims, chemberta_features, morgan_feat
                 args.hidden_dim,
                 num_layers=args.num_layers,
                 dropout=args.dropout,
-                heads=args.attention_heads,
-                chemistry_dim=sum(external_dims.values()) if external_dims else 0
+                num_heads=args.attention_heads,
+                chemical_dim=sum(external_dims.values()) if external_dims else 0
             )
 
         logger.info(f"Created {model_name.upper()} model:")
         logger.info(f"  hidden_dim: {args.hidden_dim}")
         logger.info(f"  num_layers: {args.num_layers}")
-        logger.info(f"  chemistry_dim: {sum(external_dims.values()) if external_dims else 0}")
+        logger.info(f"  chemical_dim: {sum(external_dims.values()) if external_dims else 0}")
 
         return model
 
@@ -557,6 +562,118 @@ def train_gdinn_model(args, model, data, splits, external_features, device, logg
     return GDINNResult(best_valid, best_test, best_epoch)
 
 
+def train_gcn_advanced_model(args, model, data, splits, device, logger):
+    """Train GCNAdvanced model using OGB reference training functions."""
+    import torch_geometric.transforms as T
+    from ogb.linkproppred import Evaluator, PygLinkPropPredDataset
+    from dataclasses import dataclass
+
+    @dataclass
+    class GCNAdvancedResult:
+        best_val_hits: float
+        best_test_hits: float
+        best_epoch: int
+
+    # Load dataset with SparseTensor transform (required by GCNAdvanced)
+    logger.info("Loading dataset with SparseTensor format for GCNAdvanced...")
+    dataset = PygLinkPropPredDataset(name='ogbl-ddi', transform=T.ToSparseTensor())
+    sparse_data = dataset[0]
+    adj_t = sparse_data.adj_t.to(device)
+    split_edge = dataset.get_edge_split()
+    num_nodes = sparse_data.num_nodes
+
+    # Create eval_train subset (matching OGB reference)
+    torch.manual_seed(12345)
+    idx = torch.randperm(split_edge["train"]["edge"].size(0))
+    idx = idx[: split_edge["valid"]["edge"].size(0)]
+    split_edge["eval_train"] = {"edge": split_edge["train"]["edge"][idx]}
+
+    # Move model to device and create embedding + predictor
+    model = model.to(device)
+    emb = torch.nn.Embedding(num_nodes, args.hidden_dim).to(device)
+    predictor = GCNAdvancedPredictor(
+        args.hidden_dim, args.hidden_dim, 1, args.num_layers, args.dropout
+    ).to(device)
+
+    # Initialize parameters
+    torch.nn.init.xavier_uniform_(emb.weight)
+    model.reset_parameters()
+    predictor.reset_parameters()
+
+    evaluator = Evaluator(name='ogbl-ddi')
+
+    # Optimizer for model, embedding, and predictor
+    optimizer = torch.optim.Adam(
+        list(model.parameters()) + list(emb.parameters()) + list(predictor.parameters()),
+        lr=args.lr,
+    )
+
+    logger.info("=" * 80)
+    logger.info("Starting GCNAdvanced Training")
+    logger.info(f"  epochs: {args.epochs}")
+    logger.info(f"  lr: {args.lr}")
+    logger.info(f"  batch_size: {args.batch_size}")
+    logger.info(f"  eval_every: {args.eval_every}")
+    logger.info(f"  patience: {args.patience}")
+    logger.info("=" * 80)
+
+    best_valid = 0.0
+    best_test = 0.0
+    best_epoch = 0
+    epochs_no_improve = 0
+
+    for epoch in range(1, args.epochs + 1):
+        loss = train_gcn_advanced_epoch(
+            model,
+            predictor,
+            emb.weight,
+            adj_t,
+            split_edge,
+            optimizer,
+            args.batch_size,
+        )
+
+        if epoch % args.eval_every == 0:
+            scores = test_gcn_advanced_epoch(
+                model, predictor, emb.weight, adj_t, split_edge, evaluator,
+                args.batch_size
+            )
+
+            # Extract Hits@20 (main metric)
+            _, valid_hits, test_hits = scores["Hits@20"]
+
+            if valid_hits > best_valid:
+                best_valid = valid_hits
+                best_test = test_hits
+                best_epoch = epoch
+                epochs_no_improve = 0
+            else:
+                epochs_no_improve += 1
+
+            logger.info(
+                f"[GCNAdvanced] Epoch {epoch:04d} | "
+                f"loss {loss:.4f} | "
+                f"val@20 {valid_hits:.4f} | "
+                f"test@20 {test_hits:.4f} | "
+                f"best {best_valid:.4f} (ep {best_epoch})"
+            )
+
+            # Early stopping
+            if args.patience and epochs_no_improve >= args.patience:
+                logger.info(
+                    f"[GCNAdvanced] Early stopping at epoch {epoch} "
+                    f"(no val improvement for {epochs_no_improve} evals)"
+                )
+                break
+
+    logger.info(
+        f"[GCNAdvanced] Done. Best val@20={best_valid:.4f} | test@20={best_test:.4f} "
+        f"(epoch {best_epoch})"
+    )
+
+    return GCNAdvancedResult(best_valid, best_test, best_epoch)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Unified training script for link prediction models',
@@ -678,6 +795,10 @@ def main():
         # GDINN requires external features
         model = create_model(args, num_nodes, external_dims, chemberta_features, morgan_features, device, logger)
         result = train_gdinn_model(args, model, data, splits, external_features, device, logger)
+    elif args.model == 'gcn-advanced':
+        # GCNAdvanced uses OGB reference training
+        model = create_model(args, num_nodes, external_dims, chemberta_features, morgan_features, device, logger)
+        result = train_gcn_advanced_model(args, model, data, splits, device, logger)
     else:
         # Baseline, chemistry, and hybrid models use the minimal trainer
         model = create_model(args, num_nodes, external_dims, chemberta_features, morgan_features, device, logger)
