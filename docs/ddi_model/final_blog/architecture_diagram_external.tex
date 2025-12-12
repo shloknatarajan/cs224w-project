@@ -1,0 +1,275 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+\begin{document}
+
+% Color definitions
+\definecolor{inputcolor}{RGB}{230, 245, 255}
+\definecolor{convcolor}{RGB}{255, 230, 230}
+\definecolor{linearcolor}{RGB}{230, 255, 230}
+\definecolor{activcolor}{RGB}{255, 250, 220}
+\definecolor{dropcolor}{RGB}{240, 240, 240}
+\definecolor{outputcolor}{RGB}{230, 230, 255}
+\definecolor{opcolor}{RGB}{255, 240, 245}
+\definecolor{featurecolor}{RGB}{255, 243, 224}
+\definecolor{concatcolor}{RGB}{240, 230, 255}
+\definecolor{normcolor}{RGB}{230, 240, 250}
+
+\begin{tikzpicture}[
+    node distance=0.5cm,
+    >={Stealth[length=2mm]},
+    % Node styles
+    input/.style={
+        rectangle, rounded corners=3pt, draw=black!70, fill=inputcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small
+    },
+    feature/.style={
+        rectangle, rounded corners=3pt, draw=orange!70, fill=featurecolor,
+        minimum width=1.8cm, minimum height=0.6cm, align=center,
+        font=\small
+    },
+    featenc/.style={
+        rectangle, rounded corners=3pt, draw=green!70!black, fill=linearcolor,
+        minimum width=1.8cm, minimum height=0.45cm, align=center,
+        font=\scriptsize\bfseries
+    },
+    featnorm/.style={
+        rectangle, rounded corners=3pt, draw=blue!50, fill=normcolor,
+        minimum width=1.8cm, minimum height=0.45cm, align=center,
+        font=\scriptsize
+    },
+    featactiv/.style={
+        rectangle, rounded corners=3pt, draw=orange!70, fill=activcolor,
+        minimum width=1.8cm, minimum height=0.4cm, align=center,
+        font=\scriptsize
+    },
+    featdrop/.style={
+        rectangle, rounded corners=3pt, draw=gray!70, fill=dropcolor,
+        minimum width=1.8cm, minimum height=0.4cm, align=center,
+        font=\scriptsize
+    },
+    conv/.style={
+        rectangle, rounded corners=3pt, draw=red!70, fill=convcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small\bfseries
+    },
+    linear/.style={
+        rectangle, rounded corners=3pt, draw=green!70!black, fill=linearcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small\bfseries
+    },
+    activ/.style={
+        rectangle, rounded corners=3pt, draw=orange!70, fill=activcolor,
+        minimum width=2.0cm, minimum height=0.5cm, align=center,
+        font=\small
+    },
+    drop/.style={
+        rectangle, rounded corners=3pt, draw=gray!70, fill=dropcolor,
+        minimum width=2.0cm, minimum height=0.5cm, align=center,
+        font=\small
+    },
+    output/.style={
+        rectangle, rounded corners=3pt, draw=blue!70, fill=outputcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small
+    },
+    op/.style={
+        circle, draw=purple!70, fill=opcolor,
+        minimum size=0.8cm, align=center,
+        font=\small\bfseries
+    },
+    concat/.style={
+        rectangle, rounded corners=3pt, draw=purple!50, fill=concatcolor,
+        minimum width=1.5cm, minimum height=0.6cm, align=center,
+        font=\small
+    },
+    embed/.style={
+        rectangle, rounded corners=3pt, draw=blue!50, fill=outputcolor,
+        minimum width=1.2cm, minimum height=0.6cm, align=center,
+        font=\small
+    },
+    arrow/.style={->, thick, draw=black!60},
+    title/.style={font=\large\bfseries},
+    subtitle/.style={font=\normalsize\bfseries}
+]
+
+% ==================== FEATURE ENCODERS (Top Block) ====================
+\node[title] (feat_title) {Feature Encoders};
+
+% External feature inputs - row
+\node[feature, below=0.5cm of feat_title, xshift=-4cm] (morgan) {Morgan FP\\{\scriptsize (2048d)}};
+\node[feature, right=0.4cm of morgan] (pubchem) {PubChem\\{\scriptsize (9d)}};
+\node[feature, right=0.4cm of pubchem] (chemberta) {ChemBERTa\\{\scriptsize (768d)}};
+\node[feature, right=0.4cm of chemberta] (drugtarget) {Drug-Target\\{\scriptsize (229d)}};
+
+% Feature encoder stacks (Linear -> LayerNorm -> ReLU -> Dropout)
+% Morgan encoder
+\node[featenc, below=0.4cm of morgan] (lin_m) {Linear};
+\node[featnorm, below=0.25cm of lin_m] (norm_m) {LayerNorm};
+\node[featactiv, below=0.25cm of norm_m] (relu_m) {ReLU};
+\node[featdrop, below=0.25cm of relu_m] (drop_m) {Dropout};
+
+% PubChem encoder
+\node[featenc, below=0.4cm of pubchem] (lin_p) {Linear};
+\node[featnorm, below=0.25cm of lin_p] (norm_p) {LayerNorm};
+\node[featactiv, below=0.25cm of norm_p] (relu_p) {ReLU};
+\node[featdrop, below=0.25cm of relu_p] (drop_p) {Dropout};
+
+% ChemBERTa encoder
+\node[featenc, below=0.4cm of chemberta] (lin_c) {Linear};
+\node[featnorm, below=0.25cm of lin_c] (norm_c) {LayerNorm};
+\node[featactiv, below=0.25cm of norm_c] (relu_c) {ReLU};
+\node[featdrop, below=0.25cm of relu_c] (drop_c) {Dropout};
+
+% Drug-Target encoder
+\node[featenc, below=0.4cm of drugtarget] (lin_d) {Linear};
+\node[featnorm, below=0.25cm of lin_d] (norm_d) {LayerNorm};
+\node[featactiv, below=0.25cm of norm_d] (relu_d) {ReLU};
+\node[featdrop, below=0.25cm of relu_d] (drop_d) {Dropout};
+
+% Arrows within feature encoders
+\draw[arrow] (morgan) -- (lin_m);
+\draw[arrow] (lin_m) -- (norm_m);
+\draw[arrow] (norm_m) -- (relu_m);
+\draw[arrow] (relu_m) -- (drop_m);
+
+\draw[arrow] (pubchem) -- (lin_p);
+\draw[arrow] (lin_p) -- (norm_p);
+\draw[arrow] (norm_p) -- (relu_p);
+\draw[arrow] (relu_p) -- (drop_p);
+
+\draw[arrow] (chemberta) -- (lin_c);
+\draw[arrow] (lin_c) -- (norm_c);
+\draw[arrow] (norm_c) -- (relu_c);
+\draw[arrow] (relu_c) -- (drop_c);
+
+\draw[arrow] (drugtarget) -- (lin_d);
+\draw[arrow] (lin_d) -- (norm_d);
+\draw[arrow] (norm_d) -- (relu_d);
+\draw[arrow] (relu_d) -- (drop_d);
+
+% Output dimension label
+\node[font=\scriptsize\itshape, text=gray, right=0.1cm of lin_d] {output 256d each};
+
+% ==================== GCN ENCODER (Middle Block) ====================
+% Concatenation - position first as anchor
+\node[concat, below=2.5cm of $(drop_p)!0.5!(drop_c)$] (concat) {Concat};
+
+% Node embeddings (learnable) - to the left
+\node[input, left=2cm of concat, minimum width=2.2cm] (x) {Embeddings $\mathbf{x}$\\{\scriptsize (256d)}};
+
+% Title anchored to top-left, above embeddings
+\node[title, anchor=south west] at ([yshift=0.5cm]x.north west) (gcn_title) {GCN Encoder};
+
+% Concatenation - position first as anchor
+% \node[concat, below=2cm of $(drop_p)!0.5!(drop_c)$] (concat) {Concat};
+
+% \node[title, anchor=south west] at ([yshift=0.3cm]x.north west) (gcn_title) {GCN Encoder};
+% Concatenation
+% \node[concat, below=0.5cm of gcn_title] (concat) {Concat};
+
+% Node embeddings (learnable) - to the left
+% \node[input, left=2cm of concat, minimum width=2.2cm] (x) {Embeddings $\mathbf{x}$\\{\scriptsize (256d)}};
+
+% Arrows from feature encoders to concat
+\draw[arrow] (drop_m.south) -- ++(0,-0.6) -| ([xshift=-0.4cm]concat.north);
+\draw[arrow] (drop_p.south) -- ++(0,-0.4) -| ([xshift=-0.15cm]concat.north);
+\draw[arrow] (drop_c.south) -- ++(0,-0.4) -| ([xshift=0.15cm]concat.north);
+\draw[arrow] (drop_d.south) -- ++(0,-0.6) -| ([xshift=0.4cm]concat.north);
+
+% Arrow from embeddings to concat
+\draw[arrow] (x.east) -- (concat.west);
+
+% Concat output dimension
+\node[font=\scriptsize\itshape, text=gray, right=0.2cm of concat] {1280d};
+
+% Projection after concat
+\node[linear, below=0.6cm of concat, minimum width=2.5cm] (proj) {Linear (Projection)};
+\node[font=\scriptsize\itshape, text=gray, right=0.2cm of proj] {256d};
+
+% Adjacency
+\node[input, right=1.5cm of proj, minimum width=2cm] (adj) {Adjacency $\mathbf{A}$};
+
+% First GCN block
+\node[conv, below=0.6cm of proj] (gcn1) {GCNConv};
+\node[activ, below=of gcn1] (relu1) {ReLU};
+\node[drop, below=of relu1] (drop1) {Dropout($p$)};
+
+% Final GCN layer
+\node[conv, below=0.6cm of drop1] (gcn2) {GCNConv};
+
+% Output embeddings
+\node[output, below=0.6cm of gcn2] (h) {Node Embeddings $\mathbf{h}$\\{\scriptsize (256d)}};
+
+% Arrows for GCN path
+\draw[arrow] (concat) -- (proj);
+\draw[arrow] (proj) -- (gcn1);
+\draw[arrow] (adj.south) -- ++(0,-0.3) -| ([xshift=0.8cm]gcn1.north);
+\draw[arrow] (gcn1) -- (relu1);
+\draw[arrow] (relu1) -- (drop1);
+\draw[arrow] (drop1) -- (gcn2);
+\draw[arrow] (gcn2) -- (h);
+
+% ==================== LINK PREDICTOR (Right Block) ====================
+\node[title, right=9cm of gcn_title] (mlp_title) {LinkPredictor (MLP)};
+
+% Node embeddings for edge
+\node[embed, below=0.5cm of mlp_title, xshift=-0.8cm] (hi) {$\mathbf{h}_i$};
+\node[embed, right=0.4cm of hi] (hj) {$\mathbf{h}_j$};
+
+% Element-wise product
+\node[op, below=0.7cm of $(hi)!0.5!(hj)$] (mult) {$\odot$};
+
+% First Linear block
+\node[linear, below=0.7cm of mult] (lin1) {Linear};
+\node[activ, below=of lin1] (relu3) {ReLU};
+\node[drop, below=of relu3] (drop3) {Dropout($p$)};
+
+% Final Linear layer
+\node[linear, below=0.6cm of drop3] (lin3) {Linear};
+
+% Sigmoid
+\node[activ, below=of lin3] (sigmoid) {Sigmoid};
+
+% Output
+\node[output, below=0.6cm of sigmoid] (prob) {Edge Probability};
+
+% Arrows for MLP
+\draw[arrow] (hi.south) -- ++(0,-0.25) -| (mult);
+\draw[arrow] (hj.south) -- ++(0,-0.25) -| (mult);
+\draw[arrow] (mult) -- (lin1);
+\draw[arrow] (lin1) -- (relu3);
+\draw[arrow] (relu3) -- (drop3);
+\draw[arrow] (drop3) -- (lin3);
+\draw[arrow] (lin3) -- (sigmoid);
+\draw[arrow] (sigmoid) -- (prob);
+
+% ==================== CONNECTION ====================
+% Arrow from h to hi and hj
+\draw[arrow, dashed, blue!60] (h.east) -- ++(4.5,0) |- ++(0,8) -| (hi.north);
+\draw[arrow, dashed, blue!60] (h.east) -- ++(4.5,0) |- ++(0,8) -| (hj.north);
+
+% Labels for the connection
+\node[font=\footnotesize, text=blue!70, anchor=west] at ($(h.east)+(1.5,0.25)$) {for edge $(i,j)$};
+
+% ==================== BACKGROUND BOXES ====================
+\begin{scope}[on background layer]
+    % Feature Encoders box
+    \node[fit=(feat_title)(morgan)(drugtarget)(drop_m)(drop_d),
+          draw=orange!40, fill=orange!5, rounded corners=5pt, inner sep=10pt] (featbox) {};
+
+    % GCN box
+    \node[fit=(gcn_title)(x)(adj)(concat)(proj)(gcn1)(relu1)(drop1)(gcn2)(h),
+          draw=red!30, fill=red!5, rounded corners=5pt, inner sep=10pt] (gcnbox) {};
+
+    % MLP box
+    \node[fit=(mlp_title)(hi)(hj)(mult)(lin1)(relu3)(drop3)(lin3)(sigmoid)(prob),
+          draw=green!30, fill=green!5, rounded corners=5pt, inner sep=10pt] (mlpbox) {};
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}
+

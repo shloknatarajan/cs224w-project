@@ -1,0 +1,173 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+\begin{document}
+
+% Color definitions
+\definecolor{inputcolor}{RGB}{230, 245, 255}
+\definecolor{convcolor}{RGB}{255, 230, 230}
+\definecolor{linearcolor}{RGB}{230, 255, 230}
+\definecolor{activcolor}{RGB}{255, 250, 220}
+\definecolor{dropcolor}{RGB}{240, 240, 240}
+\definecolor{outputcolor}{RGB}{230, 230, 255}
+\definecolor{opcolor}{RGB}{255, 240, 245}
+
+\begin{tikzpicture}[
+    node distance=0.6cm,
+    >={Stealth[length=2mm]},
+    % Node styles
+    input/.style={
+        rectangle, rounded corners=3pt, draw=black!70, fill=inputcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small
+    },
+    conv/.style={
+        rectangle, rounded corners=3pt, draw=red!70, fill=convcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small\bfseries
+    },
+    linear/.style={
+        rectangle, rounded corners=3pt, draw=green!70!black, fill=linearcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small\bfseries
+    },
+    activ/.style={
+        rectangle, rounded corners=3pt, draw=orange!70, fill=activcolor,
+        minimum width=2.0cm, minimum height=0.5cm, align=center,
+        font=\small
+    },
+    drop/.style={
+        rectangle, rounded corners=3pt, draw=gray!70, fill=dropcolor,
+        minimum width=2.0cm, minimum height=0.5cm, align=center,
+        font=\small
+    },
+    output/.style={
+        rectangle, rounded corners=3pt, draw=blue!70, fill=outputcolor,
+        minimum width=2.8cm, minimum height=0.7cm, align=center,
+        font=\small
+    },
+    op/.style={
+        circle, draw=purple!70, fill=opcolor,
+        minimum size=0.8cm, align=center,
+        font=\small\bfseries
+    },
+    embed/.style={
+        rectangle, rounded corners=3pt, draw=blue!50, fill=outputcolor,
+        minimum width=1.2cm, minimum height=0.6cm, align=center,
+        font=\small
+    },
+    dots/.style={font=\Large},
+    arrow/.style={->, thick, draw=black!60},
+    title/.style={font=\large\bfseries}
+]
+
+% ==================== GCN ENCODER (Left) ====================
+\node[title] (gcn_title) {GCN Encoder};
+
+% Inputs
+\node[input, below=0.5cm of gcn_title] (x) {Node Embeddings $\mathbf{x}$};
+\node[input, right=0.3cm of x] (adj) {Adjacency $\mathbf{A}$};
+
+% First GCN block
+\node[conv, below=0.8cm of x] (gcn1) {GCNConv};
+\node[activ, below=of gcn1] (relu1) {ReLU};
+\node[drop, below=of relu1] (drop1) {Dropout($p$)};
+
+% Dots for middle layers
+% \node[dots, below=0.5cm of drop1] (dots1) {$\vdots$};
+
+% Second-to-last GCN block
+% \node[conv, below=0.5cm of dots1] (gcn2) {GCNConv};
+% \node[activ, below=of gcn2] (relu2) {ReLU};
+% \node[drop, below=of relu2] (drop2) {Dropout($p$)};
+
+% Final GCN layer (no activation/dropout)
+\node[conv, below=0.8cm of drop1] (gcn3) {GCNConv};
+
+% Output embeddings
+\node[output, below=0.8cm of gcn3] (h) {Node Embeddings $\mathbf{h}$};
+
+% Arrows for GCN
+\draw[arrow] (x.south) -- (gcn1.north);
+\draw[arrow] (adj.south) -- ++(0,-0.4) -| (gcn1.north east);
+\draw[arrow] (gcn1) -- (relu1);
+\draw[arrow] (relu1) -- (drop1);
+% \draw[arrow] (drop1) -- (dots1);
+% \draw[arrow] (dots1) -- (gcn2);
+% \draw[arrow] (gcn2) -- (relu2);
+% \draw[arrow] (relu2) -- (drop2);
+% \draw[arrow] (drop2) -- (gcn3);
+\draw[arrow] (drop1) -- (gcn3);
+\draw[arrow] (gcn3) -- (h);
+
+% ==================== LINK PREDICTOR (Right) ====================
+\node[title, right=5cm of gcn_title] (mlp_title) {LinkPredictor (MLP)};
+
+% Node embeddings for edge
+\node[embed, below=0.5cm of mlp_title, xshift=-0.8cm] (hi) {$\mathbf{h}_i$};
+\node[embed, right=0.4cm of hi] (hj) {$\mathbf{h}_j$};
+
+% Element-wise product
+\node[op, below=0.8cm of $(hi)!0.5!(hj)$] (mult) {$\odot$};
+
+% First Linear block
+\node[linear, below=0.8cm of mult] (lin1) {Linear};
+\node[activ, below=of lin1] (relu3) {ReLU};
+\node[drop, below=of relu3] (drop3) {Dropout($p$)};
+
+% Dots for middle layers
+% \node[dots, below=0.5cm of drop3] (dots2) {$\vdots$};
+
+% Second-to-last Linear block
+% \node[linear, below=0.5cm of dots2] (lin2) {Linear};
+% \node[activ, below=of lin2] (relu4) {ReLU};
+% \node[drop, below=of relu4] (drop4) {Dropout($p$)};
+
+% Final Linear layer
+\node[linear, below=0.8cm of drop3] (lin3) {Linear};
+
+% Sigmoid
+\node[activ, below=of lin3] (sigmoid) {Sigmoid};
+
+% Output
+\node[output, below=0.8cm of sigmoid] (prob) {Edge Probability};
+
+% Arrows for MLP
+\draw[arrow] (hi.south) -- ++(0,-0.3) -| (mult);
+\draw[arrow] (hj.south) -- ++(0,-0.3) -| (mult);
+\draw[arrow] (mult) -- (lin1);
+\draw[arrow] (lin1) -- (relu3);
+\draw[arrow] (relu3) -- (drop3);
+\draw[arrow] (drop3) -- (lin3);
+% \draw[arrow] (dots2) -- (lin2);
+% \draw[arrow] (lin2) -- (relu4);
+% \draw[arrow] (relu4) -- (drop4);
+% \draw[arrow] (drop4) -- (lin3);
+\draw[arrow] (lin3) -- (sigmoid);
+\draw[arrow] (sigmoid) -- (prob);
+
+% ==================== CONNECTION ====================
+% Arrow from h to hi and hj - route around the right side of MLP box
+\draw[arrow, dashed, blue!60] (h.east) -- ++(4,0) |- ++(0,7.5) -| (hi.north);
+\draw[arrow, dashed, blue!60] (h.east) -- ++(4,0) |- ++(0,7.5) -|(hj.north);
+
+% Labels for the connection
+\node[font=\footnotesize, text=blue!70, anchor=west] at ($(h.east)+(1.5,+0.25)$) {for edge $(i,j)$};
+
+% ==================== BACKGROUND BOXES ====================
+\begin{scope}[on background layer]
+    % GCN box
+    % \node[fit=(gcn_title)(x)(adj)(gcn1)(relu1)(drop1)(dots1)(gcn2)(relu2)(drop2)(gcn3)(h),
+    \node[fit=(gcn_title)(x)(adj)(gcn1)(relu1)(drop1)(gcn3)(h),
+          draw=red!30, fill=red!5, rounded corners=5pt, inner sep=8pt] (gcnbox) {};
+
+    % MLP box
+    % \node[fit=(mlp_title)(hi)(hj)(mult)(lin1)(relu3)(drop3)(dots2)(lin2)(relu4)(drop4)(lin3)(sigmoid)(prob),
+    \node[fit=(mlp_title)(hi)(hj)(mult)(lin1)(relu3)(drop3)(lin3)(sigmoid)(prob),
+          draw=green!30, fill=green!5, rounded corners=5pt, inner sep=8pt] (mlpbox) {};
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}
