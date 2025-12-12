@@ -205,13 +205,13 @@ class GraphTransformer(BaseModel):
 
 # Complex Models
 
-## Structure-only GNN Architecture
+## Advanced GCN Architecture
 
 Given that GCN outperformed attention-based models in our baselines, we chose it as our foundation for further development. The key insight from our baseline experiments was that ogbl-ddi's dense connectivity (14.67% edge density, ~500 neighbors per node) favors simple aggregation over selective attention.
 
 ### Architecture Overview
 
-Our tuned structure-only model consists of two components:
+Our Advanced GCN consists of two components:
 
 1. **GCN Encoder**: A 2-layer Graph Convolutional Network that learns node embeddings from the graph structure. Each drug starts as a learnable 256-dimensional embedding that gets refined through neighborhood aggregation.
 
@@ -306,7 +306,7 @@ class LinkPredictor(torch.nn.Module): # Our improved decoder
 
 ## Ablations
 
-We ran ablations on the structure-only GCN to understand the impact of depth, dropout, and learning rate. All runs used 200 epochs with evaluation every 10 epochs.
+We ran ablations on the Advanced GCN to understand the impact of depth, dropout, and learning rate. All runs used 200 epochs with evaluation every 10 epochs.
 
 | Configuration | Layers | Hidden | Dropout | LR | Val Hits@20 | Test Hits@20 |
 |---|---|---|---|---|---|---|
@@ -335,8 +335,8 @@ This was achieved with the following configuration:
 - **Dropout**: 0.5
 - **Training**: 2000 epochs with a learning rate of 0.005 and a batch size of 65536. The model with the best validation score was found at epoch 430.
 
-# Incorporating Drug Features
-The structure-only model learns entirely from the interaction graph. Each drug starts as a randomly initialized embedding that gets refined through message passing. But drugs are not abstract entities — they are molecules with specific chemical structures, physical properties, and biological targets. In addition, the ogb-ddi dataset uses a protein-target split, so test drugs bind to different proteins than the training drugs. This creates a challenge when generalizing: the model has to predict interactions for drugs with fundamentally different mechanisms than the ones it was trained with. Thus, we decided to extend our model by providing access to external information about the drugs.
+# Incorporating Drug Features: Building GDINN
+The Advanced GCN learns entirely from the interaction graph. Each drug starts as a randomly initialized embedding that gets refined through message passing. But drugs are not abstract entities — they are molecules with specific chemical structures, physical properties, and biological targets. In addition, the ogb-ddi dataset uses a protein-target split, so test drugs bind to different proteins than the training drugs. This creates a challenge when generalizing: the model has to predict interactions for drugs with fundamentally different mechanisms than the ones it was trained with. Thus, we decided to extend our Advanced GCN by providing access to external information about the drugs — creating GDINN.
 
 ## Drug Features Sources
 We incorporated 4 different types of external features, each capturing a different aspect of drug biology.
@@ -369,8 +369,8 @@ From the Therapeutics Data Commons (TDC), we extracted drug-target binding data 
 
 This feature is particularly powerful for ogbl-ddi because the dataset uses a protein-target split. Test drugs bind to different proteins than training drugs, but the drug-target vectors explicitly encode this biological information. The model can learn that drugs targeting similar protein families tend to have similar interaction profiles.
 
-## Drug Features Implementation & Architecture
-Simply concatenating 3054 dimensions of features to each node would overwhelm the model. Instead, we designed a careful fusion architecture:
+## GDINN Architecture
+Simply concatenating 3054 dimensions of features to each node would overwhelm the model. Instead, we designed a careful fusion architecture for GDINN:
 
 ### Feature Encoders
 
@@ -407,10 +407,11 @@ Adding external drug features dramatically improved performance over the structu
 
 | Model | Val Hits@20 | Test Hits@20 | Best Epoch |
 |---|---|---|---|
-| Structure-only GCN | 64.78% | 61.69% | 430 |
-| **GCN + All Features** | **70.31%** | **73.28%** | 1685 |
+| GCN baseline | 13.59% | 11.02% | 135 |
+| Advanced GCN | 64.78% | 61.69% | 430 |
+| **GDINN** | **70.31%** | **73.28%** | **1685** |
 
-The model with all external features achieved **73.28% Test Hits@20** — an 11.6 percentage point improvement over the structure-only baseline. Notably, the test performance exceeds validation performance, suggesting that the external features provide meaningful generalization signal for the protein-target split.
+We call our complete architecture **GDINN (Graph Drug Interaction Neural Network)**, which combines the Advanced GCN encoder with our feature fusion module. GDINN achieved **73.28% Test Hits@20** — an 11.6 percentage point improvement over the Advanced GCN baseline. Notably, the test performance exceeds validation performance, suggesting that the external features provide meaningful generalization signal for the protein-target split.
 
 ### Individual Feature Contributions
 
@@ -418,14 +419,14 @@ We evaluated each external feature type combined with structure to understand th
 
 | Model Configuration | Val Hits@20 | Test Hits@20 | Best Epoch |
 |---|---|---|---|
-| Structure only (baseline) | 64.78% | 61.69% | 430 |
-| Structure + Morgan | 70.45% | 55.05% | 1910 |
-| Structure + PubChem | 69.92% | 56.72% | 1975 |
-| Structure + ChemBERTa | 70.85% | 59.01% | 1925 |
-| Structure + Drug-Target | 70.49% | 54.18% | 1850 |
-| **Structure + All Features** | **70.31%** | **73.28%** | **1685** |
+| Advanced GCN (baseline) | 64.78% | 61.69% | 430 |
+| Advanced GCN + Morgan | 70.45% | 55.05% | 1910 |
+| Advanced GCN + PubChem | 69.92% | 56.72% | 1975 |
+| Advanced GCN + ChemBERTa | 70.85% | 59.01% | 1925 |
+| Advanced GCN + Drug-Target | 70.49% | 54.18% | 1850 |
+| **GDINN (All Features)** | **70.31%** | **73.28%** | **1685** |
 
-Adding any single feature type improves validation performance (all reach ~70%) but hurts test generalization compared to structure-only. This suggests individual features can overfit to the validation distribution. However, when all features are combined, the model achieves both strong validation (70.31%) and the best test performance (73.28%) — a 11.6 point improvement over structure-only.
+Adding any single feature type improves validation performance (all reach ~70%) but hurts test generalization compared to the Advanced GCN. This suggests individual features can overfit to the validation distribution. However, when all features are combined in GDINN, the model achieves both strong validation (70.31%) and the best test performance (73.28%) — an 11.6 point improvement over Advanced GCN.
 
 This indicates that the features provide complementary rather than redundant signal: Morgan fingerprints capture molecular substructures, ChemBERTa captures chemical semantics, drug-target vectors encode protein binding, and PubChem properties describe ADME characteristics. Together, they enable robust generalization to drugs with different protein targets than those seen during training.
 
@@ -448,13 +449,13 @@ Together, these features allow the model to recognize that two drugs with simila
 GCN consistently outperformed more complex architectures like GAT and Graph Transformer. Attention mechanisms, which excel at selecting important neighbors in sparse graphs, provide less benefit when every neighbor matters. For dense interaction networks, normalized mean aggregation (GCN) appears to be the right inductive bias.
 
 **2. Structure alone hits a ceiling; external features break through.**
-Even with optimal hyperparameters and long training, structure-only GCN plateaued around 62% test Hits@20. External drug features pushed performance to 73% — a substantial gain that structure-only training cannot achieve. This suggests that for link prediction tasks with out-of-distribution test sets, incorporating domain-specific node features is essential.
+Even with optimal hyperparameters and long training, Advanced GCN plateaued around 62% test Hits@20. GDINN's external drug features pushed performance to 73% — a substantial gain that structure-only training cannot achieve. This suggests that for link prediction tasks with out-of-distribution test sets, incorporating domain-specific node features is essential.
 
 **3. Feature fusion architecture matters.**
 Simply concatenating raw features would overwhelm the model with 3054 dimensions. Our approach — encoding each feature type separately, then concatenating and projecting — allows the model to learn which feature combinations are most informative while keeping the representation manageable.
 
 **4. Test > Validation indicates positive transfer.**
-Our best model achieves higher test than validation Hits@20 (73.28% vs 70.31%). This unusual result suggests that the external features enable genuine generalization to new protein targets, rather than just memorizing training patterns. The drug-target vectors are particularly valuable here, as they explicitly encode the biological information that the protein-target split is designed to test.
+GDINN achieves higher test than validation Hits@20 (73.28% vs 70.31%). This unusual result suggests that the external features enable genuine generalization to new protein targets, rather than just memorizing training patterns. The drug-target vectors are particularly valuable here, as they explicitly encode the biological information that the protein-target split is designed to test.
 
 ## Limitations and Future Work
 
@@ -468,7 +469,7 @@ Our best model achieves higher test than validation Hits@20 (73.28% vs 70.31%). 
 
 # Conclusion
 
-We demonstrated that GNN-based link prediction can effectively identify drug-drug interactions, achieving 73.28% Hits@20 on the challenging ogbl-ddi benchmark. The key to success was combining graph structure with external drug features through a carefully designed fusion architecture. Our results show that for biochemical interaction prediction, the graph provides essential relational context, but domain-specific features are necessary to generalize beyond the training distribution. This work contributes to the broader goal of computational drug safety screening, where accurate DDI prediction can help prevent harmful medication combinations before they reach patients
+We demonstrated that GNN-based link prediction can effectively identify drug-drug interactions. Our model, GDINN (Graph Drug Interaction Neural Network), achieves 73.28% Hits@20 on the challenging ogbl-ddi benchmark. The key to success was combining the Advanced GCN's graph structure learning with external drug features through a carefully designed fusion architecture. Our results show that for biochemical interaction prediction, the graph provides essential relational context, but domain-specific features are necessary to generalize beyond the training distribution. This work contributes to the broader goal of computational drug safety screening, where accurate DDI prediction can help prevent harmful medication combinations before they reach patients.
 
 # References
 
