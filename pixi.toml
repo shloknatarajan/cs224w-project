@@ -33,11 +33,9 @@ PyTDC = ">=1.0.0, <2"          # For drug-target interaction data
 safetensors = ">=0.4.0, <1"
 
 [tasks]
-train-baselines = "python train_baselines.py"
-train-advanced = "python train_advanced.py"
-train-seal = "python train_seal.py"
-train-gdin = "python train_gdin.py"
-train-gdin-external = "python train_gdin_external.py"
+# Main training entry point
+train = "python train.py"
+train-baselines = "python train_baselines_consolidated.py"
 
 # Data fetching tasks for external knowledge
 fetch-smiles = "python -m src.data.fetch_smiles"
@@ -48,15 +46,9 @@ fetch-drug-targets = "python -m src.data.fetch_drug_targets"
 # Fetch all external data at once (runs sequentially)
 fetch-data = "python -m src.data.fetch_smiles && python -m src.data.fetch_pubchem_properties && python -m src.data.extract_chemberta_embeddings && python -m src.data.fetch_drug_targets"
 
-train-morgan = "python train_morgan_baselines.py"
-train-chemberta = "python train_chemberta_baselines.py"
-train-chemberta-fallback = "python train_chemberta_fallback.py"
-train-node2vec = "python train_node2vec_baselines.py"
-
-# Reference DDI models with external features
-train-ddi-reference = "python train_ddi_reference.py"
-train-ddi-external = "python train_ddi_reference_external.py"
-
-# Hyperparameter sweeps
-sweep-external-quick = "python sweep_external_hyperparams.py --mode quick --epochs 300"
-sweep-external-full = "python sweep_external_hyperparams.py --mode full --epochs 500"
+# Experiment scripts (in scripts/experiments/)
+sweep-external-quick = "python scripts/experiments/sweep_external_hyperparams.py --mode quick --epochs 300"
+sweep-external-full = "python scripts/experiments/sweep_external_hyperparams.py --mode full --epochs 500"
+run-sweeps = "python scripts/experiments/run_ddi_sweeps.py"
+run-long-sweeps = "python scripts/experiments/run_ddi_long_sweeps.py"
+tune-baselines = "python scripts/experiments/tune_baselines.py"
