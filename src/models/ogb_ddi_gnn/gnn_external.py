@@ -1,7 +1,7 @@
 """
 Extended OGBL-DDI GNN models with external feature support.
 
-These models extend the reference GCN/SAGE architecture to incorporate
+These models extend the GCN architecture to incorporate
 external knowledge from:
 - Morgan fingerprints (molecular substructure)
 - PubChem properties (physicochemical features)

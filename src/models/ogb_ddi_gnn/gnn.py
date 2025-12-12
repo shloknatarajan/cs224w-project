@@ -1,10 +1,3 @@
-"""
-Port of the official OGBL-DDI GCN/SAGE + MLP link predictor reference
-implementation (https://github.com/snap-stanford/ogb/blob/master/examples/linkproppred/ddi/gnn.py).
-
-Changes from the original:
-- Added type hints and lightweight docstrings for easier reuse inside this repo.
-"""
 from __future__ import annotations
 
 from typing import Dict, Iterable, Tuple
@@ -19,8 +12,6 @@ from torch_geometric.typing import SparseTensor
 
 
 class GCN(torch.nn.Module):
-    """GCN encoder mirroring the OGBL-DDI reference architecture."""
-
     def __init__(
         self,
         in_channels: int,

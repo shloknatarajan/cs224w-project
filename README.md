@@ -446,9 +446,3 @@ Dataset: Open Graph Benchmark (OGB)
   year={2020}
 }
 ```
-
----
-
-## Contact
-
-For questions about this project, please refer to the documentation in `docs/` or open an issue.
